@@ -86,7 +86,7 @@ export function Footer() {
 
         <div className="gradient-line mt-16" />
         <div className="mt-8 flex flex-col items-center justify-between gap-4 text-center text-xs text-slate-600 sm:flex-row sm:text-left">
-          <p>© 2025 {site.name}. All rights reserved.</p>
+          <p>© 2026 {site.name}. All rights reserved.</p>
           <p className="max-w-md sm:text-right">
             Crafted for speed, accessibility, and search visibility.
           </p>
