@@ -1,0 +1,142 @@
+"use client";
+
+import { PageHero } from "@/components/pages/page-hero";
+import { Button } from "@/components/ui/button";
+import { Container } from "@/components/ui/container";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { FadeIn, Stagger, StaggerItem } from "@/components/motion/fade-in";
+import { SpotlightContainer } from "@/components/motion/spotlight-cards";
+import { ServiceBenefitIcon } from "@/components/services/service-benefit-icon";
+import { FAQJsonLd, ServiceJsonLd } from "@/components/seo/json-ld";
+import type { ServiceBlock } from "@/lib/services-data";
+import { site } from "@/lib/site";
+import { CheckCircle2 } from "lucide-react";
+
+export function ServicePageBody({ service }: { service: ServiceBlock }) {
+  const url = `${site.url}/services/${service.slug}`;
+
+  return (
+    <>
+      <ServiceJsonLd name={service.title} description={service.metaDescription} url={url} />
+      <FAQJsonLd faqs={service.faqs} />
+
+      <PageHero eyebrow={service.heroEyebrow} title={service.title} description={service.shortDescription}>
+        <Button href="/request-quote">Request a quote</Button>
+        <Button href="/free-website-audit" variant="outline">Free website audit</Button>
+      </PageHero>
+
+      <section className="py-20 sm:py-24">
+        <Container>
+          <FadeIn>
+            <div className="glass gradient-border relative overflow-hidden rounded-3xl p-8 sm:p-10 md:p-14">
+              <div className="noise-overlay rounded-3xl" />
+              <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-cyan-500/10 blur-[100px]" />
+              <div className="pointer-events-none absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-violet-500/10 blur-[80px]" />
+              <div className="relative">
+                <h2 className="font-display text-2xl font-semibold text-white sm:text-3xl">What this service delivers</h2>
+                <p className="mt-5 max-w-3xl text-lg leading-relaxed text-slate-400">{service.intro}</p>
+                <p className="mt-6 max-w-3xl leading-relaxed text-slate-300">{service.explanation}</p>
+              </div>
+            </div>
+          </FadeIn>
+        </Container>
+      </section>
+
+      <section className="relative py-20 sm:py-24">
+        <div className="gradient-line absolute inset-x-0 top-0" />
+        <Container>
+          <SectionHeading
+            eyebrow="Outcomes"
+            title="Benefits that show up in your metrics"
+            description="We optimize for pipeline, revenue proxies, and durable organic equity — not vanity dashboards."
+          />
+          <SpotlightContainer className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <Stagger className="contents">
+              {service.benefits.map((b) => (
+                <StaggerItem key={b.title}>
+                  <div className="spotlight-card glass group h-full rounded-2xl border border-white/[0.08] p-6 transition-all duration-500">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-violet-500/15 text-cyan-300 transition-transform duration-500 group-hover:scale-110">
+                      <ServiceBenefitIcon name={b.icon} className="h-5 w-5" />
+                    </div>
+                    <h3 className="mt-5 font-display text-lg font-semibold text-white">{b.title}</h3>
+                    <p className="mt-2.5 text-sm leading-relaxed text-slate-400 transition-colors duration-300 group-hover:text-slate-300">{b.description}</p>
+                  </div>
+                </StaggerItem>
+              ))}
+            </Stagger>
+          </SpotlightContainer>
+        </Container>
+      </section>
+
+      <section className="relative py-20 sm:py-24">
+        <div className="gradient-line absolute inset-x-0 top-0" />
+        <Container>
+          <SectionHeading
+            eyebrow="Process"
+            title="How we work with your team"
+            description="Transparent phases, clear owners, and weekly momentum — whether you're in Delhi NCR or fully remote."
+          />
+          <div className="relative mt-14">
+            <div className="pointer-events-none absolute left-6 top-0 hidden h-full w-px bg-gradient-to-b from-cyan-500/30 via-indigo-500/20 to-transparent lg:block" />
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+              {service.process.map((step, i) => (
+                <FadeIn key={step.title} delay={i * 0.08}>
+                  <div className="spotlight-card group relative h-full rounded-2xl border border-white/[0.08] bg-slate-900/40 p-6 transition-all duration-500">
+                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500/25 to-violet-500/15 font-mono text-xs font-bold text-cyan-300 transition-transform duration-500 group-hover:scale-110">
+                      {step.step}
+                    </span>
+                    <h3 className="mt-4 font-display text-lg font-semibold text-white">{step.title}</h3>
+                    <p className="mt-2.5 text-sm leading-relaxed text-slate-400">{step.description}</p>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="relative bg-slate-950/80 py-20 sm:py-24">
+        <div className="gradient-line absolute inset-x-0 top-0" />
+        <Container>
+          <SectionHeading eyebrow="FAQ" title="Questions clients ask first" />
+          <div className="mx-auto mt-12 max-w-3xl space-y-4">
+            {service.faqs.map((f) => (
+              <FadeIn key={f.q}>
+                <div className="group rounded-2xl border border-white/[0.08] bg-slate-900/30 p-6 transition-all duration-500 hover:border-white/[0.12] hover:bg-slate-900/50 sm:p-8">
+                  <div className="flex gap-3.5">
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-cyan-400/80 transition-colors duration-300 group-hover:text-cyan-400" />
+                    <div>
+                      <h3 className="font-display font-medium text-white">{f.q}</h3>
+                      <p className="mt-3 text-sm leading-relaxed text-slate-400">{f.a}</p>
+                    </div>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-20 sm:py-28">
+        <Container>
+          <FadeIn>
+            <div className="glass gradient-border relative overflow-hidden rounded-3xl px-8 py-14 text-center sm:px-14">
+              <div className="noise-overlay rounded-3xl" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-cyan-500/8 via-transparent to-violet-500/8" />
+              <div className="relative">
+                <h2 className="font-display text-3xl font-bold text-white text-balance sm:text-4xl">Ready to ship outcomes?</h2>
+                <p className="mx-auto mt-5 max-w-xl text-slate-400">
+                  Tell us your goals — we&apos;ll respond with a clear scope, timeline, and success definition.
+                </p>
+                <div className="mt-10 flex flex-wrap justify-center gap-4">
+                  <Button href="/request-quote">Request a quote</Button>
+                  <Button href="/contact" variant="secondary">Talk to us</Button>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+        </Container>
+      </section>
+    </>
+  );
+}

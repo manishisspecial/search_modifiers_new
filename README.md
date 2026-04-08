@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Search Modifiers — Agency Website
 
-## Getting Started
+Production-oriented marketing site for **Search Modifiers**: Next.js (App Router), Tailwind CSS v4, Framer Motion, validated forms via API routes, and SEO (meta, Open Graph image, JSON-LD, `sitemap.xml`, `robots.txt`).
 
-First, run the development server:
+## Prerequisites
+
+- Node.js 20+
+- npm
+
+## Run locally
 
 ```bash
+npm install
+cp .env.example .env.local
+# Edit .env.local — set NEXT_PUBLIC_SITE_URL to http://localhost:3000 for local SEO URLs
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Production build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Logo
 
-To learn more about Next.js, take a look at the following resources:
+Place your `logo.png` in the `public` folder (e.g. `public/logo.png`). The header uses this path; if the file is missing, a text wordmark appears automatically.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Forms
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Contact, free audit, and quote forms POST to:
 
-## Deploy on Vercel
+- `/api/contact`
+- `/api/audit`
+- `/api/quote`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Payloads are validated with Zod. Submissions are logged server-side (`console.info`); wire these routes to your CRM, email provider, or queue for production.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project structure (high level)
+
+- `src/app/` — routes (core, services, locations, blog, conversion pages), API routes, `sitemap.ts`, `robots.ts`
+- `src/components/` — layout (navbar, footer, WhatsApp), UI, motion, forms, service/location templates
+- `src/lib/` — site config, navigation, Zod schemas, content data (services, locations, blog, case studies)
+
+## Page count
+
+All requested routes are implemented, including **12 service** pages, **5 location** pages, **6 blog** posts, plus core, trust, FAQ, and conversion pages (45+ routes including API and OG image).
