@@ -179,15 +179,15 @@ function WhyCard({
   icon: typeof Zap;
 }) {
   return (
-    <div className="spotlight-card group relative h-full overflow-hidden rounded-2xl border border-white/[0.08] bg-slate-900/35 p-7 transition-all duration-500 sm:p-9">
+    <div className="spotlight-card group relative h-full overflow-hidden rounded-2xl border border-border bg-card p-7 transition-all duration-500 sm:p-9">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-violet-500/0 opacity-0 transition-opacity duration-500 group-hover:from-cyan-500/[0.06] group-hover:to-transparent group-hover:opacity-100" />
       <div className="relative flex gap-5">
-        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500/25 to-violet-500/15 text-cyan-200 shadow-lg shadow-cyan-500/5 transition-transform duration-500 group-hover:scale-110">
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500/25 to-violet-500/15 text-cyan-500 shadow-lg shadow-cyan-500/5 transition-transform duration-500 group-hover:scale-110">
           <Icon className="h-6 w-6" />
         </span>
         <div>
-          <h3 className="font-display text-lg font-semibold text-white">{title}</h3>
-          <p className="mt-3 text-sm leading-relaxed text-slate-400 transition-colors duration-300 group-hover:text-slate-300">
+          <h3 className="font-display text-lg font-semibold text-foreground">{title}</h3>
+          <p className="mt-3 text-sm leading-relaxed text-muted transition-colors duration-300 group-hover:text-foreground/80">
             {body}
           </p>
         </div>

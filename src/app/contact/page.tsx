@@ -24,17 +24,17 @@ export default function ContactPage() {
           <div className="grid gap-12 lg:grid-cols-5 lg:gap-16">
             <div className="lg:col-span-2 space-y-8">
               <div className="glass rounded-2xl p-6">
-                <h2 className="font-display text-lg font-semibold text-white">Direct lines</h2>
-                <ul className="mt-6 space-y-4 text-sm text-slate-400">
+                <h2 className="font-display text-lg font-semibold text-foreground">Direct lines</h2>
+                <ul className="mt-6 space-y-4 text-sm text-muted">
                   <li className="flex gap-3">
                     <Phone className="mt-0.5 h-5 w-5 shrink-0 text-cyan-400" />
-                    <a href={`tel:${site.phoneTel}`} className="hover:text-white">
+                    <a href={`tel:${site.phoneTel}`} className="hover:text-foreground">
                       {site.phone}
                     </a>
                   </li>
                   <li className="flex gap-3">
                     <Mail className="mt-0.5 h-5 w-5 shrink-0 text-cyan-400" />
-                    <a href={`mailto:${site.email}`} className="hover:text-white">
+                    <a href={`mailto:${site.email}`} className="hover:text-foreground">
                       {site.email}
                     </a>
                   </li>
@@ -46,7 +46,7 @@ export default function ContactPage() {
                   </li>
                 </ul>
               </div>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-muted/70">
                 For RFPs and security questionnaires, email {site.email} with “RFP” in the subject — we’ll route to our solutions team.
               </p>
             </div>

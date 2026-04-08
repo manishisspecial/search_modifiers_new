@@ -42,7 +42,7 @@ export function PageHero({
           initial={reduce ? false : { opacity: 0, y: 24, filter: "blur(8px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 0.6, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-4xl font-display text-4xl font-bold tracking-tight text-white text-balance sm:text-5xl md:text-6xl md:leading-[1.05]"
+          className="max-w-4xl font-display text-4xl font-bold tracking-tight text-foreground text-balance sm:text-5xl md:text-6xl md:leading-[1.05]"
         >
           {title}
         </motion.h1>
@@ -51,7 +51,7 @@ export function PageHero({
             initial={reduce ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-400 sm:text-xl"
+            className="mt-6 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl"
           >
             {description}
           </motion.p>

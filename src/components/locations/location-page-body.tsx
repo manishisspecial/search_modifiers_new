@@ -43,8 +43,8 @@ export function LocationPageBody({ loc }: { loc: LocationPage }) {
               {loc.sections.map((s) => (
                 <FadeIn key={s.heading}>
                   <div>
-                    <h2 className="font-display text-2xl font-semibold text-white sm:text-3xl">{s.heading}</h2>
-                    <p className="mt-4 text-lg leading-relaxed text-slate-400">{s.body}</p>
+                    <h2 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">{s.heading}</h2>
+                    <p className="mt-4 text-lg leading-relaxed text-muted">{s.body}</p>
                   </div>
                 </FadeIn>
               ))}
@@ -57,9 +57,9 @@ export function LocationPageBody({ loc }: { loc: LocationPage }) {
                 </div>
                 <ul className="mt-6 space-y-4">
                   {loc.localStats.map((st) => (
-                    <li key={st.label} className="flex items-baseline justify-between border-b border-white/10 pb-3 last:border-0">
-                      <span className="text-sm text-slate-500">{st.label}</span>
-                      <span className="font-display text-xl font-bold text-white">{st.value}</span>
+                    <li key={st.label} className="flex items-baseline justify-between border-b border-border pb-3 last:border-0">
+                      <span className="text-sm text-muted/70">{st.label}</span>
+                      <span className="font-display text-xl font-bold text-foreground">{st.value}</span>
                     </li>
                   ))}
                 </ul>
@@ -72,14 +72,14 @@ export function LocationPageBody({ loc }: { loc: LocationPage }) {
         </Container>
       </section>
 
-      <section className="border-t border-white/10 bg-slate-950/80 py-16 sm:py-20">
+      <section className="border-t border-border bg-background/80 py-16 sm:py-20">
         <Container>
           <SectionHeading eyebrow="FAQ" title={`Common questions — ${loc.title}`} />
           <div className="mx-auto mt-10 max-w-3xl space-y-6">
             {loc.faqs.map((f) => (
-              <div key={f.q} className="rounded-2xl border border-white/10 bg-slate-900/40 p-6">
-                <h3 className="font-medium text-white">{f.q}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-400">{f.a}</p>
+              <div key={f.q} className="rounded-2xl border border-border bg-card p-6">
+                <h3 className="font-medium text-foreground">{f.q}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{f.a}</p>
               </div>
             ))}
           </div>
@@ -90,8 +90,8 @@ export function LocationPageBody({ loc }: { loc: LocationPage }) {
         <Container>
           <FadeIn>
             <div className="glass gradient-border rounded-3xl px-8 py-12 text-center">
-              <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">Let’s build momentum in your market</h2>
-              <p className="mx-auto mt-4 max-w-lg text-slate-400">
+              <h2 className="font-display text-2xl font-bold text-foreground sm:text-3xl">Let’s build momentum in your market</h2>
+              <p className="mx-auto mt-4 max-w-lg text-muted">
                 Share your goals — we’ll propose a channel mix and measurement plan tuned to {loc.heroEyebrow}.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-4">

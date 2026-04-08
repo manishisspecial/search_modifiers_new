@@ -76,12 +76,12 @@ export function HomeLogoWall() {
       };
 
   return (
-    <section className="relative overflow-hidden border-y border-white/[0.06] bg-slate-950/70 py-14 sm:py-16">
+    <section className="relative overflow-hidden border-y border-border bg-background/70 py-14 sm:py-16">
       <div className="noise-overlay" />
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-[#030712] to-transparent sm:w-24" />
       <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-[#030712] to-transparent sm:w-24" />
 
-      <p className="relative mb-10 text-center text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-500">
+      <p className="relative mb-10 text-center text-[11px] font-semibold uppercase tracking-[0.28em] text-muted/70">
         Trusted by growth teams at
       </p>
 
@@ -98,7 +98,7 @@ export function HomeLogoWall() {
             variants={item}
             className={cn(
               "group relative flex items-center justify-center rounded-xl px-4 py-5 transition-all duration-500",
-              "text-slate-600 hover:text-slate-200"
+              "text-muted/60 hover:text-foreground/90"
             )}
           >
             <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-br from-cyan-500/0 to-violet-500/0 opacity-0 transition-opacity duration-500 group-hover:from-cyan-500/[0.08] group-hover:to-violet-500/[0.04] group-hover:opacity-100" />

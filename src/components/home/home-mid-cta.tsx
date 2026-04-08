@@ -21,13 +21,13 @@ export function HomeMidCta() {
           <motion.span
             animate={reduce ? undefined : { rotate: [0, -6, 6, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500/20 to-violet-500/15 text-cyan-300 shadow-lg shadow-cyan-500/10"
+            className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500/20 to-violet-500/15 text-cyan-500 shadow-lg shadow-cyan-500/10"
           >
             <Calendar className="h-7 w-7" />
           </motion.span>
           <div>
-            <h3 className="font-display text-xl font-semibold text-white sm:text-2xl">20-minute fit call — zero pitch deck</h3>
-            <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-400">
+            <h3 className="font-display text-xl font-semibold text-foreground sm:text-2xl">20-minute fit call — zero pitch deck</h3>
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">
               We&apos;ll tell you honestly if we&apos;re not the right fit. If we are, you&apos;ll leave with 2–3 high-leverage ideas either way.
             </p>
           </div>

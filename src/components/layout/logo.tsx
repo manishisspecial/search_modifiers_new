@@ -22,14 +22,14 @@ export function Logo({ className }: { className?: string }) {
           alt="Search Modifiers"
           width={180}
           height={44}
-          className="h-9 w-auto max-w-[160px] object-contain brightness-0 invert sm:h-10 sm:max-w-[180px]"
+          className="h-9 w-auto max-w-[160px] object-contain sm:h-10 sm:max-w-[180px] brightness-0 dark:brightness-0 dark:invert"
           priority
           onError={() => setImgOk(false)}
         />
       ) : (
-        <span className="font-display text-lg font-bold tracking-tight text-white sm:text-xl">
+        <span className="font-display text-lg font-bold tracking-tight text-foreground sm:text-xl">
           Search{" "}
-          <span className="bg-gradient-to-r from-cyan-300 via-indigo-300 to-violet-300 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-cyan-400 via-indigo-400 to-violet-400 bg-clip-text text-transparent">
             Modifiers
           </span>
         </span>

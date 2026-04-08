@@ -23,7 +23,7 @@ export default function RequestQuotePage() {
           <div className="mx-auto max-w-3xl glass gradient-border rounded-2xl p-6 sm:p-10">
             <QuoteForm />
           </div>
-          <p className="mx-auto mt-10 max-w-2xl text-center text-sm text-slate-500">
+          <p className="mx-auto mt-10 max-w-2xl text-center text-sm text-muted/70">
             Prefer to talk first? Call {site.phone} or write {site.email} — same SLA.
           </p>
         </Container>

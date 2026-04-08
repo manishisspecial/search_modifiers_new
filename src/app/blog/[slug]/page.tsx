@@ -56,15 +56,15 @@ export default async function BlogPostPage({ params }: Props) {
           <FadeIn>
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-cyan-400"
+              className="inline-flex items-center gap-2 text-sm font-medium text-muted/70 transition hover:text-cyan-400"
             >
               <ArrowLeft className="h-4 w-4" /> Back to blog
             </Link>
             <p className="mt-8 text-xs font-semibold uppercase tracking-wider text-cyan-400/90">{post.category}</p>
-            <h1 className="mt-3 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
+            <h1 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
               {post.title}
             </h1>
-            <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-slate-500">
+            <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted/70">
               <span className="inline-flex items-center gap-1.5">
                 <Calendar className="h-4 w-4" />
                 {new Date(post.date).toLocaleDateString("en-IN", {
@@ -74,14 +74,14 @@ export default async function BlogPostPage({ params }: Props) {
                 })}
               </span>
               <span>{post.readTime}</span>
-              <span className="text-slate-400">By {post.author}</span>
+              <span className="text-muted">By {post.author}</span>
             </div>
           </FadeIn>
           <div className="prose-invert mt-12">
             <BlogBody content={post.content} />
           </div>
-          <FadeIn className="mt-16 rounded-2xl border border-white/10 bg-slate-900/40 p-8 text-center">
-            <p className="text-slate-400">Want this level of thinking on your growth program?</p>
+          <FadeIn className="mt-16 rounded-2xl border border-border bg-card p-8 text-center">
+            <p className="text-muted">Want this level of thinking on your growth program?</p>
             <div className="mt-6 flex flex-wrap justify-center gap-4">
               <Button href="/request-quote">Request a quote</Button>
               <Button href="/free-website-audit" variant="outline">

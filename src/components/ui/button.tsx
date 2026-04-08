@@ -6,11 +6,11 @@ type Variant = "primary" | "secondary" | "ghost" | "outline";
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-gradient-to-r from-cyan-400 via-indigo-400 to-violet-400 text-slate-950 font-semibold shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/35 hover:brightness-105",
-  secondary: "bg-slate-800/90 text-slate-100 border border-slate-600/50 hover:bg-slate-800 hover:border-slate-500",
-  ghost: "text-slate-200 hover:bg-white/5",
+    "bg-gradient-to-r from-cyan-400 via-indigo-400 to-violet-400 text-white font-semibold shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/35 hover:brightness-105",
+  secondary: "bg-surface text-foreground border border-border hover:bg-surface-hover",
+  ghost: "text-muted hover:bg-surface-hover hover:text-foreground",
   outline:
-    "border border-slate-500/40 text-slate-100 bg-transparent hover:bg-white/5 hover:border-cyan-400/40",
+    "border border-border text-foreground bg-transparent hover:bg-surface-hover hover:border-cyan-400/40",
 };
 
 export function Button({

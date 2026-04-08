@@ -35,10 +35,10 @@ export default function ServicesIndexPage() {
                   className="group glass gradient-border flex h-full flex-col rounded-2xl p-6 transition hover:border-cyan-500/25"
                 >
                   <div className="flex items-start justify-between gap-2">
-                    <h2 className="font-display text-lg font-semibold text-white group-hover:text-cyan-200">{s.title}</h2>
-                    <ArrowUpRight className="h-5 w-5 shrink-0 text-slate-500 group-hover:text-cyan-400" />
+                    <h2 className="font-display text-lg font-semibold text-foreground group-hover:text-cyan-500">{s.title}</h2>
+                    <ArrowUpRight className="h-5 w-5 shrink-0 text-muted/70 group-hover:text-cyan-400" />
                   </div>
-                  <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-400">{s.shortDescription}</p>
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-muted">{s.shortDescription}</p>
                   <span className="mt-4 text-xs font-semibold uppercase tracking-wider text-cyan-400/80">View service →</span>
                 </Link>
               </StaggerItem>

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import { MainShell } from "@/components/layout/main-shell";
+import { ThemeProvider } from "@/components/theme-provider";
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/json-ld";
 import { site } from "@/lib/site";
 
@@ -57,7 +58,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#030712",
+  themeColor: "#f8fafc",
   width: "device-width",
   initialScale: 1,
 };
@@ -70,12 +71,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable} h-full scroll-smooth antialiased`}
+      className={`light ${geistSans.variable} ${geistMono.variable} ${outfit.variable} h-full scroll-smooth antialiased`}
+      style={{ colorScheme: "light" }}
+      suppressHydrationWarning
     >
-      <body suppressHydrationWarning className="mesh-bg flex min-h-full flex-col text-slate-100">
-        <OrganizationJsonLd />
-        <WebSiteJsonLd />
-        <MainShell>{children}</MainShell>
+      <body className="mesh-bg flex min-h-full flex-col text-foreground" suppressHydrationWarning>
+        <ThemeProvider>
+          <OrganizationJsonLd />
+          <WebSiteJsonLd />
+          <MainShell>{children}</MainShell>
+        </ThemeProvider>
       </body>
     </html>
   );

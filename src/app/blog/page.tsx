@@ -29,13 +29,13 @@ export default function BlogPage() {
                 <FadeIn>
                   <article className="glass group flex h-full flex-col rounded-2xl p-8 transition hover:border-cyan-500/20">
                     <p className="text-xs font-semibold uppercase tracking-wider text-cyan-400/90">{post.category}</p>
-                    <h2 className="mt-3 font-display text-xl font-semibold text-white group-hover:text-cyan-200 sm:text-2xl">
-                      <Link href={`/blog/${post.slug}`} className="focus:outline-none focus-visible:text-cyan-200">
+                    <h2 className="mt-3 font-display text-xl font-semibold text-foreground group-hover:text-cyan-500 sm:text-2xl">
+                      <Link href={`/blog/${post.slug}`} className="focus:outline-none focus-visible:text-cyan-500">
                         {post.title}
                       </Link>
                     </h2>
-                    <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-400">{post.excerpt}</p>
-                    <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-slate-500">
+                    <p className="mt-3 flex-1 text-sm leading-relaxed text-muted">{post.excerpt}</p>
+                    <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-muted/70">
                       <span className="inline-flex items-center gap-1">
                         <Calendar className="h-3.5 w-3.5" />
                         {new Date(post.date).toLocaleDateString("en-IN", {

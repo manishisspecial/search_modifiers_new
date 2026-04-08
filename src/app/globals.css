@@ -1,17 +1,65 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
+  --accent-from: #22d3ee;
+  --accent-via: #818cf8;
+  --accent-to: #c084fc;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── Light theme (default) ── */
+:root.light, :root:not(.dark) {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --muted: #64748b;
+  --card: rgba(255, 255, 255, 0.75);
+  --border: rgba(15, 23, 42, 0.08);
+  --glow: rgba(34, 211, 238, 0.10);
+  --surface: #ffffff;
+  --surface-hover: rgba(15, 23, 42, 0.04);
+  --nav-bg: rgba(248, 250, 252, 0.80);
+  --nav-border: rgba(15, 23, 42, 0.06);
+  --glass-from: rgba(255, 255, 255, 0.80);
+  --glass-to: rgba(255, 255, 255, 0.50);
+  --glass-border: rgba(15, 23, 42, 0.06);
+  --glass-shadow: rgba(0, 0, 0, 0.06);
+  --mesh-spot-1: rgba(34, 211, 238, 0.06);
+  --mesh-spot-2: rgba(192, 132, 252, 0.05);
+  --mesh-spot-3: rgba(129, 140, 248, 0.05);
+  --scrollbar-thumb: rgba(100, 116, 139, 0.18);
+  --scrollbar-thumb-hover: rgba(100, 116, 139, 0.35);
+  --selection-bg: rgba(129, 140, 248, 0.20);
+  --selection-color: #1e293b;
+  --grid-line: rgba(15, 23, 42, 0.04);
+}
+
+/* ── Dark theme ── */
+:root.dark {
   --background: #030712;
   --foreground: #f8fafc;
   --muted: #94a3b8;
   --card: rgba(15, 23, 42, 0.65);
   --border: rgba(148, 163, 184, 0.12);
-  --accent-from: #22d3ee;
-  --accent-via: #818cf8;
-  --accent-to: #c084fc;
   --glow: rgba(34, 211, 238, 0.15);
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --surface: #0f172a;
+  --surface-hover: rgba(255, 255, 255, 0.04);
+  --nav-bg: rgba(2, 6, 23, 0.70);
+  --nav-border: rgba(255, 255, 255, 0.08);
+  --glass-from: rgba(15, 23, 42, 0.78);
+  --glass-to: rgba(15, 23, 42, 0.42);
+  --glass-border: rgba(148, 163, 184, 0.12);
+  --glass-shadow: rgba(0, 0, 0, 0.65);
+  --mesh-spot-1: rgba(34, 211, 238, 0.16);
+  --mesh-spot-2: rgba(192, 132, 252, 0.10);
+  --mesh-spot-3: rgba(129, 140, 248, 0.12);
+  --scrollbar-thumb: rgba(148, 163, 184, 0.15);
+  --scrollbar-thumb-hover: rgba(148, 163, 184, 0.3);
+  --selection-bg: rgba(129, 140, 248, 0.35);
+  --selection-color: #fff;
+  --grid-line: rgba(148, 163, 184, 0.05);
 }
 
 @theme inline {
@@ -20,6 +68,8 @@
   --color-muted: var(--muted);
   --color-card: var(--card);
   --color-border: var(--border);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --font-display: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
@@ -41,8 +91,16 @@ body {
 }
 
 ::selection {
-  background: rgba(129, 140, 248, 0.35);
-  color: #fff;
+  background: var(--selection-bg);
+  color: var(--selection-color);
+}
+
+/* ── Theme transition ── */
+html.light body, html.dark body,
+html.light *, html.dark * {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 0.3s;
+  transition-timing-function: var(--ease-spring);
 }
 
 /* ── Global smooth transitions ── */
@@ -61,22 +119,21 @@ img, video {
 
 /* ── Glass panels ── */
 .glass {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.78) 0%, rgba(15, 23, 42, 0.42) 100%);
+  background: linear-gradient(135deg, var(--glass-from) 0%, var(--glass-to) 100%);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border: 1px solid var(--border);
+  border: 1px solid var(--glass-border);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
-    0 1px 2px rgba(0, 0, 0, 0.4),
-    0 24px 80px -32px rgba(0, 0, 0, 0.65);
+    0 1px 2px var(--glass-shadow),
+    0 24px 80px -32px var(--glass-shadow);
   transition: box-shadow 0.6s var(--ease-spring), border-color 0.6s var(--ease-spring);
 }
 
 .glass-subtle {
-  background: rgba(15, 23, 42, 0.5);
+  background: var(--glass-to);
   backdrop-filter: blur(14px) saturate(1.3);
   -webkit-backdrop-filter: blur(14px) saturate(1.3);
-  border: 1px solid var(--border);
+  border: 1px solid var(--glass-border);
   transition: box-shadow 0.6s var(--ease-spring), border-color 0.6s var(--ease-spring);
 }
 
@@ -109,18 +166,18 @@ img, video {
 
 /* ── Mesh background ── */
 .mesh-bg {
-  background-color: #030712;
+  background-color: var(--background);
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.16), transparent),
-    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(192, 132, 252, 0.10), transparent),
-    radial-gradient(ellipse 50% 30% at 0% 100%, rgba(129, 140, 248, 0.12), transparent);
+    radial-gradient(ellipse 80% 50% at 50% -20%, var(--mesh-spot-1), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 0%, var(--mesh-spot-2), transparent),
+    radial-gradient(ellipse 50% 30% at 0% 100%, var(--mesh-spot-3), transparent);
 }
 
 /* ── Grid overlay ── */
 .grid-overlay {
   background-image:
-    linear-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 72px 72px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent);
 }
@@ -239,14 +296,14 @@ img, video {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.15);
+  background: var(--scrollbar-thumb);
   border-radius: 999px;
   border: 2px solid transparent;
   background-clip: content-box;
   transition: background 0.3s ease;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.3);
+  background: var(--scrollbar-thumb-hover);
   background-clip: content-box;
 }
 

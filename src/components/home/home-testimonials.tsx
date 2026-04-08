@@ -20,7 +20,7 @@ export function HomeTestimonials() {
 
   return (
     <div className="relative mx-auto max-w-3xl">
-      <div className="glass gradient-border relative overflow-hidden rounded-3xl border border-white/10 px-6 py-12 sm:px-12 sm:py-14">
+      <div className="glass gradient-border relative overflow-hidden rounded-3xl border border-border px-6 py-12 sm:px-12 sm:py-14">
         <div className="noise-overlay rounded-3xl opacity-[0.04]" />
         <Quote className="absolute left-4 top-4 h-16 w-16 text-cyan-500/10 sm:left-8 sm:top-8 sm:h-20 sm:w-20" />
         <div className="relative flex min-h-[200px] flex-col justify-center sm:min-h-[220px]">
@@ -45,11 +45,11 @@ export function HomeTestimonials() {
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               className="text-center sm:text-left"
             >
-              <p className="text-lg font-medium leading-relaxed text-slate-100 sm:text-xl">&ldquo;{t.quote}&rdquo;</p>
+              <p className="text-lg font-medium leading-relaxed text-foreground sm:text-xl">&ldquo;{t.quote}&rdquo;</p>
               <footer className="mt-8">
                 <cite className="not-italic">
-                  <span className="font-display text-base font-semibold text-white">{t.name}</span>
-                  <span className="mt-1 block text-sm text-slate-500">
+                  <span className="font-display text-base font-semibold text-foreground">{t.name}</span>
+                  <span className="mt-1 block text-sm text-muted/70">
                     {t.role}, {t.company}
                   </span>
                 </cite>
@@ -64,7 +64,7 @@ export function HomeTestimonials() {
               aria-label="Previous testimonial"
               whileHover={reduce ? undefined : { scale: 1.08 }}
               whileTap={reduce ? undefined : { scale: 0.94 }}
-              className="rounded-full border border-white/15 bg-white/5 p-2.5 text-slate-400 transition-colors hover:border-cyan-500/40 hover:text-white"
+              className="rounded-full border border-border bg-surface-hover p-2.5 text-muted transition-colors hover:border-cyan-500/40 hover:text-foreground"
               onClick={() => setI((x) => (x - 1 + testimonials.length) % testimonials.length)}
             >
               <ChevronLeft className="h-5 w-5" />
@@ -77,7 +77,7 @@ export function HomeTestimonials() {
                   aria-label={`Go to testimonial ${j + 1}`}
                   className={cn(
                     "h-2 rounded-full transition-all duration-300",
-                    j === i ? "w-9 bg-gradient-to-r from-cyan-400 to-indigo-400" : "w-2 bg-slate-600 hover:bg-slate-500"
+                    j === i ? "w-9 bg-gradient-to-r from-cyan-400 to-indigo-400" : "w-2 bg-muted/60 hover:bg-muted"
                   )}
                   onClick={() => setI(j)}
                 />
@@ -88,13 +88,13 @@ export function HomeTestimonials() {
               aria-label="Next testimonial"
               whileHover={reduce ? undefined : { scale: 1.08 }}
               whileTap={reduce ? undefined : { scale: 0.94 }}
-              className="rounded-full border border-white/15 bg-white/5 p-2.5 text-slate-400 transition-colors hover:border-cyan-500/40 hover:text-white"
+              className="rounded-full border border-border bg-surface-hover p-2.5 text-muted transition-colors hover:border-cyan-500/40 hover:text-foreground"
               onClick={() => setI((x) => (x + 1) % testimonials.length)}
             >
               <ChevronRight className="h-5 w-5" />
             </motion.button>
           </div>
-          <Button href="/testimonials" variant="ghost" className="text-sm text-slate-400 hover:text-white">
+          <Button href="/testimonials" variant="ghost" className="text-sm text-muted hover:text-foreground">
             All testimonials →
           </Button>
         </div>

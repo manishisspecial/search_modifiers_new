@@ -68,7 +68,7 @@ export default function TeamPage() {
             {team.map((m) => (
               <StaggerItem key={m.name}>
                 <article className="glass overflow-hidden rounded-2xl">
-                  <div className="relative aspect-square w-full bg-slate-800">
+                  <div className="relative aspect-square w-full bg-surface">
                     <Image
                       src={m.image}
                       alt={m.name}
@@ -78,14 +78,14 @@ export default function TeamPage() {
                     />
                   </div>
                   <div className="p-6">
-                    <h2 className="font-display text-lg font-semibold text-white">{m.name}</h2>
+                    <h2 className="font-display text-lg font-semibold text-foreground">{m.name}</h2>
                     <p className="text-sm font-medium text-cyan-400/90">{m.role}</p>
-                    <p className="mt-3 text-sm leading-relaxed text-slate-400">{m.bio}</p>
+                    <p className="mt-3 text-sm leading-relaxed text-muted">{m.bio}</p>
                     <a
                       href={site.social.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-white"
+                      className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-muted/70 hover:text-foreground"
                     >
                       <Linkedin className="h-4 w-4" /> LinkedIn
                     </a>
@@ -95,8 +95,8 @@ export default function TeamPage() {
             ))}
           </Stagger>
           <FadeIn className="mt-16 text-center">
-            <p className="text-sm text-slate-500">
-              Portraits shown are representative; replace with your team photography in <code className="text-slate-400">public/</code> when ready.
+            <p className="text-sm text-muted/70">
+              Portraits shown are representative; replace with your team photography in <code className="text-muted">public/</code> when ready.
             </p>
           </FadeIn>
         </Container>

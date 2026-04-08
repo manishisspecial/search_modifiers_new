@@ -17,10 +17,10 @@ export function HomeTrustMarquee() {
   const reduce = useReducedMotion();
 
   return (
-    <div className="relative overflow-hidden border-y border-white/[0.06] bg-slate-950/80 py-6">
+    <div className="relative overflow-hidden border-y border-border bg-background/80 py-6">
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-[#030712] to-transparent sm:w-32" />
       <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-[#030712] to-transparent sm:w-32" />
-      <p className="mb-4 text-center text-[10px] font-semibold uppercase tracking-[0.25em] text-slate-500">
+      <p className="mb-4 text-center text-[10px] font-semibold uppercase tracking-[0.25em] text-muted/70">
         Trusted by growth teams at
       </p>
       <div className="overflow-hidden">
@@ -34,7 +34,7 @@ export function HomeTrustMarquee() {
               {brands.map((name) => (
                 <span
                   key={`${dup}-${name}`}
-                  className="whitespace-nowrap font-display text-sm font-medium text-slate-500 transition-colors duration-300 hover:text-slate-300 sm:text-base"
+                  className="whitespace-nowrap font-display text-sm font-medium text-muted/70 transition-colors duration-300 hover:text-foreground/80 sm:text-base"
                 >
                   {name}
                 </span>

@@ -22,7 +22,7 @@ export function HomeFinalCta() {
         transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
         className="absolute inset-0 -z-10 rounded-[2rem] bg-[length:200%_200%] bg-gradient-to-r from-cyan-500/15 via-indigo-500/12 to-violet-500/15 opacity-80 blur-2xl"
       />
-      <div className="glass gradient-border relative overflow-hidden rounded-[2rem] border border-white/10 px-6 py-14 text-center sm:px-14 sm:py-16">
+      <div className="glass gradient-border relative overflow-hidden rounded-[2rem] border border-border px-6 py-14 text-center sm:px-14 sm:py-16">
         <div className="noise-overlay rounded-[2rem]" />
         <motion.div
           className="absolute -left-20 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-cyan-500/20 blur-3xl"
@@ -35,16 +35,16 @@ export function HomeFinalCta() {
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
         <div className="relative">
-          <h2 className="font-display text-3xl font-bold tracking-tight text-white text-balance sm:text-4xl md:text-[2.75rem] md:leading-tight">
+          <h2 className="font-display text-3xl font-bold tracking-tight text-foreground text-balance sm:text-4xl md:text-[2.75rem] md:leading-tight">
             Stop guessing — get a roadmap you can execute
           </h2>
-          <p className="mx-auto mt-5 max-w-xl text-base text-slate-400 sm:text-lg">
+          <p className="mx-auto mt-5 max-w-xl text-base text-muted sm:text-lg">
             Book a strategy call or send your site for audit. We return prioritized recommendations within two business days — with
             owners and effort estimates.
           </p>
           <ul className="mx-auto mt-8 flex max-w-lg flex-col gap-2.5 text-left sm:mx-auto sm:max-w-md">
             {bullets.map((b) => (
-              <li key={b} className="flex items-center justify-center gap-2 text-sm text-slate-400 sm:justify-start">
+              <li key={b} className="flex items-center justify-center gap-2 text-sm text-muted sm:justify-start">
                 <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500/90" />
                 {b}
               </li>

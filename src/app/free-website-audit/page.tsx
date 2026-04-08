@@ -31,16 +31,16 @@ export default function FreeAuditPage() {
         <Container>
           <div className="grid gap-12 lg:grid-cols-5 lg:gap-16">
             <div className="lg:col-span-2">
-              <h2 className="font-display text-xl font-semibold text-white">What we review</h2>
+              <h2 className="font-display text-xl font-semibold text-foreground">What we review</h2>
               <ul className="mt-6 space-y-4">
                 {includes.map((line) => (
-                  <li key={line} className="flex gap-3 text-sm text-slate-400">
+                  <li key={line} className="flex gap-3 text-sm text-muted">
                     <Check className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
                     {line}
                   </li>
                 ))}
               </ul>
-              <p className="mt-8 text-sm text-slate-500">
+              <p className="mt-8 text-sm text-muted/70">
                 Need an NDA first? Email {site.email} with “Audit NDA” — we’ll send a mutual template.
               </p>
             </div>

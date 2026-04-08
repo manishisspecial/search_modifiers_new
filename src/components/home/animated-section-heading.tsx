@@ -60,12 +60,12 @@ export function AnimatedSectionHeading({
       ) : null}
       <motion.h2
         variants={item}
-        className="text-3xl font-semibold tracking-tight text-white text-balance sm:text-4xl md:text-[2.5rem] md:leading-[1.15]"
+        className="text-3xl font-semibold tracking-tight text-foreground text-balance sm:text-4xl md:text-[2.5rem] md:leading-[1.15]"
       >
         {title}
       </motion.h2>
       {description ? (
-        <motion.p variants={item} className="mt-4 text-base leading-relaxed text-slate-400 sm:text-lg">
+        <motion.p variants={item} className="mt-4 text-base leading-relaxed text-muted sm:text-lg">
           {description}
         </motion.p>
       ) : null}

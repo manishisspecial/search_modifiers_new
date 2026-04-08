@@ -50,8 +50,8 @@ export default function AboutPage() {
         <Container>
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <FadeIn>
-              <h2 className="font-display text-3xl font-semibold text-white sm:text-4xl">Our story</h2>
-              <div className="mt-6 space-y-4 text-lg leading-relaxed text-slate-400">
+              <h2 className="font-display text-3xl font-semibold text-foreground sm:text-4xl">Our story</h2>
+              <div className="mt-6 space-y-4 text-lg leading-relaxed text-muted">
                 <p>
                   We built Search Modifiers for teams tired of juggling five agencies with five excuses. Today we run integrated programs across SEO,
                   paid media, ORM, content, and web — with one accountable pod and one north star: sustainable revenue impact.
@@ -64,12 +64,12 @@ export default function AboutPage() {
             </FadeIn>
             <FadeIn delay={0.08}>
               <div className="glass gradient-border rounded-3xl p-8 sm:p-10">
-                <h3 className="font-display text-xl font-semibold text-white">How we hire & train</h3>
-                <p className="mt-4 text-slate-400">
+                <h3 className="font-display text-xl font-semibold text-foreground">How we hire & train</h3>
+                <p className="mt-4 text-muted">
                   Strategists rotate through delivery squads. Media buyers pair with SEO leads on landing page tests. Designers sit in performance reviews.
                   Cross-training isn’t a perk — it’s how we avoid blind spots.
                 </p>
-                <ul className="mt-6 space-y-3 text-sm text-slate-300">
+                <ul className="mt-6 space-y-3 text-sm text-foreground/80">
                   <li>• Weekly learning blocks on platform updates</li>
                   <li>• Ethical guidelines for ORM and paid claims</li>
                   <li>• Quarterly client listening tours with leadership</li>
@@ -80,7 +80,7 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <section className="border-y border-white/5 bg-slate-950/50 py-16 sm:py-24">
+      <section className="border-y border-border bg-background/50 py-16 sm:py-24">
         <Container>
           <SectionHeading
             eyebrow="Values"
@@ -90,12 +90,12 @@ export default function AboutPage() {
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {values.map((v, i) => (
               <FadeIn key={v.title} delay={i * 0.06}>
-                <div className="h-full rounded-2xl border border-white/10 bg-slate-900/40 p-6">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-500/15 text-cyan-300">
+                <div className="h-full rounded-2xl border border-border bg-card p-6">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-500/15 text-cyan-500">
                     <v.icon className="h-5 w-5" />
                   </div>
-                  <h3 className="mt-4 font-display text-lg font-semibold text-white">{v.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-400">{v.body}</p>
+                  <h3 className="mt-4 font-display text-lg font-semibold text-foreground">{v.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted">{v.body}</p>
                 </div>
               </FadeIn>
             ))}
@@ -107,8 +107,8 @@ export default function AboutPage() {
         <Container>
           <FadeIn>
             <div className="glass gradient-border rounded-3xl px-8 py-12 text-center">
-              <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">See if we’re a fit</h2>
-              <p className="mx-auto mt-4 max-w-lg text-slate-400">Two calls: discovery and recommendations. No obligation pitch deck marathon.</p>
+              <h2 className="font-display text-2xl font-bold text-foreground sm:text-3xl">See if we’re a fit</h2>
+              <p className="mx-auto mt-4 max-w-lg text-muted">Two calls: discovery and recommendations. No obligation pitch deck marathon.</p>
               <div className="mt-8 flex flex-wrap justify-center gap-4">
                 <Button href="/contact">Contact us</Button>
                 <Button href="/case-studies" variant="outline">

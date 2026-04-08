@@ -8,6 +8,7 @@ import { cn } from "@/lib/cn";
 import { mainNav, servicesNav, locationsNav } from "@/lib/navigation";
 import { Logo } from "@/components/layout/logo";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 export function Navbar() {
@@ -52,7 +53,7 @@ export function Navbar() {
         className={cn(
           "mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 transition-all duration-500 sm:px-6 lg:px-8",
           scrolled
-            ? "rounded-2xl border border-white/[0.08] bg-slate-950/70 py-2.5 shadow-2xl shadow-black/50 backdrop-blur-2xl backdrop-saturate-[1.6] sm:mx-6 lg:mx-auto"
+            ? "rounded-2xl border border-border bg-[var(--nav-bg)] py-2.5 shadow-2xl shadow-black/20 backdrop-blur-2xl backdrop-saturate-[1.6] sm:mx-6 lg:mx-auto"
             : "py-1"
         )}
       >
@@ -68,13 +69,13 @@ export function Navbar() {
               href={item.href}
               className={cn(
                 "relative rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors duration-300",
-                isActive(item.href) ? "text-white" : "text-slate-400 hover:text-white"
+                isActive(item.href) ? "text-foreground" : "text-muted hover:text-foreground"
               )}
             >
               {isActive(item.href) ? (
                 <motion.span
                   layoutId="nav-pill"
-                  className="absolute inset-0 rounded-full bg-white/[0.08] ring-1 ring-white/[0.06]"
+                  className="absolute inset-0 rounded-full bg-foreground/[0.08] ring-1 ring-foreground/[0.06]"
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
                 />
               ) : null}
@@ -95,14 +96,14 @@ export function Navbar() {
                 <Link
                   key={s.href}
                   href={s.href}
-                  className="group rounded-xl px-3 py-2.5 text-sm text-slate-400 transition-all duration-200 hover:bg-white/[0.04] hover:text-white"
+                  className="group rounded-xl px-3 py-2.5 text-sm text-muted transition-all duration-200 hover:bg-surface-hover hover:text-foreground"
                 >
                   <span className="hover-underline">{s.label}</span>
                 </Link>
               ))}
             </div>
-            <div className="mt-3 border-t border-white/[0.06] pt-3 text-center">
-              <Link href="/services" className="text-xs font-semibold uppercase tracking-wider text-cyan-400 transition hover:text-cyan-300">
+            <div className="mt-3 border-t border-border pt-3 text-center">
+              <Link href="/services" className="text-xs font-semibold uppercase tracking-wider text-cyan-500 transition hover:text-cyan-400">
                 View all services →
               </Link>
             </div>
@@ -121,7 +122,7 @@ export function Navbar() {
               <Link
                 key={l.href}
                 href={l.href}
-                className="block rounded-xl px-3 py-2.5 text-sm text-slate-400 transition-all duration-200 hover:bg-white/[0.04] hover:text-white"
+                className="block rounded-xl px-3 py-2.5 text-sm text-muted transition-all duration-200 hover:bg-surface-hover hover:text-foreground"
               >
                 {l.label}
               </Link>
@@ -136,13 +137,13 @@ export function Navbar() {
                 href={item.href}
                 className={cn(
                   "relative rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors duration-300",
-                  isActive(item.href) ? "text-white" : "text-slate-400 hover:text-white"
+                  isActive(item.href) ? "text-foreground" : "text-muted hover:text-foreground"
                 )}
               >
                 {isActive(item.href) ? (
                   <motion.span
                     layoutId="nav-pill"
-                    className="absolute inset-0 rounded-full bg-white/[0.08] ring-1 ring-white/[0.06]"
+                    className="absolute inset-0 rounded-full bg-foreground/[0.08] ring-1 ring-foreground/[0.06]"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 ) : null}
@@ -152,7 +153,8 @@ export function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-2.5 lg:flex">
-          <Button variant="ghost" href="/free-website-audit" className="!px-4 text-slate-400 hover:text-white">
+          <ThemeToggle />
+          <Button variant="ghost" href="/free-website-audit" className="!px-4 text-muted hover:text-foreground">
             Free audit
           </Button>
           <Button href="/request-quote" className="pulse-ring px-5 py-2">
@@ -162,7 +164,7 @@ export function Navbar() {
 
         <button
           type="button"
-          className="rounded-xl p-2 text-slate-300 transition hover:bg-white/5 lg:hidden"
+          className="rounded-xl p-2 text-muted transition hover:bg-surface-hover lg:hidden"
           aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen((o) => !o)}
         >
@@ -176,7 +178,7 @@ export function Navbar() {
             initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={reduce ? undefined : { opacity: 0 }}
-            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden"
             onClick={() => setOpen(false)}
           >
             <motion.div
@@ -184,12 +186,12 @@ export function Navbar() {
               animate={{ x: 0 }}
               exit={reduce ? undefined : { x: "100%" }}
               transition={{ type: "spring", damping: 28, stiffness: 320 }}
-              className="absolute right-0 top-0 flex h-full w-[min(100vw,380px)] flex-col border-l border-white/[0.06] bg-slate-950 p-6 shadow-2xl"
+              className="absolute right-0 top-0 flex h-full w-[min(100vw,380px)] flex-col border-l border-border bg-background p-6 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="mb-8 flex justify-between">
                 <Logo />
-                <button type="button" aria-label="Close" className="rounded-lg p-2 text-slate-400 transition hover:bg-white/5" onClick={() => setOpen(false)}>
+                <button type="button" aria-label="Close" className="rounded-lg p-2 text-muted transition hover:bg-surface-hover" onClick={() => setOpen(false)}>
                   <X className="h-6 w-6" />
                 </button>
               </div>
@@ -198,25 +200,29 @@ export function Navbar() {
                   { label: "Home", href: "/" },
                   { label: "About", href: "/about" },
                 ].map((item) => (
-                  <Link key={item.href} href={item.href} className={cn("rounded-xl px-3 py-3 text-base transition", isActive(item.href) ? "bg-white/[0.04] text-white" : "text-slate-300")}>
+                  <Link key={item.href} href={item.href} className={cn("rounded-xl px-3 py-3 text-base transition", isActive(item.href) ? "bg-surface-hover text-foreground" : "text-muted")}>
                     {item.label}
                   </Link>
                 ))}
-                <p className="px-3 pt-5 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-600">Services</p>
+                <p className="px-3 pt-5 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted/60">Services</p>
                 {servicesNav.map((s) => (
-                  <Link key={s.href} href={s.href} className="rounded-xl px-3 py-2 text-sm text-slate-400 transition hover:text-white">{s.label}</Link>
+                  <Link key={s.href} href={s.href} className="rounded-xl px-3 py-2 text-sm text-muted transition hover:text-foreground">{s.label}</Link>
                 ))}
-                <p className="px-3 pt-5 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-600">Locations</p>
+                <p className="px-3 pt-5 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted/60">Locations</p>
                 {locationsNav.map((l) => (
-                  <Link key={l.href} href={l.href} className="rounded-xl px-3 py-2 text-sm text-slate-400 transition hover:text-white">{l.label}</Link>
+                  <Link key={l.href} href={l.href} className="rounded-xl px-3 py-2 text-sm text-muted transition hover:text-foreground">{l.label}</Link>
                 ))}
                 {mainNav.filter((n) => !["Home", "About", "Services"].includes(n.label)).map((item) => (
-                  <Link key={item.href} href={item.href} className={cn("rounded-xl px-3 py-3 text-base transition", isActive(item.href) ? "bg-white/[0.04] text-white" : "text-slate-300")}>
+                  <Link key={item.href} href={item.href} className={cn("rounded-xl px-3 py-3 text-base transition", isActive(item.href) ? "bg-surface-hover text-foreground" : "text-muted")}>
                     {item.label}
                   </Link>
                 ))}
               </div>
-              <div className="mt-6 flex flex-col gap-2.5 border-t border-white/[0.06] pt-6">
+              <div className="mt-6 flex flex-col gap-2.5 border-t border-border pt-6">
+                <div className="flex items-center justify-between px-1 pb-2">
+                  <span className="text-sm text-muted">Theme</span>
+                  <ThemeToggle />
+                </div>
                 <Button href="/free-website-audit" variant="outline" className="w-full justify-center">Free audit</Button>
                 <Button href="/request-quote" className="w-full justify-center">Get a quote</Button>
               </div>
@@ -253,13 +259,13 @@ function MegaDropdown({
         type="button"
         className={cn(
           "relative flex items-center gap-1 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors duration-300",
-          active ? "text-white" : "text-slate-400 hover:text-white"
+          active ? "text-foreground" : "text-muted hover:text-foreground"
         )}
       >
         {active ? (
           <motion.span
             layoutId="nav-pill"
-            className="absolute inset-0 rounded-full bg-white/[0.08] ring-1 ring-white/[0.06]"
+            className="absolute inset-0 rounded-full bg-foreground/[0.08] ring-1 ring-foreground/[0.06]"
             transition={{ type: "spring", stiffness: 380, damping: 30 }}
           />
         ) : null}
@@ -274,7 +280,7 @@ function MegaDropdown({
             exit={reduce ? undefined : { opacity: 0, y: 10, scale: 0.98 }}
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
             className={cn(
-              "absolute left-1/2 top-full z-50 mt-3 -translate-x-1/2 rounded-2xl border border-white/[0.08] bg-slate-950/95 p-4 shadow-2xl shadow-black/50 backdrop-blur-2xl",
+              "absolute left-1/2 top-full z-50 mt-3 -translate-x-1/2 rounded-2xl border border-border bg-background/95 p-4 shadow-2xl shadow-black/10 backdrop-blur-2xl",
               width
             )}
           >

@@ -52,12 +52,12 @@ export default function FAQPage() {
       </PageHero>
       <section className="pb-20 sm:pb-28">
         <Container>
-          <div className="mx-auto max-w-3xl divide-y divide-white/10 rounded-2xl border border-white/10 bg-slate-900/30">
+          <div className="mx-auto max-w-3xl divide-y divide-border rounded-2xl border border-border bg-card">
             {faqs.map((f, i) => (
               <FadeIn key={f.q} delay={i * 0.04}>
                 <div className="p-6 sm:p-8">
-                  <h2 className="font-display text-lg font-semibold text-white">{f.q}</h2>
-                  <p className="mt-3 text-slate-400 leading-relaxed">{f.a}</p>
+                  <h2 className="font-display text-lg font-semibold text-foreground">{f.q}</h2>
+                  <p className="mt-3 text-muted leading-relaxed">{f.a}</p>
                 </div>
               </FadeIn>
             ))}

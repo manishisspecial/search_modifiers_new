@@ -29,13 +29,13 @@ export function HomeConversionBar() {
         <div className="relative grid gap-10 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-16">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-400/90">Start with clarity</p>
-            <h2 className="mt-4 max-w-xl font-display text-2xl font-bold tracking-tight text-white text-balance sm:text-3xl">
+            <h2 className="mt-4 max-w-xl font-display text-2xl font-bold tracking-tight text-foreground text-balance sm:text-3xl">
               Get a prioritized growth roadmap — before you sign anything
             </h2>
             <ul className="mt-8 flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:gap-x-10 sm:gap-y-4">
               {items.map(({ icon: Icon, text }) => (
-                <li key={text} className="group flex items-center gap-3 text-sm text-slate-300">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/[0.05] text-cyan-400 transition-all duration-300 group-hover:bg-cyan-500/15 group-hover:shadow-lg group-hover:shadow-cyan-500/10">
+                <li key={text} className="group flex items-center gap-3 text-sm text-foreground/80">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface-hover text-cyan-400 transition-all duration-300 group-hover:bg-cyan-500/15 group-hover:shadow-lg group-hover:shadow-cyan-500/10">
                     <Icon className="h-4 w-4" strokeWidth={2} />
                   </span>
                   {text}
@@ -53,9 +53,9 @@ export function HomeConversionBar() {
             </Button>
             <Link
               href={`tel:${site.phoneTel}`}
-              className="text-center text-sm text-slate-500 transition-colors duration-300 hover:text-cyan-400 lg:text-left"
+              className="text-center text-sm text-muted/70 transition-colors duration-300 hover:text-cyan-400 lg:text-left"
             >
-              Or call <span className="font-medium text-slate-400">{site.phone}</span>
+              Or call <span className="font-medium text-muted">{site.phone}</span>
             </Link>
           </div>
         </div>

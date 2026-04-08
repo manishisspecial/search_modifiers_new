@@ -56,17 +56,17 @@ export default function PortfolioPage() {
               <StaggerItem key={it.title}>
                 <article className="glass group relative overflow-hidden rounded-2xl p-8 transition hover:border-cyan-500/20">
                   <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-cyan-500/10 blur-2xl transition group-hover:bg-cyan-500/15" />
-                  <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-violet-500/20 text-cyan-300">
+                  <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-violet-500/20 text-cyan-500">
                     <it.icon className="h-6 w-6" />
                   </div>
-                  <p className="relative mt-6 text-xs font-semibold uppercase tracking-wider text-slate-500">{it.cat}</p>
-                  <h2 className="relative mt-2 font-display text-xl font-semibold text-white">{it.title}</h2>
-                  <p className="relative mt-3 text-sm leading-relaxed text-slate-400">{it.desc}</p>
+                  <p className="relative mt-6 text-xs font-semibold uppercase tracking-wider text-muted/70">{it.cat}</p>
+                  <h2 className="relative mt-2 font-display text-xl font-semibold text-foreground">{it.title}</h2>
+                  <p className="relative mt-3 text-sm leading-relaxed text-muted">{it.desc}</p>
                 </article>
               </StaggerItem>
             ))}
           </Stagger>
-          <FadeIn className="mt-16 text-center text-sm text-slate-500">
+          <FadeIn className="mt-16 text-center text-sm text-muted/70">
             Full visuals available under NDA during active pitches — contact {site.email} for a tailored deck.
           </FadeIn>
         </Container>
