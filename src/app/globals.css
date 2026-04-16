@@ -3,9 +3,11 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --accent-from: #22d3ee;
-  --accent-via: #818cf8;
-  --accent-to: #c084fc;
+  /* Brand palette — anchored on Search Modifiers orange (#f97316) */
+  --accent-from: #fb923c; /* orange-400 */
+  --accent-via:  #f97316; /* orange-500 — brand primary */
+  --accent-to:   #fbbf24; /* amber-400  — warm highlight */
+  --brand:       #f97316; /* canonical brand orange */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -17,7 +19,7 @@
   --muted: #64748b;
   --card: rgba(255, 255, 255, 0.75);
   --border: rgba(15, 23, 42, 0.08);
-  --glow: rgba(34, 211, 238, 0.10);
+  --glow: rgba(249, 115, 22, 0.10);
   --surface: #ffffff;
   --surface-hover: rgba(15, 23, 42, 0.04);
   --nav-bg: rgba(248, 250, 252, 0.80);
@@ -26,12 +28,12 @@
   --glass-to: rgba(255, 255, 255, 0.50);
   --glass-border: rgba(15, 23, 42, 0.06);
   --glass-shadow: rgba(0, 0, 0, 0.06);
-  --mesh-spot-1: rgba(34, 211, 238, 0.06);
-  --mesh-spot-2: rgba(192, 132, 252, 0.05);
-  --mesh-spot-3: rgba(129, 140, 248, 0.05);
+  --mesh-spot-1: rgba(249, 115, 22, 0.06);
+  --mesh-spot-2: rgba(251, 113, 133, 0.05);
+  --mesh-spot-3: rgba(251, 191, 36, 0.05);
   --scrollbar-thumb: rgba(100, 116, 139, 0.18);
   --scrollbar-thumb-hover: rgba(100, 116, 139, 0.35);
-  --selection-bg: rgba(129, 140, 248, 0.20);
+  --selection-bg: rgba(251, 191, 36, 0.20);
   --selection-color: #1e293b;
   --grid-line: rgba(15, 23, 42, 0.04);
 }
@@ -43,7 +45,7 @@
   --muted: #94a3b8;
   --card: rgba(15, 23, 42, 0.65);
   --border: rgba(148, 163, 184, 0.12);
-  --glow: rgba(34, 211, 238, 0.15);
+  --glow: rgba(249, 115, 22, 0.15);
   --surface: #0f172a;
   --surface-hover: rgba(255, 255, 255, 0.04);
   --nav-bg: rgba(2, 6, 23, 0.70);
@@ -52,12 +54,12 @@
   --glass-to: rgba(15, 23, 42, 0.42);
   --glass-border: rgba(148, 163, 184, 0.12);
   --glass-shadow: rgba(0, 0, 0, 0.65);
-  --mesh-spot-1: rgba(34, 211, 238, 0.16);
-  --mesh-spot-2: rgba(192, 132, 252, 0.10);
-  --mesh-spot-3: rgba(129, 140, 248, 0.12);
+  --mesh-spot-1: rgba(249, 115, 22, 0.16);
+  --mesh-spot-2: rgba(251, 113, 133, 0.10);
+  --mesh-spot-3: rgba(251, 191, 36, 0.12);
   --scrollbar-thumb: rgba(148, 163, 184, 0.15);
   --scrollbar-thumb-hover: rgba(148, 163, 184, 0.3);
-  --selection-bg: rgba(129, 140, 248, 0.35);
+  --selection-bg: rgba(251, 191, 36, 0.35);
   --selection-color: #fff;
   --grid-line: rgba(148, 163, 184, 0.05);
 }
@@ -227,13 +229,13 @@ img, video {
   inset: 0;
   opacity: 0;
   transition: opacity 0.6s var(--ease-spring);
-  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(34, 211, 238, 0.06), transparent 40%);
+  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(249, 115, 22, 0.06), transparent 40%);
   pointer-events: none;
 }
 .spotlight-card:hover::after { opacity: 1; }
 .spotlight-card:hover {
-  border-color: rgba(34, 211, 238, 0.15);
-  box-shadow: 0 0 40px -16px rgba(34, 211, 238, 0.12);
+  border-color: rgba(249, 115, 22, 0.15);
+  box-shadow: 0 0 40px -16px rgba(249, 115, 22, 0.12);
 }
 
 /* ── Card lift ── */
@@ -243,7 +245,7 @@ img, video {
 }
 .card-lift:hover {
   transform: translateY(-6px);
-  box-shadow: 0 24px 48px -16px rgba(34, 211, 238, 0.10), 0 0 0 1px rgba(34, 211, 238, 0.12);
+  box-shadow: 0 24px 48px -16px rgba(249, 115, 22, 0.10), 0 0 0 1px rgba(249, 115, 22, 0.12);
 }
 @media (prefers-reduced-motion: reduce) { .card-lift:hover { transform: none; } }
 
@@ -273,16 +275,16 @@ img, video {
 
 /* ── Pulse ring (for CTA emphasis) ── */
 @keyframes pulse-ring {
-  0% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.35); }
-  70% { box-shadow: 0 0 0 10px rgba(34, 211, 238, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.35); }
+  70% { box-shadow: 0 0 0 10px rgba(249, 115, 22, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
 }
 .pulse-ring { animation: pulse-ring 2.5s ease-out infinite; }
 @media (prefers-reduced-motion: reduce) { .pulse-ring { animation: none; } }
 
 /* ── Smooth focus ring ── */
 *:focus-visible {
-  outline: 2px solid rgba(34, 211, 238, 0.6);
+  outline: 2px solid rgba(249, 115, 22, 0.6);
   outline-offset: 3px;
   border-radius: inherit;
   transition: outline-offset 0.2s var(--ease-spring);
@@ -433,7 +435,7 @@ a {
   z-index: 80;
   transform-origin: left center;
   background: linear-gradient(90deg, var(--accent-from), var(--accent-via), var(--accent-to));
-  box-shadow: 0 0 14px rgba(34, 211, 238, 0.55);
+  box-shadow: 0 0 14px rgba(249, 115, 22, 0.55);
   pointer-events: none;
   transform: scaleX(var(--scroll-progress, 0));
   transition: transform 0.05s linear;
@@ -457,8 +459,8 @@ a {
   border-radius: inherit;
   background:
     radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-      rgba(34, 211, 238, 0.18), transparent 45%),
-    linear-gradient(135deg, rgba(129, 140, 248, 0.10), rgba(192, 132, 252, 0.08) 50%, transparent 70%);
+      rgba(249, 115, 22, 0.18), transparent 45%),
+    linear-gradient(135deg, rgba(251, 191, 36, 0.10), rgba(251, 113, 133, 0.08) 50%, transparent 70%);
   opacity: 0;
   transition: opacity 0.5s var(--ease-spring);
   pointer-events: none;
@@ -482,14 +484,14 @@ a {
 .float-shadow {
   box-shadow:
     0 30px 60px -20px rgba(15, 23, 42, 0.35),
-    0 10px 30px -10px rgba(34, 211, 238, 0.15),
+    0 10px 30px -10px rgba(249, 115, 22, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 /* ── Gradient stroke badge ── */
 .badge-gradient {
   position: relative;
-  background: linear-gradient(135deg, rgba(34, 211, 238, 0.10), rgba(192, 132, 252, 0.08));
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.10), rgba(251, 113, 133, 0.08));
   border: 1px solid transparent;
   background-clip: padding-box;
 }
@@ -555,40 +557,40 @@ a {
   left: 0;
   pointer-events: none;
   z-index: 90;
-  width: 18px;
-  height: 18px;
+  width: 10px;
+  height: 10px;
   border-radius: 999px;
-  background: rgba(34, 211, 238, 0.85);
+  background: rgba(249, 115, 22, 0.9);
   mix-blend-mode: plus-lighter;
   transform: translate3d(-50%, -50%, 0);
   transition:
-    width 0.32s var(--ease-spring),
-    height 0.32s var(--ease-spring),
-    background 0.32s var(--ease-spring),
-    border-color 0.32s var(--ease-spring),
-    opacity 0.25s var(--ease-spring);
+    width 0.28s var(--ease-spring),
+    height 0.28s var(--ease-spring),
+    background 0.28s var(--ease-spring),
+    border-color 0.28s var(--ease-spring),
+    opacity 0.2s var(--ease-spring);
   will-change: transform;
 }
 .lens-cursor.is-hidden { opacity: 0; }
 .lens-cursor.is-link {
-  width: 42px;
-  height: 42px;
-  background: rgba(34, 211, 238, 0.18);
-  border: 1px solid rgba(34, 211, 238, 0.8);
+  width: 26px;
+  height: 26px;
+  background: rgba(249, 115, 22, 0.14);
+  border: 1px solid rgba(249, 115, 22, 0.7);
 }
 .lens-cursor.is-text {
-  width: 3px;
-  height: 22px;
+  width: 2px;
+  height: 16px;
   border-radius: 2px;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(120, 120, 120, 0.85);
 }
 .lens-cursor.is-view {
-  width: 88px;
-  height: 88px;
-  background: rgba(129, 140, 248, 0.25);
-  border: 1px solid rgba(129, 140, 248, 0.65);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  width: 44px;
+  height: 44px;
+  background: rgba(251, 146, 60, 0.12);
+  border: 1px solid rgba(249, 115, 22, 0.55);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 .lens-cursor .lens-label {
   position: absolute;
@@ -596,25 +598,26 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 8px;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: white;
+  color: rgba(249, 115, 22, 1);
   opacity: 0;
-  transition: opacity 0.25s var(--ease-spring);
+  transition: opacity 0.2s var(--ease-spring);
+  white-space: nowrap;
 }
-.lens-cursor.is-view .lens-label { opacity: 1; }
+.lens-cursor.is-view .lens-label { opacity: 0.95; }
 .lens-cursor .lens-dot {
   position: absolute;
   inset: 50% auto auto 50%;
   transform: translate3d(-50%, -50%, 0);
-  width: 4px;
-  height: 4px;
+  width: 3px;
+  height: 3px;
   border-radius: 999px;
-  background: rgba(34, 211, 238, 1);
+  background: rgba(249, 115, 22, 1);
   opacity: 0;
-  transition: opacity 0.25s var(--ease-spring);
+  transition: opacity 0.2s var(--ease-spring);
 }
 .lens-cursor.is-link .lens-dot { opacity: 1; }
 
@@ -664,7 +667,7 @@ a {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: radial-gradient(circle at 20% 0%, rgba(34,211,238,0.10), transparent 55%);
+  background: radial-gradient(circle at 20% 0%, rgba(249, 115, 22,0.10), transparent 55%);
   opacity: 0;
   transition: opacity 0.6s var(--ease-spring);
   pointer-events: none;

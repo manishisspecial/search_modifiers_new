@@ -18,7 +18,7 @@ export default function OpenGraphImage() {
           alignItems: "flex-start",
           justifyContent: "center",
           padding: 80,
-          background: "linear-gradient(135deg, #030712 0%, #0f172a 45%, #1e1b4b 100%)",
+          background: "linear-gradient(135deg, #0b0b10 0%, #1a120b 55%, #3a1c0b 100%)",
         }}
       >
         <div
@@ -48,7 +48,7 @@ export default function OpenGraphImage() {
           style={{
             marginTop: 48,
             fontSize: 20,
-            color: "#22d3ee",
+            color: "#fb923c",
             fontWeight: 600,
           }}
         >

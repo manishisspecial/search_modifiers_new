@@ -103,7 +103,7 @@ export function Navbar() {
               ))}
             </div>
             <div className="mt-3 border-t border-border pt-3 text-center">
-              <Link href="/services" className="text-xs font-semibold uppercase tracking-wider text-cyan-500 transition hover:text-cyan-400">
+              <Link href="/services" className="text-xs font-semibold uppercase tracking-wider text-orange-500 transition hover:text-orange-400">
                 View all services →
               </Link>
             </div>

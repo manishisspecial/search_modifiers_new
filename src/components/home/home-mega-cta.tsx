@@ -36,8 +36,8 @@ export function HomeMegaCta() {
         <div className="absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2">
           <div className="conic-ring absolute inset-0 rounded-full opacity-20 blur-2xl" />
         </div>
-        <div className="aurora-a absolute -left-20 top-10 h-80 w-80 rounded-full bg-cyan-500/15 blur-[100px]" />
-        <div className="aurora-b absolute -right-20 bottom-10 h-80 w-80 rounded-full bg-violet-500/15 blur-[100px]" />
+        <div className="aurora-a absolute -left-20 top-10 h-80 w-80 rounded-full bg-orange-500/15 blur-[100px]" />
+        <div className="aurora-b absolute -right-20 bottom-10 h-80 w-80 rounded-full bg-rose-500/15 blur-[100px]" />
         <div className="grid-overlay absolute inset-0 opacity-[0.2]" />
       </div>
 
@@ -75,11 +75,11 @@ export function HomeMegaCta() {
             {/* Orbiting dots */}
             {!reduce ? (
               <div aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                <span className="absolute block h-[440px] w-[440px] rounded-full border border-dashed border-cyan-500/15" />
-                <span className="absolute block h-[560px] w-[560px] rounded-full border border-dashed border-violet-500/10" />
-                <span className="orbit-a absolute h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_14px_rgba(34,211,238,0.8)]" />
-                <span className="orbit-b absolute h-1.5 w-1.5 rounded-full bg-violet-400 shadow-[0_0_12px_rgba(192,132,252,0.8)]" />
-                <span className="orbit-c absolute h-2.5 w-2.5 rounded-full bg-indigo-400 shadow-[0_0_14px_rgba(129,140,248,0.8)]" />
+                <span className="absolute block h-[440px] w-[440px] rounded-full border border-dashed border-orange-500/15" />
+                <span className="absolute block h-[560px] w-[560px] rounded-full border border-dashed border-rose-500/10" />
+                <span className="orbit-a absolute h-2 w-2 rounded-full bg-orange-400 shadow-[0_0_14px_rgba(251, 146, 60,0.8)]" />
+                <span className="orbit-b absolute h-1.5 w-1.5 rounded-full bg-rose-400 shadow-[0_0_12px_rgba(251, 113, 133,0.8)]" />
+                <span className="orbit-c absolute h-2.5 w-2.5 rounded-full bg-amber-400 shadow-[0_0_14px_rgba(251, 191, 36,0.8)]" />
               </div>
             ) : null}
 
@@ -88,7 +88,7 @@ export function HomeMegaCta() {
                 href="/contact"
                 data-cursor="view"
                 data-cursor-label="Let's talk"
-                className="group relative flex h-44 w-44 items-center justify-center rounded-full border border-cyan-400/30 bg-gradient-to-br from-cyan-400 via-indigo-500 to-violet-500 text-white shadow-[0_20px_60px_-15px_rgba(34,211,238,0.55)] transition-transform duration-500 hover:scale-[1.04] sm:h-52 sm:w-52"
+                className="group relative flex h-44 w-44 items-center justify-center rounded-full border border-orange-400/30 bg-gradient-to-br from-orange-400 via-amber-500 to-rose-500 text-white shadow-[0_20px_60px_-15px_rgba(251, 146, 60,0.55)] transition-transform duration-500 hover:scale-[1.04] sm:h-52 sm:w-52"
               >
                 {/* Pulsing ring */}
                 <span
@@ -146,8 +146,8 @@ function ContactTile({
   href?: string;
 }) {
   const body = (
-    <div className="holo glass group flex items-center gap-3 rounded-2xl border border-border px-5 py-4 text-left transition-all duration-400 hover:-translate-y-0.5 hover:border-cyan-400/30">
-      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-violet-500/15 text-cyan-400">
+    <div className="holo glass group flex items-center gap-3 rounded-2xl border border-border px-5 py-4 text-left transition-all duration-400 hover:-translate-y-0.5 hover:border-orange-400/30">
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500/20 to-rose-500/15 text-orange-400">
         {icon}
       </span>
       <div className="min-w-0">
@@ -159,7 +159,7 @@ function ContactTile({
         </p>
       </div>
       {href ? (
-        <ArrowUpRight className="ml-auto h-4 w-4 shrink-0 text-muted/70 transition-transform duration-400 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-cyan-400" />
+        <ArrowUpRight className="ml-auto h-4 w-4 shrink-0 text-muted/70 transition-transform duration-400 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-orange-400" />
       ) : null}
     </div>
   );

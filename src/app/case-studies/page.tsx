@@ -31,7 +31,7 @@ export default function CaseStudiesPage() {
               <StaggerItem key={c.slug}>
                 <FadeIn delay={i * 0.04}>
                   <article className="glass gradient-border h-full rounded-2xl p-8">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-cyan-400/90">{c.industry}</p>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-orange-400/90">{c.industry}</p>
                     <h2 className="mt-3 font-display text-2xl font-semibold text-foreground">{c.title}</h2>
                     <p className="mt-4 text-muted">{c.summary}</p>
                     <p className="mt-4 text-lg font-semibold text-emerald-400">{c.result}</p>
@@ -45,7 +45,7 @@ export default function CaseStudiesPage() {
                     </ul>
                     <Link
                       href="/contact"
-                      className="mt-8 inline-flex items-center gap-1 text-sm font-medium text-cyan-400 hover:text-cyan-500"
+                      className="mt-8 inline-flex items-center gap-1 text-sm font-medium text-orange-400 hover:text-orange-500"
                     >
                       Discuss a similar program <ArrowUpRight className="h-4 w-4" />
                     </Link>

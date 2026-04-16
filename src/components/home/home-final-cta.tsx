@@ -20,17 +20,17 @@ export function HomeFinalCta() {
       <motion.div
         animate={reduce ? undefined : { backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
         transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
-        className="absolute inset-0 -z-10 rounded-[2rem] bg-[length:200%_200%] bg-gradient-to-r from-cyan-500/15 via-indigo-500/12 to-violet-500/15 opacity-80 blur-2xl"
+        className="absolute inset-0 -z-10 rounded-[2rem] bg-[length:200%_200%] bg-gradient-to-r from-orange-500/15 via-amber-500/12 to-rose-500/15 opacity-80 blur-2xl"
       />
       <div className="glass gradient-border relative overflow-hidden rounded-[2rem] border border-border px-6 py-14 text-center sm:px-14 sm:py-16">
         <div className="noise-overlay rounded-[2rem]" />
         <motion.div
-          className="absolute -left-20 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-cyan-500/20 blur-3xl"
+          className="absolute -left-20 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-orange-500/20 blur-3xl"
           animate={reduce ? undefined : { scale: [1, 1.15, 1], opacity: [0.2, 0.35, 0.2] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute -right-20 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-violet-500/20 blur-3xl"
+          className="absolute -right-20 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-rose-500/20 blur-3xl"
           animate={reduce ? undefined : { scale: [1.1, 1, 1.1], opacity: [0.15, 0.3, 0.15] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
@@ -52,7 +52,7 @@ export function HomeFinalCta() {
           </ul>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <motion.div whileHover={reduce ? undefined : { scale: 1.03 }} whileTap={reduce ? undefined : { scale: 0.98 }}>
-              <Button href="/contact" className="min-h-[52px] min-w-[200px] px-10 py-3.5 text-base shadow-xl shadow-cyan-500/25">
+              <Button href="/contact" className="min-h-[52px] min-w-[200px] px-10 py-3.5 text-base shadow-xl shadow-orange-500/25">
                 Schedule a strategy call
               </Button>
             </motion.div>

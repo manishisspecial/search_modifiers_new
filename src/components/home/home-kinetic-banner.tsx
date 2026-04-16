@@ -64,7 +64,7 @@ function KineticRow({ variant = "solid" }: { variant?: "solid" | "outline" }) {
             {w}
           </span>
           <Asterisk
-            className="h-7 w-7 shrink-0 text-cyan-400/80 sm:h-9 sm:w-9 md:h-12 md:w-12"
+            className="h-7 w-7 shrink-0 text-orange-400/80 sm:h-9 sm:w-9 md:h-12 md:w-12"
             strokeWidth={2.2}
           />
         </span>

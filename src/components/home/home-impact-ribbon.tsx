@@ -78,14 +78,14 @@ export function HomeImpactRibbon() {
             style={{
               backgroundPosition: gradientShift,
             }}
-            className="absolute inset-0 -z-10 bg-[length:220%_220%] bg-gradient-to-br from-cyan-500/14 via-indigo-500/10 to-violet-500/14"
+            className="absolute inset-0 -z-10 bg-[length:220%_220%] bg-gradient-to-br from-orange-500/14 via-amber-500/10 to-rose-500/14"
           />
           <div className="glass absolute inset-0 -z-10" />
           <div className="noise-overlay" />
 
           <div className="relative px-6 py-12 sm:px-10 sm:py-16">
             <div className="max-w-2xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-400/90">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-orange-400/90">
                 Impact at scale
               </p>
               <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground text-balance sm:text-4xl md:text-[2.6rem] md:leading-[1.1]">
@@ -113,7 +113,7 @@ export function HomeImpactRibbon() {
                 >
                   <div className="flex items-baseline gap-1 font-display text-5xl font-extrabold tabular-nums leading-none tracking-[-0.02em] text-foreground sm:text-[3.4rem]">
                     {m.prefix ? (
-                      <span className="text-cyan-400/90">{m.prefix}</span>
+                      <span className="text-orange-400/90">{m.prefix}</span>
                     ) : null}
                     <AnimatedCounter
                       value={m.value.replace(m.prefix ?? "", "")}

@@ -54,7 +54,7 @@ export function AnimatedSectionHeading({
       viewport={{ once: true, margin: "-80px" }}
     >
       {eyebrow ? (
-        <motion.p variants={item} className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-400/90">
+        <motion.p variants={item} className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-orange-400/90">
           {eyebrow}
         </motion.p>
       ) : null}

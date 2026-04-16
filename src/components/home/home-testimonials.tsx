@@ -22,7 +22,7 @@ export function HomeTestimonials() {
     <div className="relative mx-auto max-w-3xl">
       <div className="glass gradient-border relative overflow-hidden rounded-3xl border border-border px-6 py-12 sm:px-12 sm:py-14">
         <div className="noise-overlay rounded-3xl opacity-[0.04]" />
-        <Quote className="absolute left-4 top-4 h-16 w-16 text-cyan-500/10 sm:left-8 sm:top-8 sm:h-20 sm:w-20" />
+        <Quote className="absolute left-4 top-4 h-16 w-16 text-orange-500/10 sm:left-8 sm:top-8 sm:h-20 sm:w-20" />
         <div className="relative flex min-h-[200px] flex-col justify-center sm:min-h-[220px]">
           <div className="mb-6 flex justify-center gap-1 sm:justify-start">
             {Array.from({ length: 5 }).map((_, si) => (
@@ -64,7 +64,7 @@ export function HomeTestimonials() {
               aria-label="Previous testimonial"
               whileHover={reduce ? undefined : { scale: 1.08 }}
               whileTap={reduce ? undefined : { scale: 0.94 }}
-              className="rounded-full border border-border bg-surface-hover p-2.5 text-muted transition-colors hover:border-cyan-500/40 hover:text-foreground"
+              className="rounded-full border border-border bg-surface-hover p-2.5 text-muted transition-colors hover:border-orange-500/40 hover:text-foreground"
               onClick={() => setI((x) => (x - 1 + testimonials.length) % testimonials.length)}
             >
               <ChevronLeft className="h-5 w-5" />
@@ -77,7 +77,7 @@ export function HomeTestimonials() {
                   aria-label={`Go to testimonial ${j + 1}`}
                   className={cn(
                     "h-2 rounded-full transition-all duration-300",
-                    j === i ? "w-9 bg-gradient-to-r from-cyan-400 to-indigo-400" : "w-2 bg-muted/60 hover:bg-muted"
+                    j === i ? "w-9 bg-gradient-to-r from-orange-400 to-amber-400" : "w-2 bg-muted/60 hover:bg-muted"
                   )}
                   onClick={() => setI(j)}
                 />
@@ -88,7 +88,7 @@ export function HomeTestimonials() {
               aria-label="Next testimonial"
               whileHover={reduce ? undefined : { scale: 1.08 }}
               whileTap={reduce ? undefined : { scale: 0.94 }}
-              className="rounded-full border border-border bg-surface-hover p-2.5 text-muted transition-colors hover:border-cyan-500/40 hover:text-foreground"
+              className="rounded-full border border-border bg-surface-hover p-2.5 text-muted transition-colors hover:border-orange-500/40 hover:text-foreground"
               onClick={() => setI((x) => (x + 1) % testimonials.length)}
             >
               <ChevronRight className="h-5 w-5" />

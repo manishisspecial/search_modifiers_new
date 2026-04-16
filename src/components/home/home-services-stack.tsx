@@ -30,8 +30,8 @@ const ITEMS: StackItem[] = [
       "Topical authority & entity graphs",
       "Programmatic & editorial content at scale",
     ],
-    gradient: "from-cyan-500/20 via-indigo-500/10 to-transparent",
-    accent: "text-cyan-400",
+    gradient: "from-orange-500/20 via-amber-500/10 to-transparent",
+    accent: "text-orange-400",
   },
   {
     slug: "google-ads",
@@ -44,8 +44,8 @@ const ITEMS: StackItem[] = [
       "Creative testing as a system, not a vibe",
       "Server-side tracking & value optimization",
     ],
-    gradient: "from-indigo-500/22 via-violet-500/10 to-transparent",
-    accent: "text-indigo-400",
+    gradient: "from-amber-500/22 via-rose-500/10 to-transparent",
+    accent: "text-amber-400",
   },
   {
     slug: "social-media-marketing",
@@ -58,8 +58,8 @@ const ITEMS: StackItem[] = [
       "Creator & influencer activation",
       "Community programs, not broadcast posts",
     ],
-    gradient: "from-violet-500/22 via-fuchsia-500/10 to-transparent",
-    accent: "text-violet-400",
+    gradient: "from-rose-500/22 via-orange-500/10 to-transparent",
+    accent: "text-rose-400",
   },
   {
     slug: "online-reputation-management",
@@ -72,7 +72,7 @@ const ITEMS: StackItem[] = [
       "Review generation + response ops",
       "Crisis playbooks on retainer",
     ],
-    gradient: "from-emerald-500/18 via-cyan-500/12 to-transparent",
+    gradient: "from-emerald-500/18 via-orange-500/12 to-transparent",
     accent: "text-emerald-400",
   },
   {
@@ -86,8 +86,8 @@ const ITEMS: StackItem[] = [
       "Design systems w/ analytics baked in",
       "Experimentation frameworks & velocity",
     ],
-    gradient: "from-amber-500/18 via-rose-500/10 to-transparent",
-    accent: "text-amber-400",
+    gradient: "from-orange-600/18 via-amber-500/10 to-transparent",
+    accent: "text-orange-500",
   },
 ];
 
@@ -216,10 +216,10 @@ function StackCard({
                   <div className="mt-8 flex flex-wrap items-center gap-4">
                     <Link
                       href={`/services/${item.slug}`}
-                      className="group inline-flex items-center gap-2 rounded-full border border-border bg-surface-hover px-5 py-2.5 text-sm font-semibold text-foreground transition-all duration-400 hover:border-cyan-400/40 hover:bg-cyan-500/10"
+                      className="group inline-flex items-center gap-2 rounded-full border border-border bg-surface-hover px-5 py-2.5 text-sm font-semibold text-foreground transition-all duration-400 hover:border-orange-400/40 hover:bg-orange-500/10"
                     >
                       Explore service
-                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 to-violet-400 text-white transition-transform duration-400 group-hover:rotate-45">
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-rose-400 text-white transition-transform duration-400 group-hover:rotate-45">
                         <ArrowUpRight className="h-3.5 w-3.5" />
                       </span>
                     </Link>

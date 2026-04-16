@@ -27,10 +27,10 @@ export default function BlogPage() {
             {blogPosts.map((post) => (
               <StaggerItem key={post.slug}>
                 <FadeIn>
-                  <article className="glass group flex h-full flex-col rounded-2xl p-8 transition hover:border-cyan-500/20">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-cyan-400/90">{post.category}</p>
-                    <h2 className="mt-3 font-display text-xl font-semibold text-foreground group-hover:text-cyan-500 sm:text-2xl">
-                      <Link href={`/blog/${post.slug}`} className="focus:outline-none focus-visible:text-cyan-500">
+                  <article className="glass group flex h-full flex-col rounded-2xl p-8 transition hover:border-orange-500/20">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-orange-400/90">{post.category}</p>
+                    <h2 className="mt-3 font-display text-xl font-semibold text-foreground group-hover:text-orange-500 sm:text-2xl">
+                      <Link href={`/blog/${post.slug}`} className="focus:outline-none focus-visible:text-orange-500">
                         {post.title}
                       </Link>
                     </h2>
@@ -49,7 +49,7 @@ export default function BlogPage() {
                     </div>
                     <Link
                       href={`/blog/${post.slug}`}
-                      className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-cyan-400"
+                      className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-orange-400"
                     >
                       Read article <ArrowUpRight className="h-4 w-4" />
                     </Link>

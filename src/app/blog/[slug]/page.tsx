@@ -56,11 +56,11 @@ export default async function BlogPostPage({ params }: Props) {
           <FadeIn>
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-sm font-medium text-muted/70 transition hover:text-cyan-400"
+              className="inline-flex items-center gap-2 text-sm font-medium text-muted/70 transition hover:text-orange-400"
             >
               <ArrowLeft className="h-4 w-4" /> Back to blog
             </Link>
-            <p className="mt-8 text-xs font-semibold uppercase tracking-wider text-cyan-400/90">{post.category}</p>
+            <p className="mt-8 text-xs font-semibold uppercase tracking-wider text-orange-400/90">{post.category}</p>
             <h1 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
               {post.title}
             </h1>

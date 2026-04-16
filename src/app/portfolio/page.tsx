@@ -54,9 +54,9 @@ export default function PortfolioPage() {
           <Stagger className="grid gap-6 sm:grid-cols-2">
             {items.map((it) => (
               <StaggerItem key={it.title}>
-                <article className="glass group relative overflow-hidden rounded-2xl p-8 transition hover:border-cyan-500/20">
-                  <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-cyan-500/10 blur-2xl transition group-hover:bg-cyan-500/15" />
-                  <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-violet-500/20 text-cyan-500">
+                <article className="glass group relative overflow-hidden rounded-2xl p-8 transition hover:border-orange-500/20">
+                  <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-orange-500/10 blur-2xl transition group-hover:bg-orange-500/15" />
+                  <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500/20 to-rose-500/20 text-orange-500">
                     <it.icon className="h-6 w-6" />
                   </div>
                   <p className="relative mt-6 text-xs font-semibold uppercase tracking-wider text-muted/70">{it.cat}</p>

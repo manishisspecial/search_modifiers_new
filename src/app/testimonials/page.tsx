@@ -39,7 +39,7 @@ export default function TestimonialsPage() {
               <StaggerItem key={t.name + t.company}>
                 <FadeIn>
                   <blockquote className="glass relative h-full rounded-2xl p-8">
-                    <Quote className="absolute right-6 top-6 h-10 w-10 text-cyan-500/10" />
+                    <Quote className="absolute right-6 top-6 h-10 w-10 text-orange-500/10" />
                     <p className="text-foreground/90">&ldquo;{t.quote}&rdquo;</p>
                     <footer className="mt-6 border-t border-border pt-6">
                       <cite className="not-italic">

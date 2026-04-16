@@ -60,14 +60,14 @@ function QuoteCard({
 
   return (
     <article
-      className={`holo glass relative flex w-[min(88vw,420px)] shrink-0 flex-col overflow-hidden rounded-2xl border p-6 transition-all duration-500 hover:-translate-y-1 hover:border-cyan-400/30 sm:p-7 ${
-        accent ? "border-violet-500/15" : "border-border"
+      className={`holo glass relative flex w-[min(88vw,420px)] shrink-0 flex-col overflow-hidden rounded-2xl border p-6 transition-all duration-500 hover:-translate-y-1 hover:border-orange-400/30 sm:p-7 ${
+        accent ? "border-rose-500/15" : "border-border"
       }`}
     >
       <Quote
         aria-hidden
         className={`absolute right-4 top-4 h-10 w-10 opacity-[0.18] ${
-          accent ? "text-violet-400" : "text-cyan-400"
+          accent ? "text-rose-400" : "text-orange-400"
         }`}
       />
 
@@ -89,8 +89,8 @@ function QuoteCard({
         <span
           className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br font-semibold text-white shadow-lg ${
             accent
-              ? "from-violet-400 to-fuchsia-500 shadow-violet-500/20"
-              : "from-cyan-400 to-indigo-500 shadow-cyan-500/20"
+              ? "from-rose-400 to-rose-500 shadow-rose-500/20"
+              : "from-orange-400 to-amber-500 shadow-orange-500/20"
           }`}
           aria-hidden
         >

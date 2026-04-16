@@ -9,7 +9,7 @@ export function Footer() {
   return (
     <footer className="relative bg-background">
       <div className="gradient-line" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_40%_at_50%_100%,rgba(34,211,238,0.06),transparent)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_40%_at_50%_100%,rgba(251, 146, 60,0.06),transparent)]" />
       <div className="noise-overlay" />
 
       <Container className="relative pt-20 pb-12 sm:pt-24 sm:pb-16">
@@ -33,15 +33,15 @@ export function Footer() {
             <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-muted/70">Get in touch</h3>
             <ul className="mt-5 space-y-4 text-sm text-muted">
               <li className="flex items-start gap-2.5">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-cyan-400/70" />
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-orange-400/70" />
                 <span>{site.address.street}, {site.address.city} {site.address.postalCode}, India</span>
               </li>
               <li className="flex items-center gap-2.5">
-                <Phone className="h-4 w-4 shrink-0 text-cyan-400/70" />
+                <Phone className="h-4 w-4 shrink-0 text-orange-400/70" />
                 <a href={`tel:${site.phoneTel}`} className="hover-underline transition hover:text-foreground">{site.phone}</a>
               </li>
               <li className="flex items-center gap-2.5">
-                <Mail className="h-4 w-4 shrink-0 text-cyan-400/70" />
+                <Mail className="h-4 w-4 shrink-0 text-orange-400/70" />
                 <a href={`mailto:${site.email}`} className="hover-underline transition hover:text-foreground">{site.email}</a>
               </li>
             </ul>
@@ -56,7 +56,7 @@ export function Footer() {
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full border border-border bg-surface-hover px-4 py-2 text-xs font-medium text-muted transition-all duration-300 hover:border-cyan-500/20 hover:bg-surface-hover hover:text-foreground"
+                  className="rounded-full border border-border bg-surface-hover px-4 py-2 text-xs font-medium text-muted transition-all duration-300 hover:border-orange-500/20 hover:bg-surface-hover hover:text-foreground"
                 >
                   {s.label}
                 </a>
@@ -72,7 +72,7 @@ export function Footer() {
                   <li key={l.href}>
                     <Link
                       href={l.href}
-                      className="group inline-flex items-center gap-1 text-sm text-muted transition-colors duration-300 hover:text-cyan-500"
+                      className="group inline-flex items-center gap-1 text-sm text-muted transition-colors duration-300 hover:text-orange-500"
                     >
                       <span className="hover-underline">{l.label}</span>
                       <ArrowUpRight className="h-3 w-3 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

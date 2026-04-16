@@ -50,10 +50,10 @@ export default function CareersPage() {
           <FadeIn>
             <div className="flex flex-wrap gap-6 text-sm text-muted">
               <span className="inline-flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-cyan-400" /> {site.address.city} HQ + remote
+                <MapPin className="h-4 w-4 text-orange-400" /> {site.address.city} HQ + remote
               </span>
               <span className="inline-flex items-center gap-2">
-                <Clock className="h-4 w-4 text-cyan-400" /> Flexible hours for deep work
+                <Clock className="h-4 w-4 text-orange-400" /> Flexible hours for deep work
               </span>
             </div>
           </FadeIn>
@@ -63,7 +63,7 @@ export default function CareersPage() {
                 <article className="glass flex flex-col gap-4 rounded-2xl p-6 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h2 className="font-display text-lg font-semibold text-foreground">{r.title}</h2>
-                    <p className="mt-1 text-xs font-medium uppercase tracking-wider text-cyan-400/80">{r.type}</p>
+                    <p className="mt-1 text-xs font-medium uppercase tracking-wider text-orange-400/80">{r.type}</p>
                     <p className="mt-3 max-w-2xl text-sm text-muted">{r.desc}</p>
                   </div>
                   <Button

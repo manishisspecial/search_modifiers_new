@@ -24,8 +24,8 @@ export function PageHero({
       <div className="pointer-events-none absolute inset-0">
         <div className="grid-overlay absolute inset-0 opacity-30" />
         <div className="noise-overlay" />
-        <div className="absolute left-1/4 top-0 h-[300px] w-[400px] rounded-full bg-cyan-500/10 blur-[100px]" />
-        <div className="absolute right-1/4 top-1/3 h-[250px] w-[350px] rounded-full bg-violet-500/8 blur-[90px]" />
+        <div className="absolute left-1/4 top-0 h-[300px] w-[400px] rounded-full bg-orange-500/10 blur-[100px]" />
+        <div className="absolute right-1/4 top-1/3 h-[250px] w-[350px] rounded-full bg-rose-500/8 blur-[90px]" />
       </div>
       <Container className="relative">
         {eyebrow ? (
@@ -33,7 +33,7 @@ export function PageHero({
             initial={reduce ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-5 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-400/90"
+            className="mb-5 text-xs font-semibold uppercase tracking-[0.22em] text-orange-400/90"
           >
             {eyebrow}
           </motion.p>

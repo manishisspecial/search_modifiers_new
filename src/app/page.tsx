@@ -5,7 +5,6 @@ import { HomeCaseStudyCard } from "@/components/home/home-case-study-card";
 import { HomeConversionBar } from "@/components/home/home-conversion-bar";
 import { HomeHero } from "@/components/home/home-hero";
 import { HomeImpactRibbon } from "@/components/home/home-impact-ribbon";
-import { HomeKineticBanner } from "@/components/home/home-kinetic-banner";
 import { HomeLogoWall } from "@/components/home/home-logo-wall";
 import { HomeMegaCta } from "@/components/home/home-mega-cta";
 import { HomeMidCta } from "@/components/home/home-mid-cta";
@@ -56,9 +55,6 @@ export default function HomePage() {
     <>
       <HomeStickyCta />
       <HomeHero />
-
-      {/* Kinetic capabilities banner — scroll-velocity reactive */}
-      <HomeKineticBanner />
 
       {/* Logo marquee */}
       <HomeLogoWall />
@@ -171,9 +167,9 @@ function WhyCard({
 }) {
   return (
     <div className="spotlight-card holo group relative h-full overflow-hidden rounded-2xl border border-border bg-card p-7 transition-all duration-500 sm:p-9">
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-violet-500/0 opacity-0 transition-opacity duration-500 group-hover:from-cyan-500/[0.06] group-hover:to-transparent group-hover:opacity-100" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-orange-500/0 to-rose-500/0 opacity-0 transition-opacity duration-500 group-hover:from-orange-500/[0.06] group-hover:to-transparent group-hover:opacity-100" />
       <div className="relative flex gap-5">
-        <span className="tilt-layer flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500/25 to-violet-500/15 text-cyan-500 shadow-lg shadow-cyan-500/5 transition-transform duration-500 group-hover:scale-110">
+        <span className="tilt-layer flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500/25 to-rose-500/15 text-orange-500 shadow-lg shadow-orange-500/5 transition-transform duration-500 group-hover:scale-110">
           <Icon className="h-6 w-6" />
         </span>
         <div>

@@ -51,7 +51,7 @@ export function LocationPageBody({ loc }: { loc: LocationPage }) {
             </div>
             <div>
               <div className="glass sticky top-28 rounded-2xl p-6">
-                <div className="flex items-center gap-2 text-cyan-400">
+                <div className="flex items-center gap-2 text-orange-400">
                   <MapPin className="h-5 w-5" />
                   <span className="text-sm font-semibold uppercase tracking-wider">Local snapshot</span>
                 </div>

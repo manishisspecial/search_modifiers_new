@@ -30,8 +30,8 @@ export function ServicePageBody({ service }: { service: ServiceBlock }) {
           <FadeIn>
             <div className="glass gradient-border relative overflow-hidden rounded-3xl p-8 sm:p-10 md:p-14">
               <div className="noise-overlay rounded-3xl" />
-              <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-cyan-500/10 blur-[100px]" />
-              <div className="pointer-events-none absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-violet-500/10 blur-[80px]" />
+              <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-orange-500/10 blur-[100px]" />
+              <div className="pointer-events-none absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-rose-500/10 blur-[80px]" />
               <div className="relative">
                 <h2 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">What this service delivers</h2>
                 <p className="mt-5 max-w-3xl text-lg leading-relaxed text-muted">{service.intro}</p>
@@ -55,7 +55,7 @@ export function ServicePageBody({ service }: { service: ServiceBlock }) {
               {service.benefits.map((b) => (
                 <StaggerItem key={b.title}>
                   <div className="spotlight-card glass group h-full rounded-2xl border border-border p-6 transition-all duration-500">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-violet-500/15 text-cyan-500 transition-transform duration-500 group-hover:scale-110">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500/20 to-rose-500/15 text-orange-500 transition-transform duration-500 group-hover:scale-110">
                       <ServiceBenefitIcon name={b.icon} className="h-5 w-5" />
                     </div>
                     <h3 className="mt-5 font-display text-lg font-semibold text-foreground">{b.title}</h3>
@@ -77,12 +77,12 @@ export function ServicePageBody({ service }: { service: ServiceBlock }) {
             description="Transparent phases, clear owners, and weekly momentum — whether you're in Delhi NCR or fully remote."
           />
           <div className="relative mt-14">
-            <div className="pointer-events-none absolute left-6 top-0 hidden h-full w-px bg-gradient-to-b from-cyan-500/30 via-indigo-500/20 to-transparent lg:block" />
+            <div className="pointer-events-none absolute left-6 top-0 hidden h-full w-px bg-gradient-to-b from-orange-500/30 via-amber-500/20 to-transparent lg:block" />
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
               {service.process.map((step, i) => (
                 <FadeIn key={step.title} delay={i * 0.08}>
                   <div className="spotlight-card group relative h-full rounded-2xl border border-border bg-card p-6 transition-all duration-500">
-                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500/25 to-violet-500/15 font-mono text-xs font-bold text-cyan-500 transition-transform duration-500 group-hover:scale-110">
+                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-orange-500/25 to-rose-500/15 font-mono text-xs font-bold text-orange-500 transition-transform duration-500 group-hover:scale-110">
                       {step.step}
                     </span>
                     <h3 className="mt-4 font-display text-lg font-semibold text-foreground">{step.title}</h3>
@@ -104,7 +104,7 @@ export function ServicePageBody({ service }: { service: ServiceBlock }) {
               <FadeIn key={f.q}>
                 <div className="group rounded-2xl border border-border bg-card p-6 transition-all duration-500 hover:border-border hover:bg-card sm:p-8">
                   <div className="flex gap-3.5">
-                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-cyan-400/80 transition-colors duration-300 group-hover:text-cyan-400" />
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-orange-400/80 transition-colors duration-300 group-hover:text-orange-400" />
                     <div>
                       <h3 className="font-display font-medium text-foreground">{f.q}</h3>
                       <p className="mt-3 text-sm leading-relaxed text-muted">{f.a}</p>
@@ -122,7 +122,7 @@ export function ServicePageBody({ service }: { service: ServiceBlock }) {
           <FadeIn>
             <div className="glass gradient-border relative overflow-hidden rounded-3xl px-8 py-14 text-center sm:px-14">
               <div className="noise-overlay rounded-3xl" />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-cyan-500/8 via-transparent to-violet-500/8" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-orange-500/8 via-transparent to-rose-500/8" />
               <div className="relative">
                 <h2 className="font-display text-3xl font-bold text-foreground text-balance sm:text-4xl">Ready to ship outcomes?</h2>
                 <p className="mx-auto mt-5 max-w-xl text-muted">

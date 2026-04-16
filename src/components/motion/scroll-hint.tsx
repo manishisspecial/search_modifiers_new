@@ -27,7 +27,7 @@ export function ScrollHint({ label = "Scroll" }: { label?: string }) {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute left-1/2 h-3 w-[2px] -translate-x-1/2 rounded-full bg-gradient-to-b from-cyan-300 to-cyan-500 shadow-[0_0_10px_rgba(34,211,238,0.6)]"
+          className="absolute left-1/2 h-3 w-[2px] -translate-x-1/2 rounded-full bg-gradient-to-b from-orange-300 to-orange-500 shadow-[0_0_10px_rgba(251, 146, 60,0.6)]"
         />
       </span>
     </motion.div>

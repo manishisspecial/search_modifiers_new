@@ -53,8 +53,8 @@ export function HomeStickyCta() {
           transition={{ type: "spring", stiffness: 380, damping: 32 }}
           className="fixed bottom-20 left-4 right-4 z-30 sm:bottom-6 sm:left-auto sm:right-6 sm:max-w-md"
         >
-          <div className="glass gradient-border relative flex items-center gap-4 rounded-2xl border border-cyan-500/20 p-4 pr-10 shadow-2xl shadow-black/10">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/30 to-violet-500/20 text-cyan-500">
+          <div className="glass gradient-border relative flex items-center gap-4 rounded-2xl border border-orange-500/20 p-4 pr-10 shadow-2xl shadow-black/10">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500/30 to-rose-500/20 text-orange-500">
               <Sparkles className="h-5 w-5" />
             </div>
             <div className="min-w-0 flex-1">
@@ -62,7 +62,7 @@ export function HomeStickyCta() {
               <p className="mt-0.5 text-xs text-muted">Technical SEO, speed &amp; CRO notes you can ship.</p>
               <Link
                 href="/free-website-audit"
-                className="mt-2 inline-flex text-xs font-semibold uppercase tracking-wider text-cyan-400 hover:text-cyan-500"
+                className="mt-2 inline-flex text-xs font-semibold uppercase tracking-wider text-orange-400 hover:text-orange-500"
               >
                 Claim yours →
               </Link>

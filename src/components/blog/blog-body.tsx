@@ -20,13 +20,13 @@ export function BlogBody({ content }: { content: string }) {
           const isExt = href?.startsWith("http");
           if (isExt) {
             return (
-              <a href={href} className="text-cyan-400 underline-offset-2 hover:underline" target="_blank" rel="noopener noreferrer">
+              <a href={href} className="text-orange-400 underline-offset-2 hover:underline" target="_blank" rel="noopener noreferrer">
                 {children}
               </a>
             );
           }
           return (
-            <Link href={href ?? "#"} className="text-cyan-400 underline-offset-2 hover:underline">
+            <Link href={href ?? "#"} className="text-orange-400 underline-offset-2 hover:underline">
               {children}
             </Link>
           );

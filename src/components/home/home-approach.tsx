@@ -29,7 +29,7 @@ const STEPS: Step[] = [
       "Commercial audit, analytics cleanup, and competitive teardown — so decisions rest on evidence, not lore.",
     deliverables: ["Attribution gap map", "SERP + paid landscape", "CRO opportunity list"],
     icon: Compass,
-    hue: "from-cyan-400/30 via-cyan-500/10 to-transparent text-cyan-400",
+    hue: "from-orange-400/30 via-orange-500/10 to-transparent text-orange-400",
   },
   {
     step: "02",
@@ -38,7 +38,7 @@ const STEPS: Step[] = [
       "We design the engine — channel mix, measurement stack, content architecture, and experimentation cadence.",
     deliverables: ["90-day growth plan", "MMM + test design", "Content & keyword blueprint"],
     icon: FlaskConical,
-    hue: "from-indigo-400/30 via-violet-500/10 to-transparent text-indigo-400",
+    hue: "from-amber-400/30 via-rose-500/10 to-transparent text-amber-400",
   },
   {
     step: "03",
@@ -47,7 +47,7 @@ const STEPS: Step[] = [
       "Embedded squads build, launch, and QA — paid media, SEO tickets, content, and landing experiences going live weekly.",
     deliverables: ["Weekly releases", "Embedded creative + media pod", "Edge-fast landing system"],
     icon: Rocket,
-    hue: "from-violet-400/30 via-fuchsia-500/10 to-transparent text-violet-400",
+    hue: "from-rose-400/30 via-orange-500/10 to-transparent text-rose-400",
   },
   {
     step: "04",
@@ -56,7 +56,7 @@ const STEPS: Step[] = [
       "Instrumented dashboards, server-side tracking, and weekly reviews focused on margin, payback, and incrementality.",
     deliverables: ["Executive dashboard", "Incrementality tests", "Cohort & LTV views"],
     icon: LineChartIcon,
-    hue: "from-emerald-400/30 via-cyan-500/10 to-transparent text-emerald-400",
+    hue: "from-emerald-400/30 via-orange-500/10 to-transparent text-emerald-400",
   },
   {
     step: "05",
@@ -65,7 +65,7 @@ const STEPS: Step[] = [
       "Every learning becomes a lever. We retire losers ruthlessly, re-invest in what works, and keep the curve bending up.",
     deliverables: ["Quarterly re-plans", "Learning library", "Margin-led reallocation"],
     icon: Repeat,
-    hue: "from-amber-400/30 via-rose-500/10 to-transparent text-amber-400",
+    hue: "from-orange-500/30 via-amber-400/10 to-transparent text-orange-500",
   },
 ];
 
@@ -120,7 +120,7 @@ export function HomeApproach() {
           <div className="pointer-events-none absolute inset-x-0 bottom-10 z-10 mx-auto h-px w-[80%] max-w-3xl overflow-hidden rounded-full bg-border sm:bottom-12">
             <motion.div
               style={{ width: progressWidth }}
-              className="h-full bg-gradient-to-r from-cyan-400 via-indigo-400 to-violet-400 shadow-[0_0_12px_rgba(34,211,238,0.45)]"
+              className="h-full bg-gradient-to-r from-orange-400 via-amber-400 to-rose-400 shadow-[0_0_12px_rgba(251, 146, 60,0.45)]"
             />
           </div>
 
@@ -175,7 +175,7 @@ function StageCard({ s, isLast }: { s: Step; isLast: boolean }) {
               key={d}
               className="flex items-center gap-2 text-sm font-medium text-foreground/90"
             >
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-cyan-400" />
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-orange-400" />
               {d}
             </li>
           ))}
@@ -187,7 +187,7 @@ function StageCard({ s, isLast }: { s: Step; isLast: boolean }) {
         <svg
           aria-hidden
           viewBox="0 0 80 40"
-          className="pointer-events-none absolute -right-16 top-1/2 h-10 w-20 -translate-y-1/2 text-cyan-400/70"
+          className="pointer-events-none absolute -right-16 top-1/2 h-10 w-20 -translate-y-1/2 text-orange-400/70"
         >
           <path
             className="connector"

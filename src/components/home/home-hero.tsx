@@ -102,15 +102,15 @@ export function HomeHero() {
         }}
       >
         <div
-          className="aurora-a absolute left-[8%] top-[8%] h-[440px] w-[440px] rounded-full bg-cyan-500/18 blur-[110px]"
+          className="aurora-a absolute left-[8%] top-[8%] h-[440px] w-[440px] rounded-full bg-orange-500/18 blur-[110px]"
           style={{ transform: "translate3d(var(--px,0),var(--py,0),0)" }}
         />
         <div
-          className="aurora-b absolute right-[0%] top-[14%] h-[380px] w-[380px] rounded-full bg-violet-500/16 blur-[100px]"
+          className="aurora-b absolute right-[0%] top-[14%] h-[380px] w-[380px] rounded-full bg-rose-500/16 blur-[100px]"
           style={{ transform: "translate3d(calc(var(--px,0) * -0.6), calc(var(--py,0) * -0.6), 0)" }}
         />
         <div
-          className="aurora-c absolute bottom-[-6%] left-1/2 h-[320px] w-[min(90%,700px)] -translate-x-1/2 rounded-full bg-indigo-500/14 blur-[90px]"
+          className="aurora-c absolute bottom-[-6%] left-1/2 h-[320px] w-[min(90%,700px)] -translate-x-1/2 rounded-full bg-amber-500/14 blur-[90px]"
           style={{ transform: "translate(-50%, 0) translate3d(calc(var(--px,0) * 0.4), calc(var(--py,0) * 0.4), 0)" }}
         />
         <div className="grid-overlay absolute inset-0 opacity-[0.22]" />
@@ -131,10 +131,10 @@ export function HomeHero() {
               className="shimmer-border badge-gradient inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-xs font-medium text-foreground/85 backdrop-blur-sm"
             >
               <span className="relative flex h-2 w-2">
-                <span className="dot-pulse absolute inline-flex h-full w-full rounded-full bg-cyan-400" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-500" />
+                <span className="dot-pulse absolute inline-flex h-full w-full rounded-full bg-orange-400" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-orange-500" />
               </span>
-              <Sparkles className="h-3.5 w-3.5 text-cyan-500" />
+              <Sparkles className="h-3.5 w-3.5 text-orange-500" />
               <span className="tracking-wide">
                 Delhi NCR · Remote-first · Global campaigns
               </span>
@@ -205,7 +205,7 @@ export function HomeHero() {
               <Magnetic strength={0.3}>
                 <Button
                   href="/request-quote"
-                  className="group min-h-[50px] px-8 py-3 text-base shadow-xl shadow-cyan-500/25"
+                  className="group min-h-[50px] px-8 py-3 text-base shadow-xl shadow-orange-500/25"
                 >
                   Get a custom proposal
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -222,10 +222,10 @@ export function HomeHero() {
               </Magnetic>
               <Link
                 href={`tel:${site.phoneTel}`}
-                className="group inline-flex items-center gap-2 text-sm font-medium text-muted transition hover:text-cyan-500"
+                className="group inline-flex items-center gap-2 text-sm font-medium text-muted transition hover:text-orange-500"
               >
                 <span className="relative flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface-hover">
-                  <Phone className="h-4 w-4 text-cyan-400" />
+                  <Phone className="h-4 w-4 text-orange-400" />
                 </span>
                 {site.phone}
                 <span className="text-xs font-normal text-muted/60">· 24h callback</span>
@@ -254,9 +254,9 @@ export function HomeHero() {
                   initial={reduce ? false : { opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1.18 + i * 0.06, duration: 0.5 }}
-                  className="glass group relative overflow-hidden rounded-2xl px-4 py-5 text-center transition-shadow duration-500 hover:shadow-lg hover:shadow-cyan-500/10 sm:text-left"
+                  className="glass group relative overflow-hidden rounded-2xl px-4 py-5 text-center transition-shadow duration-500 hover:shadow-lg hover:shadow-orange-500/10 sm:text-left"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-cyan-500/0 opacity-0 transition-opacity duration-500 group-hover:from-cyan-500/[0.08] group-hover:to-transparent group-hover:opacity-100" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-500/0 opacity-0 transition-opacity duration-500 group-hover:from-orange-500/[0.08] group-hover:to-transparent group-hover:opacity-100" />
                   <p className="relative font-display text-2xl font-bold tabular-nums text-foreground sm:text-[1.75rem]">
                     {"countTo" in s ? (
                       <AnimatedCounter
@@ -369,9 +369,9 @@ function HeroDashboard() {
           {/* Channel breakdown */}
           <div className="tilt-layer relative mt-4 space-y-2.5">
             {[
-              { label: "Organic search", pct: 78, tint: "from-cyan-400 to-cyan-500" },
-              { label: "Paid media", pct: 62, tint: "from-indigo-400 to-violet-500" },
-              { label: "Direct / brand", pct: 45, tint: "from-violet-400 to-fuchsia-500" },
+              { label: "Organic search", pct: 78, tint: "from-orange-400 to-orange-500" },
+              { label: "Paid media", pct: 62, tint: "from-amber-400 to-rose-500" },
+              { label: "Direct / brand", pct: 45, tint: "from-rose-400 to-rose-500" },
             ].map((row, i) => (
               <div key={row.label} className="flex items-center gap-3">
                 <span className="w-28 shrink-0 text-[11px] font-medium text-muted/80">
@@ -399,7 +399,7 @@ function HeroDashboard() {
           {/* glow hotspot */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -right-24 -top-24 h-56 w-56 rounded-full bg-cyan-400/20 blur-3xl"
+            className="pointer-events-none absolute -right-24 -top-24 h-56 w-56 rounded-full bg-orange-400/20 blur-3xl"
           />
         </div>
       </Tilt3D>
@@ -421,9 +421,9 @@ function HeroDashboard() {
         initial={reduce ? false : { opacity: 0, y: -14, x: 10 }}
         animate={{ opacity: 1, y: 0, x: 0 }}
         transition={{ delay: 1.35, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="glass absolute -right-2 bottom-16 hidden items-center gap-2 rounded-full border border-cyan-500/20 py-1.5 pl-2 pr-3 text-[11px] font-medium text-foreground/90 shadow-xl sm:-right-8 sm:flex"
+        className="glass absolute -right-2 bottom-16 hidden items-center gap-2 rounded-full border border-orange-500/20 py-1.5 pl-2 pr-3 text-[11px] font-medium text-foreground/90 shadow-xl sm:-right-8 sm:flex"
       >
-        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-cyan-500/15 text-cyan-400">
+        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-orange-500/15 text-orange-400">
           <Search className="h-3.5 w-3.5" />
         </span>
         #1 for 42 new keywords
@@ -445,10 +445,10 @@ function KpiTile({
 }) {
   const tint =
     accent === "cyan"
-      ? "from-cyan-400/25 to-cyan-400/0 text-cyan-400"
+      ? "from-orange-400/25 to-orange-400/0 text-orange-400"
       : accent === "violet"
-        ? "from-violet-400/25 to-violet-400/0 text-violet-400"
-        : "from-indigo-400/25 to-indigo-400/0 text-indigo-400";
+        ? "from-rose-400/25 to-rose-400/0 text-rose-400"
+        : "from-amber-400/25 to-amber-400/0 text-amber-400";
   return (
     <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-transparent p-3">
       <div className="flex items-center gap-1.5">
@@ -498,13 +498,13 @@ function TrendSparkline() {
     >
       <defs>
         <linearGradient id="spark-line" x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0%" stopColor="#22d3ee" />
-          <stop offset="55%" stopColor="#818cf8" />
-          <stop offset="100%" stopColor="#c084fc" />
+          <stop offset="0%" stopColor="#fb923c" />
+          <stop offset="55%" stopColor="#fbbf24" />
+          <stop offset="100%" stopColor="#fb7185" />
         </linearGradient>
         <linearGradient id="spark-fill" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.35" />
-          <stop offset="100%" stopColor="#22d3ee" stopOpacity="0" />
+          <stop offset="0%" stopColor="#fb923c" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="#fb923c" stopOpacity="0" />
         </linearGradient>
       </defs>
       <path d={`${d} L ${w} ${h} L 0 ${h} Z`} fill="url(#spark-fill)" />
@@ -522,7 +522,7 @@ function TrendSparkline() {
         cx={w}
         cy={y(values[values.length - 1])}
         r={4}
-        fill="#22d3ee"
+        fill="#fb923c"
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 2.1, duration: 0.4 }}

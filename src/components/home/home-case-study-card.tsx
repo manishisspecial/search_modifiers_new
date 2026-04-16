@@ -12,10 +12,10 @@ export function HomeCaseStudyCard({ c }: { c: CaseStudy }) {
     <motion.article
       whileHover={reduce ? undefined : { y: -6 }}
       transition={{ type: "spring", stiffness: 300, damping: 24 }}
-      className="glass group relative h-full overflow-hidden rounded-2xl border border-border p-8 transition-shadow duration-500 hover:border-cyan-500/15 hover:shadow-xl hover:shadow-cyan-500/5"
+      className="glass group relative h-full overflow-hidden rounded-2xl border border-border p-8 transition-shadow duration-500 hover:border-orange-500/15 hover:shadow-xl hover:shadow-orange-500/5"
     >
       <div className="pointer-events-none absolute -right-20 -top-20 h-48 w-48 rounded-full bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
-      <p className="relative text-xs font-semibold uppercase tracking-wider text-cyan-400/90">{c.industry}</p>
+      <p className="relative text-xs font-semibold uppercase tracking-wider text-orange-400/90">{c.industry}</p>
       <h3 className="relative mt-3 font-display text-xl font-semibold text-foreground sm:text-2xl">{c.title}</h3>
       <p className="relative mt-3 text-sm leading-relaxed text-muted">{c.summary}</p>
       <p className="relative mt-4 text-lg font-semibold text-emerald-400">{c.result}</p>
@@ -32,7 +32,7 @@ export function HomeCaseStudyCard({ c }: { c: CaseStudy }) {
       </ul>
       <Link
         href="/case-studies"
-        className="relative mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-cyan-400 transition hover:gap-2 hover:text-cyan-500"
+        className="relative mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-orange-400 transition hover:gap-2 hover:text-orange-500"
       >
         See how we did it <ArrowUpRight className="h-4 w-4" />
       </Link>

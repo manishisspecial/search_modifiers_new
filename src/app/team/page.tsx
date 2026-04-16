@@ -79,7 +79,7 @@ export default function TeamPage() {
                   </div>
                   <div className="p-6">
                     <h2 className="font-display text-lg font-semibold text-foreground">{m.name}</h2>
-                    <p className="text-sm font-medium text-cyan-400/90">{m.role}</p>
+                    <p className="text-sm font-medium text-orange-400/90">{m.role}</p>
                     <p className="mt-3 text-sm leading-relaxed text-muted">{m.bio}</p>
                     <a
                       href={site.social.linkedin}

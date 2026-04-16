@@ -91,7 +91,7 @@ export default function AboutPage() {
             {values.map((v, i) => (
               <FadeIn key={v.title} delay={i * 0.06}>
                 <div className="h-full rounded-2xl border border-border bg-card p-6">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-500/15 text-cyan-500">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-500/15 text-orange-500">
                     <v.icon className="h-5 w-5" />
                   </div>
                   <h3 className="mt-4 font-display text-lg font-semibold text-foreground">{v.title}</h3>

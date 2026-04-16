@@ -27,19 +27,19 @@ export default function ContactPage() {
                 <h2 className="font-display text-lg font-semibold text-foreground">Direct lines</h2>
                 <ul className="mt-6 space-y-4 text-sm text-muted">
                   <li className="flex gap-3">
-                    <Phone className="mt-0.5 h-5 w-5 shrink-0 text-cyan-400" />
+                    <Phone className="mt-0.5 h-5 w-5 shrink-0 text-orange-400" />
                     <a href={`tel:${site.phoneTel}`} className="hover:text-foreground">
                       {site.phone}
                     </a>
                   </li>
                   <li className="flex gap-3">
-                    <Mail className="mt-0.5 h-5 w-5 shrink-0 text-cyan-400" />
+                    <Mail className="mt-0.5 h-5 w-5 shrink-0 text-orange-400" />
                     <a href={`mailto:${site.email}`} className="hover:text-foreground">
                       {site.email}
                     </a>
                   </li>
                   <li className="flex gap-3">
-                    <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-cyan-400" />
+                    <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-orange-400" />
                     <span>
                       {site.address.street}, {site.address.city} {site.address.postalCode}
                     </span>
