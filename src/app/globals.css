@@ -321,3 +321,368 @@ img {
 a {
   transition: color 0.3s var(--ease-spring), opacity 0.3s var(--ease-spring);
 }
+
+/* ===================================================================
+   NEXT-LEVEL MOTION LAYER
+   Aurora, 3D tilt, kinetic marquee, mask reveal, magnetic, etc.
+   =================================================================== */
+
+/* ── 3D perspective stage ── */
+.perspective-1200 { perspective: 1200px; }
+.perspective-1600 { perspective: 1600px; }
+.preserve-3d { transform-style: preserve-3d; }
+
+/* ── Tilt card (reads --rx/--ry CSS vars set by JS) ── */
+.tilt-3d {
+  transform-style: preserve-3d;
+  transform: perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
+  transition: transform 0.35s var(--ease-spring), box-shadow 0.5s var(--ease-spring);
+  will-change: transform;
+}
+.tilt-3d > .tilt-layer { transform: translateZ(40px); }
+.tilt-3d > .tilt-layer-deep { transform: translateZ(70px); }
+@media (prefers-reduced-motion: reduce) {
+  .tilt-3d { transform: none !important; }
+}
+
+/* ── Magnetic wrapper (reads --mx/--my set by JS) ── */
+.magnetic-anchor {
+  transform: translate3d(var(--mx, 0px), var(--my, 0px), 0);
+  transition: transform 0.45s var(--ease-spring);
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .magnetic-anchor { transform: none !important; }
+}
+
+/* ── Animated aurora orbs (hero) ── */
+@keyframes aurora-float-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33%      { transform: translate3d(6%, -4%, 0) scale(1.08); }
+  66%      { transform: translate3d(-4%, 3%, 0) scale(0.96); }
+}
+@keyframes aurora-float-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.05); }
+  50%      { transform: translate3d(-6%, 5%, 0) scale(0.95); }
+}
+@keyframes aurora-float-c {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(4%, -6%, 0) scale(1.1); }
+}
+.aurora-a { animation: aurora-float-a 18s ease-in-out infinite; will-change: transform; }
+.aurora-b { animation: aurora-float-b 22s ease-in-out infinite; will-change: transform; }
+.aurora-c { animation: aurora-float-c 26s ease-in-out infinite; will-change: transform; }
+@media (prefers-reduced-motion: reduce) {
+  .aurora-a, .aurora-b, .aurora-c { animation: none; }
+}
+
+/* ── Conic glow ring ── */
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+.conic-ring {
+  background: conic-gradient(from 0deg, transparent, var(--accent-from), transparent 40%, var(--accent-via) 60%, transparent 100%);
+  animation: spin-slow 14s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) { .conic-ring { animation: none; } }
+
+/* ── Kinetic text (scrolling marquee) ──
+   Base: infinite slide; speed is modulated by --marquee-speed via JS. */
+@keyframes marquee-slide {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+.marquee-track {
+  display: inline-flex;
+  flex-shrink: 0;
+  animation: marquee-slide var(--marquee-duration, 40s) linear infinite;
+  animation-direction: var(--marquee-direction, normal);
+  will-change: transform;
+}
+.marquee-track:hover { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+
+/* ── Mask-reveal word (for headings) ── */
+.mask-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  line-height: 1.05;
+  padding-bottom: 0.12em; /* prevent clipping of descenders on y-reveal */
+}
+.mask-word > span {
+  display: inline-block;
+  transform: translateY(105%);
+  will-change: transform, opacity, filter;
+}
+.mask-word.is-in > span {
+  animation: mask-rise 0.9s var(--ease-out-expo) forwards;
+}
+@keyframes mask-rise {
+  0%   { transform: translateY(105%); filter: blur(10px); opacity: 0; }
+  60%  { filter: blur(0); opacity: 1; }
+  100% { transform: translateY(0);    filter: blur(0); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mask-word > span { transform: none; animation: none; }
+}
+
+/* ── Scroll progress bar ── */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  z-index: 80;
+  transform-origin: left center;
+  background: linear-gradient(90deg, var(--accent-from), var(--accent-via), var(--accent-to));
+  box-shadow: 0 0 14px rgba(34, 211, 238, 0.55);
+  pointer-events: none;
+  transform: scaleX(var(--scroll-progress, 0));
+  transition: transform 0.05s linear;
+}
+
+/* ── Chromatic text outline (kinetic banner) ── */
+.text-outline {
+  -webkit-text-stroke: 1px currentColor;
+  color: transparent;
+}
+
+/* ── Holographic sheen on cards ── */
+.holo {
+  position: relative;
+  overflow: hidden;
+}
+.holo::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background:
+    radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(34, 211, 238, 0.18), transparent 45%),
+    linear-gradient(135deg, rgba(129, 140, 248, 0.10), rgba(192, 132, 252, 0.08) 50%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-spring);
+  pointer-events: none;
+}
+.holo:hover::before { opacity: 1; }
+
+/* ── Number stamp (big numerals on stacking cards) ── */
+.num-stamp {
+  font-family: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  font-feature-settings: "tnum";
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, var(--accent-from) 0%, var(--accent-via) 55%, transparent 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 0.85;
+}
+
+/* ── Soft shadow for floating mockups ── */
+.float-shadow {
+  box-shadow:
+    0 30px 60px -20px rgba(15, 23, 42, 0.35),
+    0 10px 30px -10px rgba(34, 211, 238, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ── Gradient stroke badge ── */
+.badge-gradient {
+  position: relative;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.10), rgba(192, 132, 252, 0.08));
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+.badge-gradient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--accent-from), var(--accent-via), var(--accent-to));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+/* ── Diagonal stripe divider ── */
+.diagonal-divider {
+  height: 120px;
+  background: linear-gradient(180deg, transparent, var(--background));
+  mask-image: linear-gradient(180deg, black, transparent);
+}
+
+/* ── Animated dashed outline ── */
+@keyframes dash-move { to { stroke-dashoffset: -40; } }
+.dash-anim { animation: dash-move 2.6s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .dash-anim { animation: none; } }
+
+/* ── Subtle glow pulse (accent dots) ── */
+@keyframes dot-pulse {
+  0%, 100% { transform: scale(1);  opacity: 0.85; }
+  50%      { transform: scale(1.35); opacity: 1; }
+}
+.dot-pulse { animation: dot-pulse 2.2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .dot-pulse { animation: none; } }
+
+/* ── Stacking card shell ── */
+.stack-card {
+  transform-origin: top center;
+  transition: transform 0.5s var(--ease-spring), filter 0.5s var(--ease-spring);
+  will-change: transform;
+}
+
+/* ──────────────────────────────────────────────
+   CUSTOM CURSOR (desktop only, motion-safe)
+   ────────────────────────────────────────────── */
+.has-lens-cursor { cursor: none; }
+.has-lens-cursor a,
+.has-lens-cursor button,
+.has-lens-cursor [role="button"],
+.has-lens-cursor [data-cursor] { cursor: none; }
+
+/* Hide on touch / no-hover devices */
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .has-lens-cursor, .has-lens-cursor * { cursor: auto; }
+}
+
+.lens-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 90;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: rgba(34, 211, 238, 0.85);
+  mix-blend-mode: plus-lighter;
+  transform: translate3d(-50%, -50%, 0);
+  transition:
+    width 0.32s var(--ease-spring),
+    height 0.32s var(--ease-spring),
+    background 0.32s var(--ease-spring),
+    border-color 0.32s var(--ease-spring),
+    opacity 0.25s var(--ease-spring);
+  will-change: transform;
+}
+.lens-cursor.is-hidden { opacity: 0; }
+.lens-cursor.is-link {
+  width: 42px;
+  height: 42px;
+  background: rgba(34, 211, 238, 0.18);
+  border: 1px solid rgba(34, 211, 238, 0.8);
+}
+.lens-cursor.is-text {
+  width: 3px;
+  height: 22px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.9);
+}
+.lens-cursor.is-view {
+  width: 88px;
+  height: 88px;
+  background: rgba(129, 140, 248, 0.25);
+  border: 1px solid rgba(129, 140, 248, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.lens-cursor .lens-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.25s var(--ease-spring);
+}
+.lens-cursor.is-view .lens-label { opacity: 1; }
+.lens-cursor .lens-dot {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate3d(-50%, -50%, 0);
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(34, 211, 238, 1);
+  opacity: 0;
+  transition: opacity 0.25s var(--ease-spring);
+}
+.lens-cursor.is-link .lens-dot { opacity: 1; }
+
+/* ──────────────────────────────────────────────
+   HORIZONTAL PINNED SCROLL (Approach section)
+   ────────────────────────────────────────────── */
+.h-scroll-track {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: clamp(1.5rem, 2.5vw, 2.5rem);
+  will-change: transform;
+}
+
+/* ──────────────────────────────────────────────
+   GIANT KINETIC CTA TEXT
+   ────────────────────────────────────────────── */
+.mega-text {
+  font-family: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+  font-size: clamp(4rem, 14vw, 13rem);
+}
+
+/* Inline gradient text that subtly shifts over time for the mega CTA */
+@keyframes gradient-pan {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+.gradient-pan {
+  background: linear-gradient(120deg, var(--accent-from), var(--accent-via), var(--accent-to), var(--accent-from));
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 9s ease infinite;
+}
+@media (prefers-reduced-motion: reduce) { .gradient-pan { animation: none; } }
+
+/* ── Approach step card ── */
+.step-card {
+  position: relative;
+  isolation: isolate;
+}
+.step-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 20% 0%, rgba(34,211,238,0.10), transparent 55%);
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-spring);
+  pointer-events: none;
+}
+.step-card:hover::before { opacity: 1; }
+
+/* ── Dashed connector animated stroke ── */
+.connector {
+  stroke-dasharray: 6 8;
+  animation: dash-move 3s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) { .connector { animation: none; } }
+
+/* ── Orbital dots for mega CTA ── */
+@keyframes orbit-a { from { transform: rotate(0deg) translateX(140px) rotate(0deg); } to { transform: rotate(360deg) translateX(140px) rotate(-360deg); } }
+@keyframes orbit-b { from { transform: rotate(60deg) translateX(180px) rotate(-60deg); } to { transform: rotate(420deg) translateX(180px) rotate(-420deg); } }
+@keyframes orbit-c { from { transform: rotate(200deg) translateX(220px) rotate(-200deg); } to { transform: rotate(560deg) translateX(220px) rotate(-560deg); } }
+.orbit-a { animation: orbit-a 22s linear infinite; }
+.orbit-b { animation: orbit-b 30s linear infinite reverse; }
+.orbit-c { animation: orbit-c 40s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .orbit-a, .orbit-b, .orbit-c { animation: none; } }

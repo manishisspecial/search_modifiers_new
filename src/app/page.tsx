@@ -1,21 +1,24 @@
 import type { Metadata } from "next";
 import { AnimatedSectionHeading } from "@/components/home/animated-section-heading";
+import { HomeApproach } from "@/components/home/home-approach";
 import { HomeCaseStudyCard } from "@/components/home/home-case-study-card";
 import { HomeConversionBar } from "@/components/home/home-conversion-bar";
-import { HomeFinalCta } from "@/components/home/home-final-cta";
 import { HomeHero } from "@/components/home/home-hero";
+import { HomeImpactRibbon } from "@/components/home/home-impact-ribbon";
+import { HomeKineticBanner } from "@/components/home/home-kinetic-banner";
 import { HomeLogoWall } from "@/components/home/home-logo-wall";
+import { HomeMegaCta } from "@/components/home/home-mega-cta";
 import { HomeMidCta } from "@/components/home/home-mid-cta";
-import { HomeServiceCard } from "@/components/home/home-service-card";
+import { HomeServicesStack } from "@/components/home/home-services-stack";
 import { HomeStickyCta } from "@/components/home/home-sticky-cta";
-import { HomeTestimonials } from "@/components/home/home-testimonials";
+import { HomeTestimonialsMarquee } from "@/components/home/home-testimonials-marquee";
 import { BlurFade } from "@/components/motion/blur-fade";
-import { FadeIn, Stagger, StaggerItem } from "@/components/motion/fade-in";
+import { FadeIn } from "@/components/motion/fade-in";
 import { SpotlightContainer } from "@/components/motion/spotlight-cards";
+import { Tilt3D } from "@/components/motion/tilt-3d";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { caseStudies } from "@/lib/case-studies";
-import { services } from "@/lib/services-data";
 import { site } from "@/lib/site";
 import { Shield, Zap, LineChart, Users } from "lucide-react";
 
@@ -54,7 +57,10 @@ export default function HomePage() {
       <HomeStickyCta />
       <HomeHero />
 
-      {/* Logo wall */}
+      {/* Kinetic capabilities banner — scroll-velocity reactive */}
+      <HomeKineticBanner />
+
+      {/* Logo marquee */}
       <HomeLogoWall />
 
       {/* Conversion bar */}
@@ -64,31 +70,14 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Services */}
-      <section className="relative py-24 sm:py-32">
-        <div className="gradient-line absolute inset-x-0 top-0" />
-        <Container>
-          <AnimatedSectionHeading
-            eyebrow="Capabilities"
-            title="Full-funnel services — one accountable partner"
-            description="From technical SEO to paid social, we connect the dots between discovery, trust, and conversion."
-          />
-          <SpotlightContainer className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            <Stagger className="contents" stagger={0.07}>
-              {services.slice(0, 6).map((s) => (
-                <StaggerItem key={s.slug}>
-                  <HomeServiceCard href={`/services/${s.slug}`} title={s.title} description={s.shortDescription} />
-                </StaggerItem>
-              ))}
-            </Stagger>
-          </SpotlightContainer>
-          <FadeIn className="mt-14 text-center">
-            <Button href="/services" variant="secondary" className="px-8 py-3 text-base">
-              Explore all 13 services
-            </Button>
-          </FadeIn>
-        </Container>
-      </section>
+      {/* Sticky stacking services */}
+      <HomeServicesStack />
+
+      {/* Horizontally-pinned approach journey */}
+      <HomeApproach />
+
+      {/* Impact metrics ribbon */}
+      <HomeImpactRibbon />
 
       {/* Why us */}
       <section className="relative py-24 sm:py-32">
@@ -102,7 +91,9 @@ export default function HomePage() {
           <SpotlightContainer className="mt-16 grid gap-6 md:grid-cols-2">
             {why.map((w, idx) => (
               <BlurFade key={w.title} delay={idx * 0.08}>
-                <WhyCard {...w} />
+                <Tilt3D max={6} scale={1.01}>
+                  <WhyCard {...w} />
+                </Tilt3D>
               </BlurFade>
             ))}
           </SpotlightContainer>
@@ -135,36 +126,36 @@ export default function HomePage() {
           <div className="mt-16 grid gap-8 lg:grid-cols-2">
             {caseStudies.slice(0, 2).map((c) => (
               <FadeIn key={c.slug}>
-                <HomeCaseStudyCard c={c} />
+                <Tilt3D max={5} scale={1.005}>
+                  <div data-cursor="view" data-cursor-label="Read">
+                    <HomeCaseStudyCard c={c} />
+                  </div>
+                </Tilt3D>
               </FadeIn>
             ))}
           </div>
         </Container>
       </section>
 
-      {/* Testimonials */}
+      {/* Testimonials — dual kinetic marquee */}
       <section className="relative py-24 sm:py-32">
         <div className="gradient-line absolute inset-x-0 top-0" />
         <Container>
           <AnimatedSectionHeading
-            eyebrow="Testimonials"
+            eyebrow="Voices"
             title="Trusted by operators who hate fluff"
             description="Retention and referrals are our real KPIs. Here's what clients say — references available on request."
             align="center"
             className="mx-auto"
           />
-          <div className="mt-16">
-            <HomeTestimonials />
-          </div>
         </Container>
+        <div className="mt-16">
+          <HomeTestimonialsMarquee />
+        </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="pb-28 sm:pb-36">
-        <Container>
-          <HomeFinalCta />
-        </Container>
-      </section>
+      {/* Signature mega CTA closer */}
+      <HomeMegaCta />
     </>
   );
 }
@@ -179,10 +170,10 @@ function WhyCard({
   icon: typeof Zap;
 }) {
   return (
-    <div className="spotlight-card group relative h-full overflow-hidden rounded-2xl border border-border bg-card p-7 transition-all duration-500 sm:p-9">
+    <div className="spotlight-card holo group relative h-full overflow-hidden rounded-2xl border border-border bg-card p-7 transition-all duration-500 sm:p-9">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-violet-500/0 opacity-0 transition-opacity duration-500 group-hover:from-cyan-500/[0.06] group-hover:to-transparent group-hover:opacity-100" />
       <div className="relative flex gap-5">
-        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500/25 to-violet-500/15 text-cyan-500 shadow-lg shadow-cyan-500/5 transition-transform duration-500 group-hover:scale-110">
+        <span className="tilt-layer flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500/25 to-violet-500/15 text-cyan-500 shadow-lg shadow-cyan-500/5 transition-transform duration-500 group-hover:scale-110">
           <Icon className="h-6 w-6" />
         </span>
         <div>

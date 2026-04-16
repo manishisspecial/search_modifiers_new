@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { KineticMarquee } from "@/components/motion/kinetic-marquee";
 import { cn } from "@/lib/cn";
 
 const logos: { name: string; svg: React.ReactNode }[] = [
@@ -55,60 +55,28 @@ const logos: { name: string; svg: React.ReactNode }[] = [
 ];
 
 export function HomeLogoWall() {
-  const reduce = useReducedMotion();
-
-  const container = {
-    hidden: {},
-    show: {
-      transition: { staggerChildren: reduce ? 0 : 0.06 },
-    },
-  };
-
-  const item = reduce
-    ? { hidden: { opacity: 1 }, show: { opacity: 1 } }
-    : {
-        hidden: { opacity: 0, y: 14 },
-        show: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const },
-        },
-      };
-
   return (
-    <section className="relative overflow-hidden border-y border-border bg-background/70 py-14 sm:py-16">
+    <section className="relative overflow-hidden border-y border-border bg-background/70 py-12 sm:py-14">
       <div className="noise-overlay" />
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-[#030712] to-transparent sm:w-24" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-[#030712] to-transparent sm:w-24" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-background to-transparent sm:w-32" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-background to-transparent sm:w-32" />
 
-      <p className="relative mb-10 text-center text-[11px] font-semibold uppercase tracking-[0.28em] text-muted/70">
+      <p className="relative mb-8 text-center text-[11px] font-semibold uppercase tracking-[0.28em] text-muted/70">
         Trusted by growth teams at
       </p>
 
-      <motion.div
-        className="relative mx-auto grid max-w-5xl grid-cols-2 gap-x-6 gap-y-8 px-6 sm:grid-cols-4 sm:gap-x-10 sm:gap-y-10 sm:px-10"
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: "-60px" }}
-      >
+      <KineticMarquee duration={46} rowClassName="gap-14 sm:gap-20 items-center">
         {logos.map((logo) => (
-          <motion.div
+          <span
             key={logo.name}
-            variants={item}
             className={cn(
-              "group relative flex items-center justify-center rounded-xl px-4 py-5 transition-all duration-500",
-              "text-muted/60 hover:text-foreground/90"
+              "inline-flex shrink-0 items-center justify-center px-2 text-muted/55 transition-colors duration-400 hover:text-foreground/90"
             )}
           >
-            <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-br from-cyan-500/0 to-violet-500/0 opacity-0 transition-opacity duration-500 group-hover:from-cyan-500/[0.08] group-hover:to-violet-500/[0.04] group-hover:opacity-100" />
-            <div className="pointer-events-none absolute inset-0 rounded-xl border border-white/0 transition-all duration-500 group-hover:border-white/[0.08] group-hover:shadow-[0_0_24px_-8px_rgba(34,211,238,0.15)]" />
-            <div className="relative transition-transform duration-500 group-hover:scale-105">
-              {logo.svg}
-            </div>
-          </motion.div>
+            {logo.svg}
+          </span>
         ))}
-      </motion.div>
+      </KineticMarquee>
     </section>
   );
 }
