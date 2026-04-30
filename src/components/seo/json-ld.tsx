@@ -18,7 +18,13 @@ export function OrganizationJsonLd() {
       postalCode: site.address.postalCode,
       addressCountry: site.address.country,
     },
-    sameAs: [site.social.linkedin, site.social.twitter, site.social.instagram],
+    sameAs: [
+      site.social.linkedin,
+      site.social.twitter,
+      site.social.instagram,
+      site.social.facebook,
+      site.social.youtube,
+    ],
   };
 
   return (

@@ -32,7 +32,11 @@ export default function CaseStudiesPage() {
                 <FadeIn delay={i * 0.04}>
                   <article className="glass gradient-border h-full rounded-2xl p-8">
                     <p className="text-xs font-semibold uppercase tracking-wider text-orange-400/90">{c.industry}</p>
-                    <h2 className="mt-3 font-display text-2xl font-semibold text-foreground">{c.title}</h2>
+                    <h2 className="mt-3 font-display text-2xl font-semibold text-foreground">
+                      <Link href={`/case-studies/${c.slug}`} className="transition hover:text-orange-500">
+                        {c.title}
+                      </Link>
+                    </h2>
                     <p className="mt-4 text-muted">{c.summary}</p>
                     <p className="mt-4 text-lg font-semibold text-emerald-400">{c.result}</p>
                     <ul className="mt-6 flex flex-wrap gap-3">
@@ -44,10 +48,10 @@ export default function CaseStudiesPage() {
                       ))}
                     </ul>
                     <Link
-                      href="/contact"
+                      href={`/case-studies/${c.slug}`}
                       className="mt-8 inline-flex items-center gap-1 text-sm font-medium text-orange-400 hover:text-orange-500"
                     >
-                      Discuss a similar program <ArrowUpRight className="h-4 w-4" />
+                      Read the full story <ArrowUpRight className="h-4 w-4" />
                     </Link>
                   </article>
                 </FadeIn>

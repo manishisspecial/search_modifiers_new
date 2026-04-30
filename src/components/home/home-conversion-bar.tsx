@@ -7,9 +7,9 @@ import { site } from "@/lib/site";
 import { Button } from "@/components/ui/button";
 
 const items = [
-  { icon: FileSearch, text: "Free technical + CRO audit" },
+  { icon: FileSearch, text: "Free ORM + SEO Audit Report" },
   { icon: Calendar, text: "Strategy call in 48 hours" },
-  { icon: Phone, text: "Dedicated strategist — not a BDR" },
+  { icon: Phone, text: "Connect Experts - Not Sales Team" },
 ];
 
 export function HomeConversionBar() {
@@ -46,7 +46,7 @@ export function HomeConversionBar() {
           <div className="flex flex-col gap-3.5 sm:flex-row lg:flex-col lg:items-stretch">
             <Button href="/free-website-audit" className="group justify-center px-8 py-3.5 text-base shadow-xl shadow-orange-500/20">
               Get free website audit
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              <ArrowRight className="cta-arrow-nudge h-4 w-4 shrink-0" />
             </Button>
             <Button href="/request-quote" variant="secondary" className="justify-center px-8 py-3.5 text-base">
               Request a quote

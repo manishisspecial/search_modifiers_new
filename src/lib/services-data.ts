@@ -1,12 +1,21 @@
+import { ppcServicesDetailMarkdown } from "./ppc-services-detail";
+import { seoServicesDetailMarkdown } from "./seo-services-detail";
+import { socialMediaMarketingDetailMarkdown } from "./social-media-marketing-detail";
+import { brandManagementDetailMarkdown } from "./brand-management-detail";
+
 export type ServiceBlock = {
   slug: string;
   title: string;
+  /** Long marketing headline shown in the page hero; defaults to `title` when omitted. */
+  heroTitle?: string;
   shortDescription: string;
   metaTitle: string;
   metaDescription: string;
   heroEyebrow: string;
   intro: string;
   explanation: string;
+  /** Rich markdown (headings, lists, GFM tables) rendered in the primary service narrative block. */
+  detailMarkdown?: string;
   benefits: { title: string; description: string; icon: string }[];
   process: { step: string; title: string; description: string }[];
   faqs: { q: string; a: string }[];
@@ -20,12 +29,16 @@ export const serviceSlugs = [
   "technical-seo",
   "social-media-marketing",
   "google-ads",
+  "ppc-services",
   "facebook-ads",
   "online-reputation-management",
+  "public-relations",
   "brand-management",
   "content-marketing",
   "influencer-marketing",
   "website-development",
+  "generative-engine-optimization",
+  "answer-engine-optimization",
 ] as const;
 
 export type ServiceSlug = (typeof serviceSlugs)[number];
@@ -101,48 +114,94 @@ export const services: ServiceBlock[] = [
   },
   {
     slug: "seo-services",
-    title: "SEO Services",
+    title: "Search Engine Optimization (SEO)",
+    heroTitle: "Best SEO Company in India – Grow Your Business with Search Modifiers",
     shortDescription:
-      "Organic visibility that earns qualified demand — technical excellence plus editorial authority.",
-    metaTitle: "SEO Services | Technical, Content & Authority | Search Modifiers",
+      "Traditional and AI-powered SEO for rankings, visibility, and leads — with mid-month and monthly reporting you can trust.",
+    metaTitle: "Best SEO Company in India | SEO Services | Search Modifiers",
     metaDescription:
-      "Enterprise-grade SEO: audits, content strategy, digital PR, and technical fixes that improve crawlability, relevance, and sustainable rankings.",
+      "Search Modifiers: trusted SEO company in India — on-page, off-page, technical, local, eCommerce, content, and AI SEO. Data-driven strategy, 9+ years' experience, transparent ROI-focused reporting.",
     heroEyebrow: "Organic growth",
     intro:
-      "SEO is a product discipline. We treat your site like an asset that must be crawlable, relevant, and trustworthy.",
+      "If you are searching for a reliable and result-driven SEO company in India, Search Modifiers helps you rank higher, earn visibility, and grow qualified organic demand.",
     explanation:
-      "We combine technical SEO, information architecture, and content engineered for intent. Our playbooks cover everything from JavaScript rendering to entity-rich topical clusters — always aligned with business outcomes.",
+      "We blend proven SEO fundamentals with AI-aware optimization so you stay competitive on Google and emerging search surfaces — always tied to leads and revenue, not vanity metrics.",
+    detailMarkdown: seoServicesDetailMarkdown,
     benefits: [
       {
-        title: "Sustainable traffic",
-        description: "Reduce paid dependency with compounding organic sessions.",
-        icon: "trending-up",
-      },
-      {
-        title: "Intent-matched content",
-        description: "Pages mapped to stages of the buyer journey.",
+        title: "On-page SEO",
+        description:
+          "Content, meta tags, headings, URLs, and internal linking aligned with intent and algorithms for stronger relevance and traffic.",
         icon: "file-text",
       },
       {
-        title: "Technical health",
-        description: "Core Web Vitals, indexation, and structured data done right.",
+        title: "Off-page SEO",
+        description:
+          "High-quality, white-hat backlinks from authoritative sites to grow domain authority and credibility safely.",
+        icon: "link-2",
+      },
+      {
+        title: "Technical SEO",
+        description:
+          "Crawl errors, speed, Core Web Vitals, indexing, and site health so search engines can crawl and users convert.",
         icon: "cpu",
       },
       {
-        title: "Transparent reporting",
-        description: "Rankings tied to landing pages, conversions, and revenue proxies.",
-        icon: "line-chart",
+        title: "Local SEO",
+        description:
+          "Google Business Profile, citations, and local keywords so you show up for nearby, high-intent searches.",
+        icon: "map-pin",
+      },
+      {
+        title: "eCommerce SEO",
+        description:
+          "Product and category visibility, UX improvements, and structured journeys that lift traffic and conversions.",
+        icon: "shopping-bag",
+      },
+      {
+        title: "Content writing",
+        description:
+          "Engaging, keyword-smart content that matches user intent and strengthens topical authority.",
+        icon: "pen-tool",
+      },
+      {
+        title: "AI SEO",
+        description:
+          "AI-informed insights paired with classic SEO so you’re ready for evolving search and answer experiences.",
+        icon: "sparkles",
       },
     ],
     process: [
-      { step: "01", title: "Audit & benchmark", description: "Crawl, analytics, and competitive gap analysis." },
-      { step: "02", title: "Roadmap", description: "Prioritized fixes and content opportunities by impact." },
-      { step: "03", title: "Execution", description: "Technical releases, content production, and internal linking." },
-      { step: "04", title: "Measure & iterate", description: "Monthly reviews with clear next experiments." },
+      { step: "01", title: "Website audit", description: "Uncover errors, gaps, and opportunities across your site." },
+      { step: "02", title: "Competitor analysis", description: "Learn what competitors do well and where you can outperform." },
+      { step: "03", title: "Keyword research", description: "Prioritize high-value terms aligned with your audience." },
+      { step: "04", title: "Content creation", description: "Publish SEO-friendly content matched to intent and SERPs." },
+      { step: "05", title: "On-page optimization", description: "Tune pages, metadata, and internal links for visibility." },
+      { step: "06", title: "Technical optimization", description: "Speed, indexing, crawlability, and UX fixes." },
+      { step: "07", title: "Link building", description: "Earn authoritative links that reinforce trust and rankings." },
+      { step: "08", title: "Reporting & analysis", description: "Clear reports and ongoing refinement for stronger ROI." },
     ],
     faqs: [
-      { q: "Do you guarantee rankings?", a: "No ethical agency can. We guarantee rigorous process, clear reporting, and strategies aligned with Google’s guidelines." },
-      { q: "Can you work with our dev team?", a: "Absolutely. We write tickets, join standups when needed, and QA implementations." },
+      {
+        q: "How long does SEO take to show results?",
+        a: "SEO is long-term. Many sites see meaningful movement in 3–6 months, depending on competition, site health, and scope.",
+      },
+      {
+        q: "What is the cost of SEO services in India?",
+        a: "Pricing depends on your goals, competition, and deliverables. We offer flexible, tailored plans so you invest at the right level for your business.",
+      },
+      {
+        q: "What is local SEO?",
+        a: "Local SEO helps you appear in location-based searches — maps, local packs, and “near me” queries — so nearby customers find you first.",
+      },
+      {
+        q: "Why should I hire an SEO company in India?",
+        a: "A professional team applies current best practices, fixes technical issues, builds authority safely, and focuses on traffic and leads — not risky shortcuts.",
+      },
+      {
+        q: "Do you provide reports?",
+        a: "Yes — mid-month and monthly reports covering progress, rankings, traffic, and ROI so you always know what’s working.",
+      },
     ],
   },
   {
@@ -232,38 +291,144 @@ export const services: ServiceBlock[] = [
   {
     slug: "social-media-marketing",
     title: "Social Media Marketing",
-    shortDescription: "Platform-native creative and community systems that build demand.",
-    metaTitle: "Social Media Marketing Agency | Search Modifiers",
+    heroTitle: "Social Media Marketing Company in India – Drive Real Growth with Search Modifiers",
+    shortDescription:
+      "Data-driven social strategy across LinkedIn, Facebook, Instagram, X, and Pinterest — engagement, leads, and ROI with mid-month and monthly reporting.",
+    metaTitle: "Social Media Marketing Company in India | Search Modifiers",
     metaDescription:
-      "Organic social strategy, creator workflows, and paid social amplification for B2B and B2C brands.",
+      "Search Modifiers: trusted social media marketing agency in India — B2B and B2C campaigns, platform-specific creative, community management, 9+ years' experience, transparent ROI-focused reporting.",
     heroEyebrow: "Community & creative",
-    intro: "Social is where trust is built before the click — if your narrative is sharp and consistent.",
+    intro:
+      "If you want a social media marketing company in India that delivers measurable results, Search Modifiers combines skilled execution with clear reporting.",
     explanation:
-      "We design content pillars, production calendars, and engagement playbooks aligned with your brand voice. Paid social layers accelerate learning and retarget high-intent audiences.",
+      "We build brand presence, qualified leads, and consistent growth through audience targeting, platform-native creative, and continuous optimization aligned with your business goals.",
+    detailMarkdown: socialMediaMarketingDetailMarkdown,
     benefits: [
-      { title: "Brand salience", description: "Consistent storytelling across platforms.", icon: "megaphone" },
-      { title: "Creative testing", description: "Hooks, formats, and angles validated quickly.", icon: "flask-conical" },
-      { title: "Community care", description: "Response SLAs and escalation paths.", icon: "message-circle" },
-      { title: "Creator partnerships", description: "Briefs and measurement that protect brand safety.", icon: "users" },
+      {
+        title: "LinkedIn marketing",
+        description:
+          "Professional campaigns for B2B: reach decision-makers, generate leads, and build authority in your category.",
+        icon: "users",
+      },
+      {
+        title: "Facebook marketing",
+        description:
+          "Highly targeted campaigns to drive traffic, engagement, and conversions on one of the largest social platforms.",
+        icon: "megaphone",
+      },
+      {
+        title: "Instagram marketing",
+        description:
+          "Visual storytelling with creatives, Reels, and campaigns that grow visibility and audience interaction.",
+        icon: "video",
+      },
+      {
+        title: "X (Twitter) marketing",
+        description:
+          "Real-time relevance, conversation, and campaigns that strengthen awareness and engagement.",
+        icon: "share-2",
+      },
+      {
+        title: "Pinterest marketing",
+        description:
+          "Strategic pinning and content optimization for niche and product-led brands driving long-term traffic.",
+        icon: "palette",
+      },
+      {
+        title: "Analytics & optimization",
+        description:
+          "Continuous tracking, insights, and refinement so spend and effort compound into better reach and conversions.",
+        icon: "bar-chart-3",
+      },
     ],
     process: [
-      { step: "01", title: "Audience & positioning", description: "Personas, competitors, and tone guidelines." },
-      { step: "02", title: "Content system", description: "Pillars, templates, and approval workflows." },
-      { step: "03", title: "Publish & engage", description: "Cadence, community management, and UGC." },
-      { step: "04", title: "Optimize", description: "Weekly performance reviews and creative swaps." },
+      {
+        step: "01",
+        title: "Goal setting & objectives",
+        description: "Define leads, sales, or awareness so every tactic maps to measurable outcomes.",
+      },
+      {
+        step: "02",
+        title: "Target audience research",
+        description: "Demographics, interests, and behavior so content reaches people likely to engage and convert.",
+      },
+      { step: "03", title: "Competitor analysis", description: "Learn what works in your space and where you can win." },
+      {
+        step: "04",
+        title: "Platform selection",
+        description: "Focus on the channels that fit your business instead of spreading effort too thin.",
+      },
+      {
+        step: "05",
+        title: "Content strategy & planning",
+        description: "Balanced mix of informational, promotional, and engaging content aligned to brand goals.",
+      },
+      {
+        step: "06",
+        title: "Content creation",
+        description: "Visuals, video, and copy that capture attention and communicate your message clearly.",
+      },
+      {
+        step: "07",
+        title: "Content calendar & scheduling",
+        description: "Consistent posting and planning that builds trust and predictable momentum.",
+      },
+      {
+        step: "08",
+        title: "Posting & distribution",
+        description: "Publish at the right times with optimization for reach and performance.",
+      },
+      {
+        step: "09",
+        title: "Engagement & community",
+        description: "Respond to comments and messages to build relationships and loyalty.",
+      },
+      {
+        step: "10",
+        title: "Performance tracking",
+        description: "Measure engagement, clicks, and conversions to guide next decisions.",
+      },
+      {
+        step: "11",
+        title: "Optimization & scaling",
+        description: "Double down on what works and refine targeting and creative for long-term growth.",
+      },
     ],
     faqs: [
-      { q: "Which platforms do you support?", a: "LinkedIn, Instagram, Facebook, X, YouTube, and emerging channels where your ICP spends time." },
-      { q: "Do you produce video?", a: "Yes — short-form packages, motion graphics, and UGC-style edits." },
+      {
+        q: "What makes Search Modifiers a top social media marketing company in India?",
+        a:
+          "A data-driven approach, 9+ years of experience, transparent reporting, and strategies focused on ROI — not just likes.",
+      },
+      {
+        q: "What is the cost of social media marketing services in India?",
+        a:
+          "Cost depends on your goals, platforms, and scope. We offer flexible pricing tailored to each client.",
+      },
+      {
+        q: "What platforms do you manage?",
+        a:
+          "We run LinkedIn, Facebook, Instagram, X (Twitter), and Pinterest marketing campaigns — aligned to where your audience is.",
+      },
+      {
+        q: "How long does it take to see results?",
+        a:
+          "It varies by strategy and goals; many campaigns show stronger engagement and momentum within the first few weeks.",
+      },
+      {
+        q: "Do you provide performance reports?",
+        a: "Yes — mid-month and monthly reports for full visibility into performance and results.",
+      },
     ],
   },
   {
     slug: "google-ads",
-    title: "Google Ads",
-    shortDescription: "Search, PMax, and Demand Gen structured for efficiency and scale.",
-    metaTitle: "Google Ads Management | Search Modifiers",
+    title: "Paid Advertising (Google & Social Ads)",
+    shortDescription:
+      "Google and Meta campaigns, precision audiences, and creative systems tuned for ROAS and pipeline.",
+    metaTitle: "Paid Advertising — Google & Social Ads | Search Modifiers",
     metaDescription:
-      "Account structure, feed hygiene, and bidding strategies that improve CPA/ROAS while protecting brand terms.",
+      "Google Ads, Meta ads, high-converting creatives, targeting, retargeting, and continuous optimization for measurable ROI.",
     heroEyebrow: "Paid search & beyond",
     intro: "Google Ads rewards discipline: structure, signals, and relentless creative iteration.",
     explanation:
@@ -282,7 +447,102 @@ export const services: ServiceBlock[] = [
     ],
     faqs: [
       { q: "Do you manage Shopping / Performance Max?", a: "Yes — including feed optimization and supplemental feeds." },
-      { q: "Minimum ad spend?", a: "We recommend budgets that reach statistical significance; we’ll advise during discovery." },
+      { q: "Minimum ad spend?", a: "We recommend budgets that reach statistical significance; we'll advise during discovery." },
+    ],
+  },
+  {
+    slug: "ppc-services",
+    title: "PPC Services",
+    shortDescription:
+      "Performance-driven PPC across Search, Display, Video, App campaigns, and Remarketing — built for leads, sales, and ROI with transparent reporting.",
+    metaTitle: "Best PPC Company in India | PPC Services | Search Modifiers",
+    metaDescription:
+      "Search Modifiers delivers high-converting PPC in India: Google Ads, Display, Video, App promotion, remarketing, daily optimization, and mid-month + monthly reporting.",
+    heroEyebrow: "Paid search & performance",
+    intro:
+      "If you are looking for a performance-driven PPC company in India, Search Modifiers is your trusted partner for measurable growth through paid advertising.",
+    explanation:
+      "With over 9+ years of experience, we specialize in high-converting PPC campaigns that help businesses across India generate targeted traffic, qualified leads, and maximum return on investment.",
+    detailMarkdown: ppcServicesDetailMarkdown,
+    benefits: [
+      {
+        title: "Search Ads (Google Ads)",
+        description:
+          "Highly targeted search campaigns when users actively look for your offer — keyword intent, ad relevance, and conversion optimization.",
+        icon: "search",
+      },
+      {
+        title: "Display Ads",
+        description:
+          "Reach broader audiences across sites and apps with engaging creatives that build awareness and attract prospects.",
+        icon: "layout-grid",
+      },
+      {
+        title: "Video Ads",
+        description:
+          "Video campaigns that engage users, communicate your message clearly, and drive conversions.",
+        icon: "video",
+      },
+      {
+        title: "App Promotion Ads",
+        description:
+          "Grow installs and engagement with targeted app promotion across the right networks.",
+        icon: "rocket",
+      },
+      {
+        title: "Remarketing Campaigns",
+        description:
+          "Re-engage visitors who already know your brand — strategic remarketing that lifts conversion rates.",
+        icon: "refresh-cw",
+      },
+      {
+        title: "Transparent reporting",
+        description:
+          "Mid-month and monthly performance reports — clicks, conversions, ROI, and clear next steps.",
+        icon: "line-chart",
+      },
+    ],
+    process: [
+      { step: "01", title: "Goal definition", description: "Lead gen, sales, or brand awareness — aligned to your objectives." },
+      { step: "02", title: "Audience & intent mapping", description: "Who buys, how they search, and how we match campaigns to intent." },
+      { step: "03", title: "Keyword & negative keywords", description: "High-performing keywords and lists that cut wasted spend." },
+      { step: "04", title: "Landing page optimization", description: "UX and messaging tuned to improve conversion rates." },
+      { step: "05", title: "Tracking setup", description: "Advanced tracking for clicks, conversions, and behavior." },
+      { step: "06", title: "Campaign structuring", description: "Account structure for control, clarity, and scale." },
+      { step: "07", title: "Ad creation", description: "Copy and creatives built to earn attention and qualified clicks." },
+      { step: "08", title: "Budget allocation", description: "Spend deployed where it compounds ROI, not vanity metrics." },
+      { step: "09", title: "Launch & optimization", description: "Continuous monitoring, testing, and tuning after go-live." },
+    ],
+    faqs: [
+      {
+        q: "What makes Search Modifiers a top PPC company in India?",
+        a:
+          "A performance-driven approach, data-backed strategies, and strong ROI focus. With 9+ years of experience, we emphasize continuous optimization, transparent reporting, and campaigns tailored to each business.",
+      },
+      {
+        q: "What is the cost of PPC services in India?",
+        a: "Cost depends on your industry, competition, and goals. We offer flexible pricing based on your requirements and budget.",
+      },
+      {
+        q: "What PPC services does Search Modifiers offer?",
+        a:
+          "Google Search Ads, Display Ads, Video Ads, App Promotion Ads, and Remarketing — each designed to reach the right audience and maximize conversions.",
+      },
+      {
+        q: "What is the cost of hiring a PPC company in India?",
+        a:
+          "It varies by industry, competition, and objectives. Search Modifiers offers flexible pricing aligned with your business needs and ad spend.",
+      },
+      {
+        q: "Do you provide performance reports?",
+        a:
+          "Yes — mid-month and monthly reports with insights into clicks, impressions, conversions, and ROI so you always have full visibility.",
+      },
+      {
+        q: "What industries do you work with?",
+        a:
+          "E-commerce, service businesses, startups, high-ticket providers, and more — with PPC strategies customized to each sector.",
+      },
     ],
   },
   {
@@ -315,11 +575,12 @@ export const services: ServiceBlock[] = [
   },
   {
     slug: "online-reputation-management",
-    title: "ORM (Online Reputation Management)",
-    shortDescription: "Protect narrative, respond with poise, and earn trust at scale.",
-    metaTitle: "Online Reputation Management | Search Modifiers",
+    title: "Online Reputation Management (ORM)",
+    shortDescription:
+      "Proactive review ecosystems, suppression strategy, and SERP defense — trust signals that compound.",
+    metaTitle: "Online Reputation Management (ORM) | Search Modifiers",
     metaDescription:
-      "Review strategy, SERP clean-up, crisis workflows, and proactive PR to shape how your brand appears online.",
+      "ORM programs: review management, negative-result suppression, SERP defense, and positive content promotion for brands in India and globally.",
     heroEyebrow: "Trust engineering",
     intro: "Reputation is a conversion surface — search results and reviews close or kill deals.",
     explanation:
@@ -342,31 +603,177 @@ export const services: ServiceBlock[] = [
     ],
   },
   {
-    slug: "brand-management",
-    title: "Brand Management",
-    shortDescription: "Guidelines, messaging architecture, and creative systems that scale.",
-    metaTitle: "Brand Management Services | Search Modifiers",
+    slug: "public-relations",
+    title: "Public Relations (Digital PR & Brand Authority)",
+    shortDescription:
+      "Strategic media positioning and authority-building PR across digital and traditional channels.",
+    metaTitle: "Digital PR & Public Relations | Search Modifiers",
     metaDescription:
-      "Positioning, visual consistency, and campaign frameworks so every touchpoint feels unmistakably you.",
-    heroEyebrow: "Brand systems",
-    intro: "Strong brands convert more — because clarity reduces friction.",
+      "Press releases, media outreach, brand reputation management, and high-authority placements — narrative systems that scale credibility.",
+    heroEyebrow: "Authority & coverage",
+    intro:
+      "PR today is measurable: narratives, placements, and search-visible proof that compound trust.",
     explanation:
-      "We codify voice, visual rules, and messaging maps. Campaign toolkits empower regional teams and partners without diluting the core story.",
+      "We combine strategic media positioning, AI-assisted narrative development, and journalist outreach — strengthening brand credibility, visibility, and coverage quality without vanity headlines.",
     benefits: [
-      { title: "Positioning clarity", description: "Differentiation that sales and marketing can repeat.", icon: "compass" },
-      { title: "Design ops", description: "Templates, components, and approval flows.", icon: "palette" },
-      { title: "Launch kits", description: "Channel-ready packs for product releases.", icon: "rocket" },
-      { title: "Partner alignment", description: "Briefs that keep agencies and creators on-brand.", icon: "handshake" },
+      {
+        title: "Press & distribution",
+        description: "Release strategy, wire and targeted distribution, and follow-through.",
+        icon: "newspaper",
+      },
+      {
+        title: "Media relationships",
+        description: "Outreach, journalist mapping, and story-fit pitching.",
+        icon: "handshake",
+      },
+      {
+        title: "Reputation alignment",
+        description: "ORM-safe messaging and escalation when narratives shift.",
+        icon: "shield-check",
+      },
+      {
+        title: "Authority placements",
+        description: "Tier-1 and niche publications matched to your ICP.",
+        icon: "star",
+      },
     ],
     process: [
-      { step: "01", title: "Brand audit", description: "Stakeholder interviews and competitive scan." },
-      { step: "02", title: "Architecture", description: "Messaging hierarchy and visual direction." },
-      { step: "03", title: "Toolkits", description: "Guidelines, templates, and training." },
-      { step: "04", title: "Governance", description: "Review cadence and refresh cycles." },
+      { step: "01", title: "Narrative audit", description: "Positioning, proof points, and media landscape scan." },
+      { step: "02", title: "Story architecture", description: "Angles, timelines, and asset checklist." },
+      { step: "03", title: "Outreach & activation", description: "Journalist engagement and content syndication." },
+      { step: "04", title: "Measure & iterate", description: "Coverage reports, referral traffic, and SERP impact." },
     ],
     faqs: [
-      { q: "Is this only for rebrands?", a: "No — we also tighten existing brands pre-scale or pre-funding milestones." },
-      { q: "Do you design logos?", a: "We partner with specialist designers or your in-house team; we lead strategy and systems." },
+      {
+        q: "Do you guarantee media pickups?",
+        a: "No ethical firm can guarantee editorial outcomes. We guarantee disciplined outreach, transparent reporting, and narrative quality.",
+      },
+      {
+        q: "B2B vs B2C PR?",
+        a: "We tailor publication targets, spokespeople, and proof formats to your buyer motion.",
+      },
+    ],
+  },
+  {
+    slug: "brand-management",
+    title: "Brand Management",
+    heroTitle: "Online Reputation Management Services in India for Brand Growth & Trust",
+    shortDescription:
+      "SEO-driven ORM to build, monitor, recover, and protect your reputation across search, reviews, and social — with mid-month and monthly reporting.",
+    metaTitle: "Online Reputation Management (ORM) India | Brand Management | Search Modifiers",
+    metaDescription:
+      "Search Modifiers: ORM and brand reputation in India — audits, content, review management, suppression, monitoring, 9+ years' experience, Semrush/Ahrefs, transparent reporting.",
+    heroEyebrow: "Reputation & trust",
+    intro:
+      "Your brand is what people find when they search — reviews, articles, and social proof. We help you control that narrative with structured, ethical ORM.",
+    explanation:
+      "From audits and positive asset creation to review programs and negative-result handling, we align ORM with SEO so trustworthy content earns the visibility you need.",
+    detailMarkdown: brandManagementDetailMarkdown,
+    benefits: [
+      {
+        title: "Build & manage reputation",
+        description:
+          "Optimized narratives and assets that highlight strengths and keep messaging consistent across digital touchpoints.",
+        icon: "shield-check",
+      },
+      {
+        title: "Monitor reputation",
+        description:
+          "Ongoing tracking of mentions and signals so you can respond early and stay ahead of issues.",
+        icon: "eye",
+      },
+      {
+        title: "Recover reputation",
+        description:
+          "Recovery roadmaps after negative exposure — rebuilding trust with content, authority, and time-bound milestones.",
+        icon: "refresh-cw",
+      },
+      {
+        title: "Negative content handling",
+        description:
+          "Ethical analysis, reporting, and suppression strategies — never black-hat tactics that put your domain at risk.",
+        icon: "alert-triangle",
+      },
+      {
+        title: "Positive asset development",
+        description:
+          "Blogs, profiles, PR-style pieces, and branded pages designed to rank and reinforce the story you want told.",
+        icon: "file-text",
+      },
+    ],
+    process: [
+      {
+        step: "01",
+        title: "Reputation audit",
+        description: "Map how you appear in results, reviews, and mentions — strengths, risks, and priorities.",
+      },
+      {
+        step: "02",
+        title: "Keyword & SERP analysis",
+        description: "Branded and risk terms traced so we know what must rank and what to counterbalance.",
+      },
+      {
+        step: "03",
+        title: "Strategy planning",
+        description: "Custom ORM plan: build, recover, or both — with platforms and content mix defined.",
+      },
+      {
+        step: "04",
+        title: "Positive content creation",
+        description: "SEO-ready assets that earn visibility and push constructive narrative to the top.",
+      },
+      {
+        step: "05",
+        title: "Review management",
+        description: "Programs and responses that grow trust and show customers you listen.",
+      },
+      {
+        step: "06",
+        title: "Social monitoring",
+        description: "Watch engagement and keep messaging consistent across social surfaces.",
+      },
+      {
+        step: "07",
+        title: "Link building for ORM assets",
+        description: "Authority links to strengthen positive pages so they stay durable in SERPs.",
+      },
+      {
+        step: "08",
+        title: "Negative content handling",
+        description: "Suppression, compliant removal requests, and SEO counterweight where appropriate.",
+      },
+      {
+        step: "09",
+        title: "Monitoring & reporting",
+        description: "Mid-month and monthly reporting with clear next steps and optimization.",
+      },
+    ],
+    faqs: [
+      {
+        q: "What are online reputation management services in India?",
+        a:
+          "They cover monitoring, improving, and maintaining how your brand appears in search, reviews, and social — so users see trustworthy, relevant information.",
+      },
+      {
+        q: "How long does ORM take to show results?",
+        a:
+          "Early signals often appear within weeks; meaningful, stable movement typically needs roughly 3–6 months depending on starting position and competition.",
+      },
+      {
+        q: "Can negative content be removed?",
+        a:
+          "Sometimes, if it violates platform rules. Otherwise we use ethical suppression, positive content promotion, and compliant processes — not empty promises.",
+      },
+      {
+        q: "Do you provide ORM for individuals?",
+        a:
+          "Yes — professionals and public figures can strengthen personal branding and address harmful or irrelevant results responsibly.",
+      },
+      {
+        q: "Why choose Search Modifiers as an ORM company in India?",
+        a:
+          "9+ years of experience, transparent reporting, and data-driven ORM tied to SEO — focused on sustainable outcomes, not quick fixes.",
+      },
     ],
   },
   {
@@ -428,7 +835,8 @@ export const services: ServiceBlock[] = [
   {
     slug: "website-development",
     title: "Website Development",
-    shortDescription: "Fast, accessible marketing sites on modern stacks — optimized for conversion.",
+    shortDescription:
+      "Fast, responsive sites and conversion-led experiences — design, performance, and SEO-ready structure.",
     metaTitle: "Website Development Agency | Search Modifiers",
     metaDescription:
       "Next.js and headless builds with Core Web Vitals in mind, CRO modules, and analytics instrumentation from day one.",
@@ -451,6 +859,110 @@ export const services: ServiceBlock[] = [
     faqs: [
       { q: "Headless vs WordPress?", a: "We recommend based on your team, content velocity, and performance goals." },
       { q: "Ongoing support?", a: "Yes — retainers for updates, experiments, and security hygiene." },
+    ],
+  },
+  {
+    slug: "generative-engine-optimization",
+    title: "GEO – Generative Engine Optimization",
+    shortDescription:
+      "Visibility inside ChatGPT, Gemini, Perplexity, and next-gen AI surfaces — citations, entities, and demand before the click.",
+    metaTitle: "Generative Engine Optimization (GEO) | Search Modifiers",
+    metaDescription:
+      "GEO programs: generative-search content systems, AI citation optimization, entity authority, and conversational query visibility.",
+    heroEyebrow: "AI discovery",
+    intro:
+      "Generative engines answer first — brands that engineer citations and entity trust win invisible demand.",
+    explanation:
+      "We build generative-search visibility systems: content architectures tuned for AI retrieval, citation patterns across major models, and entity maps that increase trusted-source inclusion as answers compound.",
+    benefits: [
+      {
+        title: "AI-native content systems",
+        description: "Structures and cues engineered for model-friendly retrieval.",
+        icon: "layers",
+      },
+      {
+        title: "Citation optimization",
+        description: "Brand presence across ChatGPT, Gemini, Perplexity, and emerging engines.",
+        icon: "share-2",
+      },
+      {
+        title: "Entity authority",
+        description: "Knowledge graph signals and consistency for inclusion.",
+        icon: "target",
+      },
+      {
+        title: "Zero-click demand",
+        description: "Conversational queries captured before traditional SERP clicks.",
+        icon: "activity",
+      },
+    ],
+    process: [
+      { step: "01", title: "AI visibility audit", description: "Model surfaces, competitor citations, and gap map." },
+      { step: "02", title: "Entity & source map", description: "Canonical facts, feeds, and third-party proof." },
+      { step: "03", title: "Content engineering", description: "Retrieval-friendly pages, FAQs, and structured context." },
+      { step: "04", title: "Measure & expand", description: "Citation tracking, prompt tests, and iteration." },
+    ],
+    faqs: [
+      {
+        q: "Is GEO the same as SEO?",
+        a: "Related but distinct — GEO optimizes for how LLMs synthesize and cite sources, not only classic ranking factors.",
+      },
+      {
+        q: "Can you influence specific AI answers?",
+        a: "We improve probability through authoritative sourcing and structure; no one can guarantee fixed responses from third-party models.",
+      },
+    ],
+  },
+  {
+    slug: "answer-engine-optimization",
+    title: "AEO - Answer Engine Optimization",
+    shortDescription:
+      "Answer boxes, AI Overviews, and entity-rich content — built to become the preferred answer source.",
+    metaTitle: "Answer Engine Optimization (AEO) | Search Modifiers",
+    metaDescription:
+      "AEO: answer-focused content, entity optimization, structured data, and authority signals for Google and AI-powered answer surfaces.",
+    heroEyebrow: "Preferred answers",
+    intro:
+      "Answer engines reward clarity, entities, and structured proof — not keyword stuffing.",
+    explanation:
+      "We deploy answer-engine architecture: intent-mapped content, schema and entity graphs, and authority expansion so your brand is cited in AI summaries, featured results, and zero-click contexts.",
+    benefits: [
+      {
+        title: "Answer architecture",
+        description: "Page types and outlines aligned to answer intent.",
+        icon: "file-text",
+      },
+      {
+        title: "Entity & schema",
+        description: "Structured data and knowledge signals that models trust.",
+        icon: "cpu",
+      },
+      {
+        title: "Zero-click growth",
+        description: "Visibility on Google surfaces and third-party answer engines.",
+        icon: "eye",
+      },
+      {
+        title: "Authority signals",
+        description: "Citations, E-E-A-T, and proof that reinforce preferred-source status.",
+        icon: "badge-check",
+      },
+    ],
+    process: [
+      { step: "01", title: "Intent & SERP map", description: "Questions, PAA, and AI snapshot patterns." },
+      { step: "02", title: "Entity foundations", description: "SameAs, org/person schema, and consistency." },
+      { step: "03", title: "Publish & structure", description: "FAQ, HowTo, and modular answer blocks." },
+      { step: "04", title: "Iterate on visibility", description: "SERP + AI monitoring with refresh cycles." },
+    ],
+    faqs: [
+      {
+        q: "AEO vs traditional SEO?",
+        a: "AEO emphasizes becoming the cited answer — often overlapping with SEO but with heavier structured context and entity work.",
+      },
+      {
+        q: "How fast do answer placements move?",
+        a: "Depends on competition and authority; early signals often appear within weeks for narrow queries.",
+      },
     ],
   },
 ];

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AnimatedSectionHeading } from "@/components/home/animated-section-heading";
 import { HomeApproach } from "@/components/home/home-approach";
+import { HomeBlogSection } from "@/components/home/home-blog-section";
 import { HomeCaseStudyCard } from "@/components/home/home-case-study-card";
 import { HomeConversionBar } from "@/components/home/home-conversion-bar";
 import { HomeHero } from "@/components/home/home-hero";
@@ -11,6 +12,7 @@ import { HomeMidCta } from "@/components/home/home-mid-cta";
 import { HomeServicesStack } from "@/components/home/home-services-stack";
 import { HomeStickyCta } from "@/components/home/home-sticky-cta";
 import { HomeTestimonialsMarquee } from "@/components/home/home-testimonials-marquee";
+import { OfficeInfoSection } from "@/components/layout/office-info-section";
 import { BlurFade } from "@/components/motion/blur-fade";
 import { FadeIn } from "@/components/motion/fade-in";
 import { SpotlightContainer } from "@/components/motion/spotlight-cards";
@@ -19,7 +21,8 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { caseStudies } from "@/lib/case-studies";
 import { site } from "@/lib/site";
-import { Shield, Zap, LineChart, Users } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { BarChart3, Layers, LineChart, Users } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Digital Marketing & SEO Agency",
@@ -29,23 +32,23 @@ export const metadata: Metadata = {
 
 const why = [
   {
-    title: "Operator mindset",
-    body: "We run weekly experiments, document learnings, and protect your brand like it's our own P&L.",
-    icon: Zap,
+    title: "Data-Driven Strategy",
+    body: "Every move powered by analytics, market intelligence, and performance data — engineered to maximize ROI.",
+    icon: BarChart3,
   },
   {
-    title: "Executive-ready reporting",
-    body: "Dashboards your CFO understands — pipeline proxies, cohort views, and channel efficiency.",
+    title: "Transparent Reporting",
+    body: "Clear monthly dashboards with verified metrics, campaign progress, and expansion opportunities.",
     icon: LineChart,
   },
   {
-    title: "Engineering-friendly SEO",
-    body: "Tickets, repro steps, and QA — not vague PDFs that gather dust in Jira.",
-    icon: Shield,
+    title: "Full-Service Expertise",
+    body: "From web systems and SEO to paid media and social growth, a complete performance ecosystem under one roof.",
+    icon: Layers,
   },
   {
-    title: "Embedded squads",
-    body: "Strategists, media buyers, and creatives in one pod — fewer handoffs, faster shipping.",
+    title: "Dedicated Support",
+    body: "Rapid communication, proactive updates, and a growth-focused team aligned with your success.",
     icon: Users,
   },
 ];
@@ -120,7 +123,7 @@ export default function HomePage() {
             </FadeIn>
           </div>
           <div className="mt-16 grid gap-8 lg:grid-cols-2">
-            {caseStudies.slice(0, 2).map((c) => (
+            {caseStudies.map((c) => (
               <FadeIn key={c.slug}>
                 <Tilt3D max={5} scale={1.005}>
                   <div data-cursor="view" data-cursor-label="Read">
@@ -150,6 +153,11 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Blog — featured + stack (match reference layout) */}
+      <HomeBlogSection />
+
+      <OfficeInfoSection className="py-24 sm:py-32" withTopDivider />
+
       {/* Signature mega CTA closer */}
       <HomeMegaCta />
     </>
@@ -163,7 +171,7 @@ function WhyCard({
 }: {
   title: string;
   body: string;
-  icon: typeof Zap;
+  icon: LucideIcon;
 }) {
   return (
     <div className="spotlight-card holo group relative h-full overflow-hidden rounded-2xl border border-border bg-card p-7 transition-all duration-500 sm:p-9">

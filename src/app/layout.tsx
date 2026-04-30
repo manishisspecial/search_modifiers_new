@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
-import { MainShell } from "@/components/layout/main-shell";
+import { ConditionalShell } from "@/components/layout/conditional-shell";
 import { ThemeProvider } from "@/components/theme-provider";
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/json-ld";
 import { site } from "@/lib/site";
@@ -79,7 +79,7 @@ export default function RootLayout({
         <ThemeProvider>
           <OrganizationJsonLd />
           <WebSiteJsonLd />
-          <MainShell>{children}</MainShell>
+          <ConditionalShell>{children}</ConditionalShell>
         </ThemeProvider>
       </body>
     </html>

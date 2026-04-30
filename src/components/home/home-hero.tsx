@@ -5,6 +5,7 @@ import {
   ArrowRight,
   ArrowUpRight,
   CheckCircle2,
+  Mail,
   Phone,
   Sparkles,
   TrendingUp,
@@ -176,12 +177,13 @@ export function HomeHero() {
               initial={reduce ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.85, duration: 0.45 }}
-              className="mt-6 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:gap-x-8"
+              className="mt-6 grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-2.5"
             >
               {[
-                "No long-term lock-ins on pilots",
-                "Named strategists on every account",
-                "SLA-backed response times",
+                "Dedicated marketing strategist for every account",
+                "Fast response times with clear communication",
+                "ROI-focused campaigns across SEO, Ads & Social",
+                "Transparent monthly reporting & insights",
               ].map((line, i) => (
                 <motion.li
                   key={line}
@@ -208,7 +210,7 @@ export function HomeHero() {
                   className="group min-h-[50px] px-8 py-3 text-base shadow-xl shadow-orange-500/25"
                 >
                   Get a custom proposal
-                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight className="cta-arrow-nudge h-4 w-4 shrink-0" />
                 </Button>
               </Magnetic>
               <Magnetic strength={0.25}>
@@ -220,16 +222,29 @@ export function HomeHero() {
                   Free website audit
                 </Button>
               </Magnetic>
-              <Link
-                href={`tel:${site.phoneTel}`}
-                className="group inline-flex items-center gap-2 text-sm font-medium text-muted transition hover:text-orange-500"
-              >
-                <span className="relative flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface-hover">
-                  <Phone className="h-4 w-4 text-orange-400" />
+              <div className="inline-flex max-w-full flex-col gap-2 text-sm font-medium text-muted sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-2">
+                <a
+                  href={`tel:${site.phoneTel}`}
+                  className="inline-flex items-center gap-2 transition hover:text-orange-500"
+                >
+                  <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-surface-hover">
+                    <Phone className="h-4 w-4 text-orange-400" aria-hidden />
+                  </span>
+                  <span className="text-foreground">{site.phone}</span>
+                </a>
+                <span className="hidden px-0.5 text-muted/45 sm:inline" aria-hidden>
+                  –
                 </span>
-                {site.phone}
-                <span className="text-xs font-normal text-muted/60">· 24h callback</span>
-              </Link>
+                <a
+                  href={`mailto:${site.email}`}
+                  className="inline-flex items-center gap-2 transition hover:text-orange-500"
+                >
+                  <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-surface-hover">
+                    <Mail className="h-4 w-4 text-orange-400" aria-hidden />
+                  </span>
+                  <span className="min-w-0 break-all text-foreground sm:break-normal">{site.email}</span>
+                </a>
+              </div>
             </motion.div>
 
             <motion.p

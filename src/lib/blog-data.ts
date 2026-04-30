@@ -191,3 +191,10 @@ Book a [free website audit](/free-website-audit) — we include CWV and form fri
 export function getPostBySlug(slug: string): BlogPost | undefined {
   return blogPosts.find((p) => p.slug === slug);
 }
+
+/** Newest first — for homepage and related sections. */
+export function getRecentBlogPosts(count: number): BlogPost[] {
+  return [...blogPosts]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, count);
+}

@@ -20,74 +20,124 @@ type StackItem = {
 
 const ITEMS: StackItem[] = [
   {
-    slug: "seo-services",
+    slug: "online-reputation-management",
     index: "01",
-    title: "Search Engine Optimisation",
+    title: "Online Reputation Management (ORM)",
     description:
-      "Technical + editorial SEO programs engineered for compounding organic pipeline, not vanity keywords.",
+      "Proactive review ecosystems, negative-result suppression, and SERP defense frameworks — building trust signals that compound quietly over time.",
     bullets: [
-      "Technical audits w/ engineering tickets",
-      "Topical authority & entity graphs",
-      "Programmatic & editorial content at scale",
+      "Negative link suppression & removal",
+      "Google review management & improvement",
+      "Brand monitoring & reputation control",
+      "Positive content creation & promotion",
+    ],
+    gradient: "from-emerald-500/18 via-orange-500/12 to-transparent",
+    accent: "text-emerald-400",
+  },
+  {
+    slug: "seo-services",
+    index: "02",
+    title: "Search Engine Optimization (SEO)",
+    description:
+      "Technical SEO frameworks, authority growth, and search-intent optimization — driving qualified organic traffic, and consistent lead flow visibility beyond vanity rankings.",
+    bullets: [
+      "Keyword research & on-page optimization",
+      "Technical SEO to improve site performance",
+      "High-quality content to boost rankings & traffic",
+      "Link building to increase authority",
     ],
     gradient: "from-orange-500/20 via-amber-500/10 to-transparent",
     accent: "text-orange-400",
   },
   {
-    slug: "google-ads",
-    index: "02",
-    title: "Paid Media & Performance",
+    slug: "public-relations",
+    index: "03",
+    title: "Public Relations (Digital PR & Brand Authority)",
     description:
-      "Search, Shopping, PMax, Meta & LinkedIn — tuned for incrementality and margin, measured with MMM & uplift tests.",
+      "Strategic media positioning, AI-driven narrative amplification, and authority-building PR frameworks strengthening brand credibility, increasing visibility, and securing high-impact coverage across digital and traditional media channels.",
     bullets: [
-      "Incrementality-tested media plans",
-      "Creative testing as a system, not a vibe",
-      "Server-side tracking & value optimization",
+      "Press release creation & distribution",
+      "Media outreach & journalist connections",
+      "Brand reputation management",
+      "High-authority publication placements",
+    ],
+    gradient: "from-rose-500/22 via-orange-500/10 to-transparent",
+    accent: "text-rose-400",
+  },
+  {
+    slug: "google-ads",
+    index: "04",
+    title: "Paid Advertising (Google & Social Ads)",
+    description:
+      "AI-optimized ad engines, precision audience mapping, and conversion-reactor campaign systems — activating lead generation, accelerating sales momentum, and maximizing ROAS across every traffic channel.",
+    bullets: [
+      "Google Ads & Meta Ads campaign setup",
+      "High-converting ad creatives & copy",
+      "Audience targeting & retargeting strategies",
+      "Continuous optimization for better ROI",
     ],
     gradient: "from-amber-500/22 via-rose-500/10 to-transparent",
     accent: "text-amber-400",
   },
   {
     slug: "social-media-marketing",
-    index: "03",
-    title: "Social & Brand Systems",
+    index: "05",
+    title: "Social Media Marketing",
     description:
-      "From kinetic content engines to category POV — the connective tissue between brand and pipeline.",
+      "Content engines, platform-native growth strategies, and real-time audience engagement loops — scaling social presence, increasing follower velocity, and turning attention into loyal communities.",
     bullets: [
-      "Story-led monthly content sprints",
-      "Creator & influencer activation",
-      "Community programs, not broadcast posts",
+      "Content creation & posting strategy",
+      "Instagram, Facebook & LinkedIn management",
+      "Audience growth & engagement",
+      "Influencer & brand collaborations",
     ],
-    gradient: "from-rose-500/22 via-orange-500/10 to-transparent",
-    accent: "text-rose-400",
-  },
-  {
-    slug: "online-reputation-management",
-    index: "04",
-    title: "Reputation & ORM",
-    description:
-      "Proactive review ecosystems, SERP defense, and response playbooks — so trust compounds quietly.",
-    bullets: [
-      "Branded SERP auditing & mapping",
-      "Review generation + response ops",
-      "Crisis playbooks on retainer",
-    ],
-    gradient: "from-emerald-500/18 via-orange-500/12 to-transparent",
-    accent: "text-emerald-400",
+    gradient: "from-orange-600/18 via-rose-500/10 to-transparent",
+    accent: "text-orange-500",
   },
   {
     slug: "website-development",
-    index: "05",
-    title: "Web Experiences & CRO",
+    index: "06",
+    title: "Website Development",
     description:
-      "Fast, accessible sites and landing systems instrumented for experimentation from day one.",
+      "High-speed web architecture, modern interface systems, and conversion-optimized digital environments, elevating brand perception, engaging incoming traffic, and transforming visitors into customers.",
     bullets: [
-      "Edge-first Next.js builds",
-      "Design systems w/ analytics baked in",
-      "Experimentation frameworks & velocity",
+      "Custom website design tailored to your brand",
+      "Mobile-friendly & responsive development",
+      "SEO-ready structure & fast loading speed",
+      "Conversion-focused pages & lead generation setup",
     ],
-    gradient: "from-orange-600/18 via-amber-500/10 to-transparent",
-    accent: "text-orange-500",
+    gradient: "from-orange-500/20 via-emerald-500/12 to-transparent",
+    accent: "text-emerald-400",
+  },
+  {
+    slug: "generative-engine-optimization",
+    index: "07",
+    title: "GEO – Generative Engine Optimization",
+    description:
+      "Generative-search visibility systems, AI citation frameworks, and entity-authority optimization — positioning your brand inside ChatGPT, Gemini, Perplexity, and next-gen answer engines to capture demand before clicks happen.",
+    bullets: [
+      "Generative-search content systems engineered for AI discovery",
+      "Brand citation optimization across ChatGPT, Gemini & AI engines",
+      "Entity authority mapping for trusted-source inclusion",
+      "Conversational query visibility & zero-click demand capture",
+    ],
+    gradient: "from-violet-500/20 via-orange-500/12 to-transparent",
+    accent: "text-violet-400",
+  },
+  {
+    slug: "answer-engine-optimization",
+    index: "08",
+    title: "AEO - Answer Engine Optimization",
+    description:
+      "Answer-engine architecture, entity-based content systems, and query-intent optimization frameworks — increasing AI search visibility, capturing zero-click traffic, and positioning your brand as the preferred answer source.",
+    bullets: [
+      "Answer-focused content architecture aligned with AI search intent",
+      "Entity optimization & structured data deployment systems",
+      "Zero-click visibility growth across Google & answer engines",
+      "Authority signal expansion for preferred-source ranking",
+    ],
+    gradient: "from-sky-500/20 via-amber-500/10 to-transparent",
+    accent: "text-sky-400",
   },
 ];
 
@@ -105,7 +155,7 @@ export function HomeServicesStack() {
         <AnimatedSectionHeading
           eyebrow="Capabilities"
           title="Full-funnel services — one accountable partner"
-          description="From technical SEO to paid social, creative, and ORM — connected the dots between discovery, trust, and conversion."
+          description="From ORM, to branding, SEO, PR, social media, paid ads, we engineer a unified growth ecosystem connecting search discovery, brand trust, and conversion performance."
         />
       </Container>
 

@@ -26,7 +26,7 @@ export function Button({
   children: React.ReactNode;
 }) {
   const cls = cn(
-    "inline-flex items-center justify-center gap-2 rounded-full px-6 py-2.5 text-sm transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.97] hover:translate-y-[-1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400/80 disabled:opacity-50 disabled:pointer-events-none disabled:active:scale-100 disabled:hover:translate-y-0",
+    "inline-flex items-center justify-center gap-2 rounded-full px-6 py-2.5 text-sm transition-[box-shadow,filter,opacity,background-color,border-color,color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400/80 disabled:opacity-50 disabled:pointer-events-none active:opacity-[0.94]",
     variants[variant],
     className
   );

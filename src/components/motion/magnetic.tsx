@@ -50,6 +50,11 @@ export function Magnetic({
     };
 
     const onMove = (e: PointerEvent) => {
+      // Touch drags fire pointermove on a coarse pointer — avoid shifting CTAs and CLS/jank.
+      if (e.pointerType !== "mouse" && e.pointerType !== "pen") {
+        apply(0, 0);
+        return;
+      }
       const rect = node.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;

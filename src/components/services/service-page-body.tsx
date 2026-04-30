@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { FadeIn, Stagger, StaggerItem } from "@/components/motion/fade-in";
 import { SpotlightContainer } from "@/components/motion/spotlight-cards";
+import { BlogBody } from "@/components/blog/blog-body";
 import { ServiceBenefitIcon } from "@/components/services/service-benefit-icon";
 import { FAQJsonLd, ServiceJsonLd } from "@/components/seo/json-ld";
 import type { ServiceBlock } from "@/lib/services-data";
@@ -18,9 +19,9 @@ export function ServicePageBody({ service }: { service: ServiceBlock }) {
   return (
     <>
       <ServiceJsonLd name={service.title} description={service.metaDescription} url={url} />
-      <FAQJsonLd faqs={service.faqs} />
+      {service.faqs.length > 0 ? <FAQJsonLd faqs={service.faqs} /> : null}
 
-      <PageHero eyebrow={service.heroEyebrow} title={service.title} description={service.shortDescription}>
+      <PageHero eyebrow={service.heroEyebrow} title={service.heroTitle ?? service.title} description={service.shortDescription}>
         <Button href="/request-quote">Request a quote</Button>
         <Button href="/free-website-audit" variant="outline">Free website audit</Button>
       </PageHero>
@@ -33,9 +34,15 @@ export function ServicePageBody({ service }: { service: ServiceBlock }) {
               <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-orange-500/10 blur-[100px]" />
               <div className="pointer-events-none absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-rose-500/10 blur-[80px]" />
               <div className="relative">
-                <h2 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">What this service delivers</h2>
-                <p className="mt-5 max-w-3xl text-lg leading-relaxed text-muted">{service.intro}</p>
-                <p className="mt-6 max-w-3xl leading-relaxed text-foreground/80">{service.explanation}</p>
+                {service.detailMarkdown ? (
+                  <BlogBody content={service.detailMarkdown} />
+                ) : (
+                  <>
+                    <h2 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">What this service delivers</h2>
+                    <p className="mt-5 max-w-3xl text-lg leading-relaxed text-muted">{service.intro}</p>
+                    <p className="mt-6 max-w-3xl leading-relaxed text-foreground/80">{service.explanation}</p>
+                  </>
+                )}
               </div>
             </div>
           </FadeIn>

@@ -1,13 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import {
-  Compass,
-  FlaskConical,
-  Rocket,
-  LineChart as LineChartIcon,
-  Repeat,
-} from "lucide-react";
+import { ClipboardList, Compass, Rocket, Target } from "lucide-react";
 import { useRef } from "react";
 import { AnimatedSectionHeading } from "@/components/home/animated-section-heading";
 import { Container } from "@/components/ui/container";
@@ -24,48 +18,59 @@ type Step = {
 const STEPS: Step[] = [
   {
     step: "01",
-    title: "Discover",
+    title: "Strategic Discovery Meeting",
     description:
-      "Commercial audit, analytics cleanup, and competitive teardown — so decisions rest on evidence, not lore.",
-    deliverables: ["Attribution gap map", "SERP + paid landscape", "CRO opportunity list"],
+      "Mission-alignment session focused on decoding your business model, growth objectives, operational friction points, and success metrics — establishing a precision roadmap from day one.",
+    deliverables: [
+      "Goal discovery & revenue-target mapping",
+      "Business requirement intelligence gathering",
+      "Target audience behavior analysis",
+      "Initial growth-opportunity identification systems",
+    ],
     icon: Compass,
     hue: "from-orange-400/30 via-orange-500/10 to-transparent text-orange-400",
   },
   {
     step: "02",
-    title: "Architect",
+    title: "Project Intelligence Briefing",
     description:
-      "We design the engine — channel mix, measurement stack, content architecture, and experimentation cadence.",
-    deliverables: ["90-day growth plan", "MMM + test design", "Content & keyword blueprint"],
-    icon: FlaskConical,
+      "Brand intelligence audit analyzing your products, services, market positioning, and current digital footprint — extracting the data required to engineer a high-performance growth strategy.",
+    deliverables: [
+      "Brand ecosystem & business model analysis",
+      "Current performance diagnostics & channel review",
+      "Product/service value architecture mapping",
+      "Priority objective synchronization systems",
+    ],
+    icon: ClipboardList,
     hue: "from-amber-400/30 via-rose-500/10 to-transparent text-amber-400",
   },
   {
     step: "03",
-    title: "Ship",
+    title: "Research & Strategy Engineering",
     description:
-      "Embedded squads build, launch, and QA — paid media, SEO tickets, content, and landing experiences going live weekly.",
-    deliverables: ["Weekly releases", "Embedded creative + media pod", "Edge-fast landing system"],
-    icon: Rocket,
+      "Competitive intelligence mapping, market-signal analysis, and strategic growth engineering — building a precision roadmap designed for measurable expansion and scalable performance.",
+    deliverables: [
+      "Competitor intelligence mapping & market-gap analysis",
+      "Audience behavior research & intent profiling",
+      "Multi-channel strategy architecture planning",
+      "Timeline sequencing & execution roadmap systems",
+    ],
+    icon: Target,
     hue: "from-rose-400/30 via-orange-500/10 to-transparent text-rose-400",
   },
   {
     step: "04",
-    title: "Measure",
+    title: "Launch & Execution Systems",
     description:
-      "Instrumented dashboards, server-side tracking, and weekly reviews focused on margin, payback, and incrementality.",
-    deliverables: ["Executive dashboard", "Incrementality tests", "Cohort & LTV views"],
-    icon: LineChartIcon,
+      "Precision deployment systems launch, manage, and continuously optimize every campaign layer — using real-time monitoring to maximize performance, efficiency, and measurable results.",
+    deliverables: [
+      "Campaign or website deployment protocols",
+      "Performance tracking & analytics integration",
+      "Continuous optimization & scaling systems",
+      "Monthly intelligence reports & growth insights",
+    ],
+    icon: Rocket,
     hue: "from-emerald-400/30 via-orange-500/10 to-transparent text-emerald-400",
-  },
-  {
-    step: "05",
-    title: "Compound",
-    description:
-      "Every learning becomes a lever. We retire losers ruthlessly, re-invest in what works, and keep the curve bending up.",
-    deliverables: ["Quarterly re-plans", "Learning library", "Margin-led reallocation"],
-    icon: Repeat,
-    hue: "from-orange-500/30 via-amber-400/10 to-transparent text-orange-500",
   },
 ];
 
@@ -83,13 +88,11 @@ export function HomeApproach() {
     offset: ["start start", "end end"],
   });
 
-  // Translate the track by roughly (100 - viewport) percent. We animate 0 → -72%
-  // which nicely shows all 5 cards across common viewport widths. Reduce-motion
-  // skips the horizontal animation.
+  // Translate the track so all 4 cards can be reached; tuned for card width + gaps.
   const x = useTransform(
     scrollYProgress,
     [0, 1],
-    reduce ? ["0%", "0%"] : ["0%", "-72%"]
+    reduce ? ["0%", "0%"] : ["0%", "-62%"]
   );
   const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
@@ -101,14 +104,14 @@ export function HomeApproach() {
         <div className="pt-24 sm:pt-32">
           <AnimatedSectionHeading
             eyebrow="Our approach"
-            title="A repeatable engine, not a one-off campaign"
-            description="Five disciplined stages that compound learnings into durable advantage — same rigour whether you spend ₹5L or ₹5Cr per month."
+            title="Growth Systems Engineered for Consistent Results"
+            description="A precision growth framework engineered to convert ideas into measurable momentum — generating qualified traffic, increasing brand value, and scaling brands with data-backed confidence."
           />
         </div>
       </Container>
 
       {/* Tall wrapper — its height defines how long the sideways pin lasts. */}
-      <div ref={wrapRef} className="relative h-[400vh]">
+      <div ref={wrapRef} className="relative h-[340vh]">
         <div className="sticky top-0 flex h-screen items-center overflow-hidden">
           <motion.div style={{ x }} className="h-scroll-track px-[6vw]">
             {STEPS.map((s, i) => (
@@ -139,7 +142,7 @@ function StageCard({ s, isLast }: { s: Step; isLast: boolean }) {
     <div
       data-cursor="view"
       data-cursor-label="Focus"
-      className="step-card relative flex h-[min(72vh,600px)] w-[min(82vw,520px)] shrink-0 flex-col overflow-hidden rounded-[2rem] border border-border bg-card p-7 sm:p-10"
+      className="step-card relative flex h-[min(82vh,700px)] w-[min(82vw,520px)] shrink-0 flex-col overflow-hidden rounded-[2rem] border border-border bg-card p-7 sm:p-10"
     >
       <div
         aria-hidden
@@ -160,7 +163,7 @@ function StageCard({ s, isLast }: { s: Step; isLast: boolean }) {
         <h3 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
           {s.title}
         </h3>
-        <p className="mt-4 max-w-md text-base leading-relaxed text-muted sm:text-lg">
+        <p className="mt-4 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
           {s.description}
         </p>
       </div>
@@ -169,14 +172,14 @@ function StageCard({ s, isLast }: { s: Step; isLast: boolean }) {
         <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.24em] text-muted/70">
           Deliverables
         </p>
-        <ul className="space-y-2">
+        <ul className="space-y-2.5">
           {s.deliverables.map((d) => (
             <li
               key={d}
-              className="flex items-center gap-2 text-sm font-medium text-foreground/90"
+              className="flex items-start gap-2.5 text-sm font-medium text-foreground/90 leading-snug"
             >
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-orange-400" />
-              {d}
+              <span className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-orange-400" />
+              <span>{d}</span>
             </li>
           ))}
         </ul>

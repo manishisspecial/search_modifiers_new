@@ -350,11 +350,26 @@ a {
 /* ── Magnetic wrapper (reads --mx/--my set by JS) ── */
 .magnetic-anchor {
   transform: translate3d(var(--mx, 0px), var(--my, 0px), 0);
-  transition: transform 0.45s var(--ease-spring);
   will-change: transform;
 }
+/* Only smooth magnetic pull when a precise pointer is primary — coarse/touch stays static */
+@media (pointer: fine) {
+  .magnetic-anchor {
+    transition: transform 0.45s var(--ease-spring);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  .magnetic-anchor { transform: none !important; }
+  .magnetic-anchor { transform: none !important; transition: none !important; }
+}
+
+/* CTA arrow nudge: hover-only, fine pointer — avoids sticky :hover transform on touch */
+@media (hover: hover) and (pointer: fine) {
+  .cta-arrow-nudge {
+    transition: transform 0.3s var(--ease-spring);
+  }
+  .group:hover .cta-arrow-nudge {
+    transform: translateX(0.25rem);
+  }
 }
 
 /* ── Animated aurora orbs (hero) ── */
@@ -430,7 +445,8 @@ a {
 /* ── Scroll progress bar ── */
 .scroll-progress {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 2.5rem; /* below top contact bar (h-10) */
+  left: 0; right: 0;
   height: 2px;
   z-index: 80;
   transform-origin: left center;
