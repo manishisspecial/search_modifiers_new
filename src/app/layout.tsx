@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import { ConditionalShell } from "@/components/layout/conditional-shell";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Providers } from "@/components/providers";
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/json-ld";
 import { site } from "@/lib/site";
 
@@ -76,11 +77,13 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="mesh-bg flex min-h-full flex-col text-foreground" suppressHydrationWarning>
-        <ThemeProvider>
-          <OrganizationJsonLd />
-          <WebSiteJsonLd />
-          <ConditionalShell>{children}</ConditionalShell>
-        </ThemeProvider>
+        <Providers>
+          <ThemeProvider>
+            <OrganizationJsonLd />
+            <WebSiteJsonLd />
+            <ConditionalShell>{children}</ConditionalShell>
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

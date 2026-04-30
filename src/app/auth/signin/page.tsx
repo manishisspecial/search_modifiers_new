@@ -91,15 +91,6 @@ export default function SignInPage() {
           </Button>
         </form>
 
-        <div className="mt-6 p-4 rounded-lg bg-surface border border-border">
-          <p className="text-xs text-muted">
-            <strong>Demo credentials:</strong>
-            <br />
-            Email: (set ADMIN_EMAIL env var)
-            <br />
-            Password: (set ADMIN_PASSWORD env var)
-          </p>
-        </div>
       </div>
     </div>
   );
