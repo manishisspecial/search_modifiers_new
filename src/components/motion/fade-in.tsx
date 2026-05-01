@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/cn";
+import { useHasMounted } from "@/lib/use-has-mounted";
 
 export function FadeIn({
   children,
@@ -15,8 +16,9 @@ export function FadeIn({
   y?: number;
 }) {
   const reduce = useReducedMotion();
+  const mounted = useHasMounted();
 
-  if (reduce) {
+  if (reduce || !mounted) {
     return <div className={className}>{children}</div>;
   }
 
@@ -43,8 +45,9 @@ export function Stagger({
   stagger?: number;
 }) {
   const reduce = useReducedMotion();
+  const mounted = useHasMounted();
 
-  if (reduce) {
+  if (reduce || !mounted) {
     return <div className={className}>{children}</div>;
   }
 
@@ -74,8 +77,9 @@ export function StaggerItem({
   className?: string;
 }) {
   const reduce = useReducedMotion();
+  const mounted = useHasMounted();
 
-  if (reduce) {
+  if (reduce || !mounted) {
     return <div className={className}>{children}</div>;
   }
 

@@ -3,39 +3,23 @@ import { FadeIn, Stagger, StaggerItem } from "@/components/motion/fade-in";
 import { PageHero } from "@/components/pages/page-hero";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
+import { getCareerRoles } from "@/lib/db-queries";
 import { MapPin, Clock } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Careers",
-  description: "Join Search Modifiers — strategists, media buyers, creatives, and SEO specialists in Delhi NCR and remote.",
-  alternates: { canonical: `${site.url}/careers` },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return {
+    title: "Careers",
+    description: "Join Search Modifiers — strategists, media buyers, creatives, and SEO specialists in Delhi NCR and remote.",
+    alternates: { canonical: `${site.url}/careers` },
+  };
+}
 
-const roles = [
-  {
-    title: "Senior Performance Marketing Manager",
-    type: "Full-time · Hybrid (Delhi)",
-    desc: "Own Google Ads + Meta for 3–5 accounts; mentor associates; partner with SEO on landing tests.",
-  },
-  {
-    title: "Technical SEO Lead",
-    type: "Full-time · Remote-friendly",
-    desc: "Lead crawls, migrations, and CWV programs for enterprise sites; comfortable in Next.js stacks.",
-  },
-  {
-    title: "Content Strategist",
-    type: "Full-time · Delhi",
-    desc: "Build topical maps, brief writers, and align editorial to pipeline stages for B2B clients.",
-  },
-  {
-    title: "ORM Specialist",
-    type: "Full-time · Delhi",
-    desc: "Review programs, SERP projects, and crisis workflows for regulated and consumer brands.",
-  },
-];
+export default async function CareersPage() {
+  const [site, allRoles] = await Promise.all([getSite(), getCareerRoles()]);
+  const roles = allRoles.filter((r) => r.isOpen);
 
-export default function CareersPage() {
   return (
     <>
       <PageHero
@@ -59,12 +43,12 @@ export default function CareersPage() {
           </FadeIn>
           <Stagger className="mt-12 space-y-5">
             {roles.map((r) => (
-              <StaggerItem key={r.title}>
+              <StaggerItem key={r.id}>
                 <article className="glass flex flex-col gap-4 rounded-2xl p-6 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h2 className="font-display text-lg font-semibold text-foreground">{r.title}</h2>
                     <p className="mt-1 text-xs font-medium uppercase tracking-wider text-orange-400/80">{r.type}</p>
-                    <p className="mt-3 max-w-2xl text-sm text-muted">{r.desc}</p>
+                    <p className="mt-3 max-w-2xl text-sm text-muted">{r.description}</p>
                   </div>
                   <Button
                     href={`mailto:${site.email}?subject=${encodeURIComponent("Application: " + r.title)}`}
@@ -77,9 +61,14 @@ export default function CareersPage() {
               </StaggerItem>
             ))}
           </Stagger>
+          {roles.length === 0 && (
+            <FadeIn className="mt-12 text-center">
+              <p className="text-muted">No open positions at the moment. Check back soon!</p>
+            </FadeIn>
+          )}
           <FadeIn className="mt-16 rounded-2xl border border-dashed border-border p-8 text-center">
             <p className="text-muted">
-              Don’t see a fit? Send a note anyway — we’re always meeting strong strategists and specialists for upcoming pods.
+              Don't see a fit? Send a note anyway — we're always meeting strong strategists and specialists for upcoming pods.
             </p>
             <Button href={`mailto:${site.email}`} variant="secondary" className="mt-6">
               hello@searchmodifiers.com

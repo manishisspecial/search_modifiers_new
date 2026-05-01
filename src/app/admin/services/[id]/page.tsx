@@ -22,6 +22,9 @@ export default function EditServicePage() {
     intro: "",
     explanation: "",
     detailMarkdown: "",
+    pill: "",
+    related: [] as string[],
+    proof: [] as { value: string; label: string }[],
     benefits: [] as { title: string; description: string; icon: string }[],
     process: [] as { step: string; title: string; description: string }[],
     faqs: [] as { q: string; a: string }[],
@@ -44,6 +47,9 @@ export default function EditServicePage() {
           intro: data.intro || "",
           explanation: data.explanation || "",
           detailMarkdown: data.detailMarkdown || "",
+          pill: data.pill || "",
+          related: Array.isArray(data.related) ? data.related : [],
+          proof: Array.isArray(data.proof) ? data.proof.map((p: any) => ({ value: p.value || "", label: p.label || "" })) : [],
           benefits: data.benefits?.map((b: any) => ({
             title: b.title,
             description: b.description,
@@ -218,6 +224,63 @@ export default function EditServicePage() {
             }
           />
         </FormField>
+
+        <div className="border-t pt-6 mt-6">
+          <h3 className="text-lg font-semibold mb-4">Service Meta (Dashboard & Stats)</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField label="Pill Text">
+              <FormInput
+                value={formData.pill}
+                onChange={(e) =>
+                  setFormData({ ...formData, pill: e.target.value })
+                }
+                placeholder="e.g. Full-funnel growth"
+              />
+            </FormField>
+
+            <FormField label="Related Service Slugs (comma-separated)">
+              <FormInput
+                value={formData.related.join(", ")}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    related: e.target.value
+                      .split(",")
+                      .map((s) => s.trim())
+                      .filter(Boolean),
+                  })
+                }
+                placeholder="seo-services, ppc-services"
+              />
+            </FormField>
+          </div>
+
+          <NestedFieldArray
+            label="Proof / Stat Badges"
+            items={formData.proof}
+            onAdd={() =>
+              setFormData({
+                ...formData,
+                proof: [...formData.proof, { value: "", label: "" }],
+              })
+            }
+            onRemove={(index) =>
+              setFormData({
+                ...formData,
+                proof: formData.proof.filter((_, i) => i !== index),
+              })
+            }
+            onItemChange={(index, field, value) => {
+              const updated = [...formData.proof];
+              updated[index] = { ...updated[index], [field]: value };
+              setFormData({ ...formData, proof: updated });
+            }}
+            fields={[
+              { name: "value", label: "Value", placeholder: "412" },
+              { name: "label", label: "Label", placeholder: "Top-3 rankings won" },
+            ]}
+          />
+        </div>
 
         <NestedFieldArray
           label="Benefits"

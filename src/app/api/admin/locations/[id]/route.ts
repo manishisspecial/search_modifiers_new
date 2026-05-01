@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { z } from "zod";
 
@@ -133,6 +134,8 @@ export async function PUT(
       },
     });
 
+    revalidatePath(`/locations/${validatedData.slug}`);
+    revalidatePath("/");
     return NextResponse.json(location);
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -162,6 +165,7 @@ export async function DELETE(
       data: { deletedAt: new Date() },
     });
 
+    revalidatePath("/");
     return NextResponse.json({ message: "Location deleted" });
   } catch (error) {
     console.error(error);

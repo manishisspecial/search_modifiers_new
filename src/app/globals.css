@@ -705,3 +705,23 @@ a {
 .orbit-b { animation: orbit-b 30s linear infinite reverse; }
 .orbit-c { animation: orbit-c 40s linear infinite; }
 @media (prefers-reduced-motion: reduce) { .orbit-a, .orbit-b, .orbit-c { animation: none; } }
+
+/* ── Page-enter (CSS-only so framer-motion initial never propagates) ── */
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-enter {
+  animation: page-enter 0.38s var(--ease-spring) both;
+}
+@media (prefers-reduced-motion: reduce) { .page-enter { animation: none; } }
+
+/* ── Service hero enter (CSS-only so content is never invisible) ── */
+@keyframes hero-fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.service-hero-enter {
+  animation: hero-fade-up 0.7s var(--ease-spring) both;
+}
+@media (prefers-reduced-motion: reduce) { .service-hero-enter { animation: none; } }

@@ -34,3 +34,14 @@ export const quoteSchema = z.object({
 });
 
 export type QuoteInput = z.infer<typeof quoteSchema>;
+
+export const ctaFormSchema = z.object({
+  name: z.string().min(2, "Name is required"),
+  email: z.string().email("Enter a valid email"),
+  phone: z.string().regex(phoneRegex, "Enter a valid phone number"),
+  company: z.string().optional(),
+  interest: z.string().min(1, "Please select your interest"),
+  source: z.string().optional(),
+});
+
+export type CtaFormInput = z.infer<typeof ctaFormSchema>;

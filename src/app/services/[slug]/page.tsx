@@ -1,18 +1,23 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ServicePageBody } from "@/components/services/service-page-body";
-import { getServiceBySlug, serviceSlugs } from "@/lib/services-data";
-import { site } from "@/lib/site";
+import {
+  getServiceBySlug,
+  getServiceMetaBySlug,
+  getServiceSlugs,
+} from "@/lib/db-queries";
+import { getSite } from "@/lib/get-site";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return serviceSlugs.map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  const slugs = await getServiceSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const s = getServiceBySlug(slug);
+  const [site, s] = await Promise.all([getSite(), getServiceBySlug(slug)]);
   if (!s) return {};
   return {
     title: s.metaTitle,
@@ -24,7 +29,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ServicePage({ params }: Props) {
   const { slug } = await params;
-  const s = getServiceBySlug(slug);
+  const s = await getServiceBySlug(slug);
   if (!s) notFound();
-  return <ServicePageBody service={s} />;
+
+  const meta = await getServiceMetaBySlug(slug);
+  if (!meta) notFound();
+
+  const relatedSlugs: string[] = meta.related ?? [];
+  const relatedServices = (
+    await Promise.all(relatedSlugs.map((rs) => getServiceBySlug(rs)))
+  ).filter(Boolean) as NonNullable<Awaited<ReturnType<typeof getServiceBySlug>>>[];
+
+  return <ServicePageBody service={s} meta={meta} relatedServices={relatedServices} />;
 }

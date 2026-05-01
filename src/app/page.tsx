@@ -19,16 +19,19 @@ import { SpotlightContainer } from "@/components/motion/spotlight-cards";
 import { Tilt3D } from "@/components/motion/tilt-3d";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { caseStudies } from "@/lib/case-studies";
-import { site } from "@/lib/site";
+import { getCaseStudies, getTestimonials } from "@/lib/db-queries";
+import { getSite } from "@/lib/get-site";
 import type { LucideIcon } from "lucide-react";
 import { BarChart3, Layers, LineChart, Users } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Digital Marketing & SEO Agency",
-  description: site.description,
-  alternates: { canonical: site.url },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return {
+    title: "Digital Marketing & SEO Agency",
+    description: site.description,
+    alternates: { canonical: site.url },
+  };
+}
 
 const why = [
   {
@@ -53,7 +56,12 @@ const why = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [caseStudies, testimonials] = await Promise.all([
+    getCaseStudies(),
+    getTestimonials(),
+  ]);
+
   return (
     <>
       <HomeStickyCta />
@@ -149,7 +157,7 @@ export default function HomePage() {
           />
         </Container>
         <div className="mt-16">
-          <HomeTestimonialsMarquee />
+          <HomeTestimonialsMarquee testimonials={testimonials} />
         </div>
       </section>
 

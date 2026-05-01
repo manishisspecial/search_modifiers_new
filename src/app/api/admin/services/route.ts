@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { z } from "zod";
 
@@ -14,6 +15,10 @@ const ServiceSchema = z.object({
   intro: z.string().min(1),
   explanation: z.string().min(1),
   detailMarkdown: z.string().optional(),
+  pill: z.string().optional(),
+  related: z.array(z.string()).optional().default([]),
+  proof: z.array(z.object({ value: z.string(), label: z.string() })).optional().default([]),
+  dashMeta: z.record(z.unknown()).optional(),
   benefits: z.array(
     z.object({
       title: z.string(),
@@ -84,6 +89,10 @@ export async function POST(req: NextRequest) {
         intro: validatedData.intro,
         explanation: validatedData.explanation,
         detailMarkdown: validatedData.detailMarkdown,
+        pill: validatedData.pill,
+        related: validatedData.related,
+        proof: validatedData.proof,
+        dashMeta: validatedData.dashMeta ?? undefined,
         benefits: {
           createMany: {
             data: validatedData.benefits.map((benefit, index) => ({
@@ -121,6 +130,8 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    revalidatePath("/services");
+    revalidatePath("/");
     return NextResponse.json(service, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {

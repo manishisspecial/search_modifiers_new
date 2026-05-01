@@ -79,6 +79,12 @@ model Service {
   explanation         String
   detailMarkdown      String?  @db.Text
 
+  // ServiceMeta fields (dashboard, stat ribbon, related)
+  pill                String?
+  related             Json     @default("[]")
+  proof               Json     @default("[]")
+  dashMeta            Json?
+
   benefits            ServiceBenefit[]
   process             ServiceProcess[]
   faqs                ServiceFAQ[]
@@ -348,4 +354,75 @@ model NavigationItem {
   updatedAt   DateTime @updatedAt
 
   @@map("navigation_items")
+}
+
+model TeamMember {
+  id          String   @id @default(cuid())
+  name        String
+  role        String
+  bio         String
+  image       String?
+  linkedinUrl String?
+  order       Int      @default(0)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
+
+  @@map("team_members")
+}
+
+model CareerRole {
+  id          String   @id @default(cuid())
+  title       String
+  type        String
+  description String
+  isOpen      Boolean  @default(true)
+  order       Int      @default(0)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
+
+  @@map("career_roles")
+}
+
+model FaqItem {
+  id          String   @id @default(cuid())
+  q           String
+  a           String   @db.Text
+  order       Int      @default(0)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
+
+  @@map("faq_items")
+}
+
+model PortfolioItem {
+  id          String   @id @default(cuid())
+  title       String
+  category    String
+  description String
+  icon        String   @default("sparkles")
+  order       Int      @default(0)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
+
+  @@map("portfolio_items")
+}
+
+model PageContent {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  fields      Json
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("page_contents")
 }

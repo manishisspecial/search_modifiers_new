@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { z } from "zod";
 
@@ -50,6 +51,8 @@ export async function POST(req: NextRequest) {
       data: validatedData,
     });
 
+    revalidatePath("/blog");
+    revalidatePath("/");
     return NextResponse.json(post, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {

@@ -2,15 +2,22 @@ import type { Metadata } from "next";
 import { QuoteForm } from "@/components/forms/quote-form";
 import { PageHero } from "@/components/pages/page-hero";
 import { Container } from "@/components/ui/container";
-import { site } from "@/lib/site";
+import { getServices } from "@/lib/db-queries";
+import { getSite } from "@/lib/get-site";
 
-export const metadata: Metadata = {
-  title: "Request a Quote",
-  description: "Request a tailored proposal from Search Modifiers for SEO, paid media, ORM, content, or web projects.",
-  alternates: { canonical: `${site.url}/request-quote` },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return {
+    title: "Request a Quote",
+    description: "Request a tailored proposal from Search Modifiers for SEO, paid media, ORM, content, or web projects.",
+    alternates: { canonical: `${site.url}/request-quote` },
+  };
+}
 
-export default function RequestQuotePage() {
+export default async function RequestQuotePage() {
+  const [site, services] = await Promise.all([getSite(), getServices()]);
+  const serviceOptions = services.map((s) => ({ slug: s.slug, title: s.title }));
+
   return (
     <>
       <PageHero
@@ -21,7 +28,7 @@ export default function RequestQuotePage() {
       <section className="pb-20 sm:pb-28">
         <Container>
           <div className="mx-auto max-w-3xl glass gradient-border rounded-2xl p-6 sm:p-10">
-            <QuoteForm />
+            <QuoteForm serviceOptions={serviceOptions} />
           </div>
           <p className="mx-auto mt-10 max-w-2xl text-center text-sm text-muted/70">
             Prefer to talk first? Call {site.phone} or write {site.email} — same SLA.

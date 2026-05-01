@@ -23,6 +23,13 @@ import {
   KeyRound,
   Bell,
   ChevronDown,
+  Users,
+  GraduationCap,
+  HelpCircle,
+  Image,
+  Navigation2,
+  Award,
+  FileCode,
 } from "lucide-react";
 
 const navigation = [
@@ -33,6 +40,14 @@ const navigation = [
   { label: "Testimonials", href: "/admin/testimonials", icon: Star },
   { label: "Locations", href: "/admin/locations", icon: MapPin },
   { label: "Static Pages", href: "/admin/static-pages", icon: FileStack },
+  { label: "Team", href: "/admin/team", icon: Users },
+  { label: "Careers", href: "/admin/careers", icon: GraduationCap },
+  { label: "FAQ", href: "/admin/faq", icon: HelpCircle },
+  { label: "Portfolio", href: "/admin/portfolio", icon: Image },
+  { label: "Navigation", href: "/admin/navigation", icon: Navigation2 },
+  { label: "Trust Badges", href: "/admin/trust-badges", icon: Award },
+  { label: "Footer Ratings", href: "/admin/footer-ratings", icon: Star },
+  { label: "Page Content", href: "/admin/page-content", icon: FileCode },
   { label: "Site Settings", href: "/admin/site-settings", icon: Settings },
 ];
 

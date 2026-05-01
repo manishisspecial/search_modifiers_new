@@ -4,17 +4,22 @@ import { FadeIn, Stagger, StaggerItem } from "@/components/motion/fade-in";
 import { PageHero } from "@/components/pages/page-hero";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { caseStudies } from "@/lib/case-studies";
-import { site } from "@/lib/site";
+import { getCaseStudies } from "@/lib/db-queries";
+import { getSite } from "@/lib/get-site";
 import { ArrowUpRight } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Case Studies",
-  description: "Selected growth stories from Search Modifiers — SEO, paid media, ORM, and full-funnel programs.",
-  alternates: { canonical: `${site.url}/case-studies` },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return {
+    title: "Case Studies",
+    description: "Selected growth stories from Search Modifiers — SEO, paid media, ORM, and full-funnel programs.",
+    alternates: { canonical: `${site.url}/case-studies` },
+  };
+}
 
-export default function CaseStudiesPage() {
+export default async function CaseStudiesPage() {
+  const caseStudies = await getCaseStudies();
+
   return (
     <>
       <PageHero

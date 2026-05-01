@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { z } from "zod";
 
@@ -92,6 +93,9 @@ export async function PUT(
       include: { metrics: true },
     });
 
+    revalidatePath("/case-studies");
+    revalidatePath(`/case-studies/${validatedData.slug}`);
+    revalidatePath("/");
     return NextResponse.json(study);
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -121,6 +125,8 @@ export async function DELETE(
       data: { deletedAt: new Date() },
     });
 
+    revalidatePath("/case-studies");
+    revalidatePath("/");
     return NextResponse.json({ message: "Case study deleted" });
   } catch (error) {
     console.error(error);

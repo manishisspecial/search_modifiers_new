@@ -6,19 +6,20 @@ import { FadeIn } from "@/components/motion/fade-in";
 import { PageHero } from "@/components/pages/page-hero";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { getCaseStudyBySlug, getCaseStudySlugs } from "@/lib/case-studies";
-import { site } from "@/lib/site";
+import { getCaseStudyBySlug, getCaseStudySlugs } from "@/lib/db-queries";
+import { getSite } from "@/lib/get-site";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return getCaseStudySlugs().map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  const slugs = await getCaseStudySlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const c = getCaseStudyBySlug(slug);
+  const [site, c] = await Promise.all([getSite(), getCaseStudyBySlug(slug)]);
   if (!c) return {};
   const description = c.summary.length > 155 ? `${c.summary.slice(0, 152)}…` : c.summary;
   return {
@@ -36,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CaseStudyDetailPage({ params }: Props) {
   const { slug } = await params;
-  const c = getCaseStudyBySlug(slug);
+  const c = await getCaseStudyBySlug(slug);
   if (!c) notFound();
 
   return (

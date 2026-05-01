@@ -2,15 +2,18 @@ import type { Metadata } from "next";
 import { AuditForm } from "@/components/forms/audit-form";
 import { PageHero } from "@/components/pages/page-hero";
 import { Container } from "@/components/ui/container";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 import { Check } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Free Website Audit",
-  description:
-    "Request a technical SEO, speed, and CRO audit from Search Modifiers. Prioritized, dev-ready recommendations.",
-  alternates: { canonical: `${site.url}/free-website-audit` },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return {
+    title: "Free Website Audit",
+    description:
+      "Request a technical SEO, speed, and CRO audit from Search Modifiers. Prioritized, dev-ready recommendations.",
+    alternates: { canonical: `${site.url}/free-website-audit` },
+  };
+}
 
 const includes = [
   "Crawl & indexation health snapshot",
@@ -19,7 +22,8 @@ const includes = [
   "Conversion friction observations (forms, CTAs, trust)",
 ];
 
-export default function FreeAuditPage() {
+export default async function FreeAuditPage() {
+  const site = await getSite();
   return (
     <>
       <PageHero

@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 
-export default function robots(): MetadataRoute.Robots {
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const site = await getSite();
   const base = site.url.replace(/\/$/, "");
   return {
     rules: { userAgent: "*", allow: "/", disallow: ["/api/"] },

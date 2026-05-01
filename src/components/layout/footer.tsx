@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { footerColumns } from "@/lib/navigation";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
+import { getTrustBadges, getFooterRatings } from "@/lib/db-queries";
+import { siteDefaults } from "@/lib/site-defaults";
 import { ArrowUpRight, Mail, MapPin, Phone, Facebook, Youtube, Linkedin, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// Official WhatsApp icon
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -19,40 +20,63 @@ function WhatsAppIcon({ className }: { className?: string }) {
   );
 }
 
-const footerSocialIcons = [
-  {
-    name: "Facebook",
-    href: site.social.facebook,
-    Icon: Facebook,
-    className: "bg-[#1877F2] text-white hover:brightness-110",
-  },
-  {
-    name: "X",
-    href: site.social.twitter,
-    Icon: X,
-    className: "bg-foreground text-background hover:bg-foreground/90",
-  },
-  {
-    name: "YouTube",
-    href: site.social.youtube,
-    Icon: Youtube,
-    className: "bg-[#FF0000] text-white hover:brightness-110",
-  },
-  {
-    name: "LinkedIn",
-    href: site.social.linkedin,
-    Icon: Linkedin,
-    className: "bg-[#0A66C2] text-white hover:brightness-110",
-  },
-  {
-    name: "WhatsApp",
-    href: `https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Hi Search Modifiers — I'd like to discuss a growth project.")}`,
-    Icon: WhatsAppIcon,
-    className: "bg-[#25D366] text-white hover:brightness-110",
-  },
-] as const;
+export async function Footer() {
+  const [site, dbTrustBadges, dbFooterRatings] = await Promise.all([
+    getSite(),
+    getTrustBadges(),
+    getFooterRatings(),
+  ]);
 
-export function Footer() {
+  const trustBadges =
+    dbTrustBadges.length > 0
+      ? dbTrustBadges.map((b) => ({ label: b.label, subtitle: b.subtitle, href: b.href }))
+      : siteDefaults.trustBadges;
+
+  const googleRating = dbFooterRatings.find((r) => r.platform === "google");
+  const clutchRating = dbFooterRatings.find((r) => r.platform === "clutch");
+
+  const footerRatings = {
+    google: googleRating
+      ? { score: googleRating.score, maxScore: "5", href: googleRating.href }
+      : siteDefaults.footerRatings.google,
+    clutch: clutchRating
+      ? { score: clutchRating.score, href: clutchRating.href }
+      : siteDefaults.footerRatings.clutch,
+  };
+
+  const footerSocialIcons = [
+    {
+      name: "Facebook",
+      href: site.social.facebook,
+      Icon: Facebook,
+      className: "bg-[#1877F2] text-white hover:brightness-110",
+    },
+    {
+      name: "X",
+      href: site.social.twitter,
+      Icon: X,
+      className: "bg-foreground text-background hover:bg-foreground/90",
+    },
+    {
+      name: "YouTube",
+      href: site.social.youtube,
+      Icon: Youtube,
+      className: "bg-[#FF0000] text-white hover:brightness-110",
+    },
+    {
+      name: "LinkedIn",
+      href: site.social.linkedin,
+      Icon: Linkedin,
+      className: "bg-[#0A66C2] text-white hover:brightness-110",
+    },
+    {
+      name: "WhatsApp",
+      href: `https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Hi Search Modifiers — I'd like to discuss a growth project.")}`,
+      Icon: WhatsAppIcon,
+      className: "bg-[#25D366] text-white hover:brightness-110",
+    },
+  ] as const;
+
   return (
     <footer className="relative bg-background">
       <div className="gradient-line" />
@@ -81,7 +105,7 @@ export function Footer() {
 
         {/* Trust badges — partner / ratings strip */}
         <div className="mb-14 flex flex-wrap gap-3 sm:gap-4">
-          {site.trustBadges.map((b) => (
+          {trustBadges.map((b) => (
             <a
               key={b.label}
               href={b.href}
@@ -168,7 +192,7 @@ export function Footer() {
 
           <div className="order-2 flex flex-wrap items-center justify-center gap-3 sm:justify-end lg:order-3">
             <a
-              href={site.footerRatings.google.href}
+              href={footerRatings.google.href}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-xs shadow-sm transition hover:border-orange-500/25"
@@ -177,12 +201,12 @@ export function Footer() {
                 G
               </span>
               <span className="text-muted">
-                <span className="font-semibold text-foreground">{site.footerRatings.google.score}</span>
-                /{site.footerRatings.google.maxScore} rating
+                <span className="font-semibold text-foreground">{footerRatings.google.score}</span>
+                /{footerRatings.google.maxScore} rating
               </span>
             </a>
             <a
-              href={site.footerRatings.clutch.href}
+              href={footerRatings.clutch.href}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-xs shadow-sm transition hover:border-orange-500/25"
@@ -191,7 +215,7 @@ export function Footer() {
                 C
               </span>
               <span className="text-muted">
-                <span className="font-semibold text-foreground">{site.footerRatings.clutch.score}</span> rating
+                <span className="font-semibold text-foreground">{footerRatings.clutch.score}</span> rating
               </span>
             </a>
           </div>
