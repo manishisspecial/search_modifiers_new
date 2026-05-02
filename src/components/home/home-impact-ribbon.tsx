@@ -4,7 +4,6 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { useRef } from "react";
 import { AnimatedCounter } from "@/components/motion/animated-counter";
 import { Container } from "@/components/ui/container";
-import { useHasMounted } from "@/lib/use-has-mounted";
 
 type Metric = {
   label: string;
@@ -57,7 +56,6 @@ const METRICS: Metric[] = [
  */
 export function HomeImpactRibbon() {
   const reduce = useReducedMotion();
-  const mounted = useHasMounted();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -103,7 +101,7 @@ export function HomeImpactRibbon() {
               {METRICS.map((m, i) => (
                 <motion.div
                   key={m.label}
-                  initial={reduce || !mounted ? false : { opacity: 0, y: 18 }}
+                  initial={reduce ? false : { opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{

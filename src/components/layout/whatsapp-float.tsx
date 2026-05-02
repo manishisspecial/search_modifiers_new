@@ -1,11 +1,10 @@
 "use client";
 
 import { MessageCircle } from "lucide-react";
-import { useSite } from "@/lib/site-context";
+import { site } from "@/lib/site";
 import { motion, useReducedMotion } from "framer-motion";
 
 export function WhatsAppFloat() {
-  const site = useSite();
   const reduce = useReducedMotion();
   const href = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
     "Hi Search Modifiers — I'd like to discuss a growth project."

@@ -12,6 +12,7 @@ import {
   Search,
   Target,
 } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { AnimatedCounter } from "@/components/motion/animated-counter";
 import { MaskReveal } from "@/components/motion/mask-reveal";
@@ -20,8 +21,7 @@ import { ScrollHint } from "@/components/motion/scroll-hint";
 import { Tilt3D } from "@/components/motion/tilt-3d";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { useSite } from "@/lib/site-context";
-import { CtaFormModal, useCtaModal } from "@/components/forms/cta-form-modal";
+import { site } from "@/lib/site";
 
 type HeroStat =
   | { value: string; label: string; countTo: number; suffix?: string; decimals?: number }
@@ -43,11 +43,9 @@ const stats: HeroStat[] = [
  *  5. Magnetic CTAs that pull toward the cursor.
  */
 export function HomeHero() {
-  const site = useSite();
   const reduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const orbsRef = useRef<HTMLDivElement>(null);
-  const { isOpen, source, open, close } = useCtaModal();
 
   // Scroll-linked parallax — fade/translate content as hero leaves viewport.
   const { scrollYProgress } = useScroll({
@@ -208,7 +206,7 @@ export function HomeHero() {
             >
               <Magnetic strength={0.3}>
                 <Button
-                  onClick={() => open("Homepage - Hero CTA")}
+                  href="/request-quote"
                   className="group min-h-[50px] px-8 py-3 text-base shadow-xl shadow-orange-500/25"
                 >
                   Get a custom proposal
@@ -299,14 +297,6 @@ export function HomeHero() {
         </motion.div>
       </Container>
       <ScrollHint />
-
-      <CtaFormModal
-        isOpen={isOpen}
-        onClose={close}
-        title="Get a custom proposal"
-        subtitle="Share your goals and we'll craft a tailored strategy for your business."
-        source={source}
-      />
     </section>
   );
 }

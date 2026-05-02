@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { quoteSchema, type QuoteInput } from "@/lib/schemas";
 import { Button } from "@/components/ui/button";
 import { Field, inputClass } from "@/components/forms/field";
+import { services } from "@/lib/services-data";
 import { Loader2 } from "lucide-react";
 
 const budgets = [
@@ -18,7 +19,7 @@ const budgets = [
 
 const timelines = ["ASAP", "Within 30 days", "1–3 months", "3+ months / retainer"];
 
-export function QuoteForm({ serviceOptions }: { serviceOptions: { slug: string; title: string }[] }) {
+export function QuoteForm() {
   const [status, setStatus] = useState<"idle" | "ok" | "err">("idle");
   const [msg, setMsg] = useState("");
 
@@ -75,7 +76,7 @@ export function QuoteForm({ serviceOptions }: { serviceOptions: { slug: string; 
       <Field label="Primary service" htmlFor="service" error={errors.service?.message}>
         <select id="service" className={inputClass(!!errors.service)} {...register("service")}>
           <option value="">Select a service</option>
-          {serviceOptions.map((s) => (
+          {services.map((s) => (
             <option key={s.slug} value={s.title}>
               {s.title}
             </option>

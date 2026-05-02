@@ -5,11 +5,10 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { FadeIn } from "@/components/motion/fade-in";
 import { FAQJsonLd } from "@/components/seo/json-ld";
 import type { LocationPage } from "@/lib/locations-data";
-import { getSite } from "@/lib/get-site";
+import { site } from "@/lib/site";
 import { MapPin } from "lucide-react";
 
-export async function LocationPageBody({ loc }: { loc: LocationPage }) {
-  const site = await getSite();
+export function LocationPageBody({ loc }: { loc: LocationPage }) {
   const url = `${site.url}/locations/${loc.slug}`;
 
   return (

@@ -1,33 +1,22 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
 
-/**
- * CSS-only page-enter animation. Uses a plain div so framer-motion's
- * `initial` prop is never propagated to children — that was breaking
- * `whileInView` animations on all child motion components.
- */
 export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const ref = useRef<HTMLDivElement>(null);
-  const prevPath = useRef(pathname);
+  const reduce = useReducedMotion();
 
-  useEffect(() => {
-    if (pathname !== prevPath.current) {
-      const el = ref.current;
-      if (el) {
-        el.classList.remove("page-enter");
-        void el.offsetWidth;
-        el.classList.add("page-enter");
-      }
-      prevPath.current = pathname;
-    }
-  }, [pathname]);
+  if (reduce) return <>{children}</>;
 
   return (
-    <div ref={ref} className="page-enter">
+    <motion.div
+      key={pathname}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+    >
       {children}
-    </div>
+    </motion.div>
   );
 }

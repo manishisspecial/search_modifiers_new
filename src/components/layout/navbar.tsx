@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { useNav } from "@/lib/nav-context";
+import { mainNav, servicesNav, locationsNav } from "@/lib/navigation";
 import { Logo } from "@/components/layout/logo";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -13,7 +13,6 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 export function Navbar() {
   const pathname = usePathname();
-  const { mainNav, servicesNav, locationsNav } = useNav();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mega, setMega] = useState<null | "services" | "locations">(null);

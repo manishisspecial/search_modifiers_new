@@ -4,22 +4,17 @@ import { FadeIn, Stagger, StaggerItem } from "@/components/motion/fade-in";
 import { PageHero } from "@/components/pages/page-hero";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { getTestimonials } from "@/lib/db-queries";
-import { getSite } from "@/lib/get-site";
+import { testimonials } from "@/lib/testimonials";
+import { site } from "@/lib/site";
 import { Quote } from "lucide-react";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const site = await getSite();
-  return {
-    title: "Testimonials",
-    description: "What clients say about working with Search Modifiers — performance, communication, and integrity.",
-    alternates: { canonical: `${site.url}/testimonials` },
-  };
-}
+export const metadata: Metadata = {
+  title: "Testimonials",
+  description: "What clients say about working with Search Modifiers — performance, communication, and integrity.",
+  alternates: { canonical: `${site.url}/testimonials` },
+};
 
-export default async function TestimonialsPage() {
-  const testimonials = await getTestimonials();
-
+export default function TestimonialsPage() {
   return (
     <>
       <PageHero
@@ -33,7 +28,7 @@ export default async function TestimonialsPage() {
         <Container>
           <h2 className="text-center font-display text-xl font-semibold text-foreground">Featured slider</h2>
           <div className="mt-10">
-            <HomeTestimonials testimonials={testimonials} />
+            <HomeTestimonials />
           </div>
         </Container>
       </section>

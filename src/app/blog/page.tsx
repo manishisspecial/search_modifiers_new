@@ -3,22 +3,17 @@ import Link from "next/link";
 import { FadeIn, Stagger, StaggerItem } from "@/components/motion/fade-in";
 import { PageHero } from "@/components/pages/page-hero";
 import { Container } from "@/components/ui/container";
-import { getPosts } from "@/lib/db-queries";
-import { getSite } from "@/lib/get-site";
+import { blogPosts } from "@/lib/blog-data";
+import { site } from "@/lib/site";
 import { ArrowUpRight, Calendar } from "lucide-react";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const site = await getSite();
-  return {
-    title: "Blog",
-    description: "Insights on SEO, paid media, content, and web performance from the Search Modifiers team.",
-    alternates: { canonical: `${site.url}/blog` },
-  };
-}
+export const metadata: Metadata = {
+  title: "Blog",
+  description: "Insights on SEO, paid media, content, and web performance from the Search Modifiers team.",
+  alternates: { canonical: `${site.url}/blog` },
+};
 
-export default async function BlogPage() {
-  const blogPosts = await getPosts();
-
+export default function BlogPage() {
   return (
     <>
       <PageHero

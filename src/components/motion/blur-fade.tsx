@@ -2,7 +2,6 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/cn";
-import { useHasMounted } from "@/lib/use-has-mounted";
 
 export function BlurFade({
   children,
@@ -14,10 +13,7 @@ export function BlurFade({
   delay?: number;
 }) {
   const reduce = useReducedMotion();
-  const mounted = useHasMounted();
-  if (reduce || !mounted) {
-    return <div className={className}>{children}</div>;
-  }
+  if (reduce) return <div className={className}>{children}</div>;
 
   return (
     <motion.div

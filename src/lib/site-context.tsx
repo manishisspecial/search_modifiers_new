@@ -2,6 +2,7 @@
 
 import { createContext, useContext } from "react";
 import type { SiteConfig } from "@/lib/get-site";
+import { siteDefaults } from "@/lib/site-defaults";
 
 const SiteContext = createContext<SiteConfig | null>(null);
 
@@ -17,6 +18,5 @@ export function SiteProvider({
 
 export function useSite(): SiteConfig {
   const ctx = useContext(SiteContext);
-  if (!ctx) throw new Error("useSite must be used within SiteProvider");
-  return ctx;
+  return ctx ?? siteDefaults;
 }

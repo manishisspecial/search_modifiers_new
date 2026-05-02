@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { cn } from "@/lib/cn";
 import type { BlogPost } from "@/lib/blog-data";
-import { getRecentBlogPosts } from "@/lib/db-queries";
+import { getRecentBlogPosts } from "@/lib/blog-data";
 
 function formatPostDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-IN", {
@@ -114,8 +114,8 @@ function CompactCard({ post }: { post: BlogPost }) {
   );
 }
 
-export async function HomeBlogSection() {
-  const recent = await getRecentBlogPosts(3);
+export function HomeBlogSection() {
+  const recent = getRecentBlogPosts(3);
   if (recent.length === 0) return null;
 
   const featured = recent[0];

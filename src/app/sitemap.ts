@@ -1,11 +1,9 @@
 import type { MetadataRoute } from "next";
-import {
-  getServiceSlugs,
-  getLocationSlugs,
-  getPosts,
-  getCaseStudySlugs,
-} from "@/lib/db-queries";
-import { getSite } from "@/lib/get-site";
+import { blogPosts } from "@/lib/blog-data";
+import { getCaseStudySlugs } from "@/lib/case-studies";
+import { locationSlugs } from "@/lib/locations-data";
+import { serviceSlugs } from "@/lib/services-data";
+import { site } from "@/lib/site";
 
 const staticRoutes = [
   "/",
@@ -23,17 +21,8 @@ const staticRoutes = [
   "/request-quote",
 ];
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const site = await getSite();
+export default function sitemap(): MetadataRoute.Sitemap {
   const base = site.url.replace(/\/$/, "");
-
-  const [serviceSlugs, locationSlugs, blogPosts, caseStudySlugs] =
-    await Promise.all([
-      getServiceSlugs(),
-      getLocationSlugs(),
-      getPosts(),
-      getCaseStudySlugs(),
-    ]);
 
   const entries: MetadataRoute.Sitemap = [
     ...staticRoutes.map((path) => ({
@@ -60,7 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.65,
     })),
-    ...caseStudySlugs.map((slug) => ({
+    ...getCaseStudySlugs().map((slug) => ({
       url: `${base}/case-studies/${slug}`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,

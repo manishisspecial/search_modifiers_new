@@ -4,18 +4,15 @@ import { PageHero } from "@/components/pages/page-hero";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { getSite } from "@/lib/get-site";
+import { site } from "@/lib/site";
 import { Target, Heart, Lightbulb } from "lucide-react";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const site = await getSite();
-  return {
-    title: "About Us",
-    description:
-      "Search Modifiers is a performance-led digital marketing agency blending strategy, creative, and engineering for brands in India and abroad.",
-    alternates: { canonical: `${site.url}/about` },
-  };
-}
+export const metadata: Metadata = {
+  title: "About Us",
+  description:
+    "Search Modifiers is a performance-led digital marketing agency blending strategy, creative, and engineering for brands in India and abroad.",
+  alternates: { canonical: `${site.url}/about` },
+};
 
 const values = [
   {
@@ -35,8 +32,7 @@ const values = [
   },
 ];
 
-export default async function AboutPage() {
-  const site = await getSite();
+export default function AboutPage() {
   return (
     <>
       <PageHero

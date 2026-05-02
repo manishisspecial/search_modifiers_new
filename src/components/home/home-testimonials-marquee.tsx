@@ -2,9 +2,15 @@
 
 import { Quote, Star } from "lucide-react";
 import { KineticMarquee } from "@/components/motion/kinetic-marquee";
-import type { Testimonial } from "@/lib/testimonials";
+import { testimonials } from "@/lib/testimonials";
 
-export function HomeTestimonialsMarquee({ testimonials }: { testimonials: Testimonial[] }) {
+/**
+ * Premium testimonials marquee. Two counter-rotating rows of 3D-feeling
+ * quote cards that hover-pause, each with a subtle tilt on hover via
+ * the parent's hover state. Unlike a static carousel, this scans as a
+ * continuous wall of social proof.
+ */
+export function HomeTestimonialsMarquee() {
   // Split the testimonials across two rows for visual balance
   const rowA = testimonials.slice(0, Math.ceil(testimonials.length / 2) + 1);
   const rowB = [...testimonials.slice(Math.ceil(testimonials.length / 2)), testimonials[0]];

@@ -1,40 +1,41 @@
 import Link from "next/link";
 import { ExternalLink, Landmark, Mail, MessageCircle } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { getSite, type SiteConfig } from "@/lib/get-site";
+import { site } from "@/lib/site";
 import { cn } from "@/lib/cn";
 
-function formatPhoneDisplay(phone: string) {
-  const raw = phone.replace(/\D/g, "");
+function formatPhoneDisplay() {
+  const raw = site.phone.replace(/\D/g, "");
   if (raw.length === 10) {
     return `+91 ${raw.slice(0, 5)} ${raw.slice(5)}`;
   }
-  return phone;
+  return site.phone;
 }
 
-function mapsEmbedSrc(site: SiteConfig) {
+function mapsEmbedSrc() {
   if (site.googleMapsEmbedSrc) return site.googleMapsEmbedSrc;
   const q = encodeURIComponent(site.address.detail);
   return `https://maps.google.com/maps?q=${q}&hl=en&z=14&output=embed`;
 }
 
-function mapsExternalUrl(site: SiteConfig) {
+function mapsExternalUrl() {
   const q = encodeURIComponent(site.address.detail);
   return `https://www.google.com/maps/search/?api=1&query=${q}`;
 }
 
-export async function OfficeInfoSection({
+export function OfficeInfoSection({
   className,
   compactHeading = false,
   withTopDivider = false,
 }: {
   className?: string;
+  /** Slightly smaller title for nested contexts */
   compactHeading?: boolean;
+  /** Show the standard full-width gradient rule above this block */
   withTopDivider?: boolean;
 }) {
-  const site = await getSite();
   const waHref = `https://wa.me/${site.whatsapp}`;
-  const phoneDisplay = formatPhoneDisplay(site.phone);
+  const phoneDisplay = formatPhoneDisplay();
 
   return (
     <section className={cn("relative", className)}>
@@ -110,7 +111,7 @@ export async function OfficeInfoSection({
             <div className="relative aspect-[4/3] min-h-[280px] w-full lg:aspect-auto lg:min-h-[420px]">
               <iframe
                 title={`${site.name} office location`}
-                src={mapsEmbedSrc(site)}
+                src={mapsEmbedSrc()}
                 className="absolute inset-0 z-0 h-full w-full border-0"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
@@ -118,7 +119,7 @@ export async function OfficeInfoSection({
               />
               <div className="absolute left-4 top-4 z-10">
                 <Link
-                  href={mapsExternalUrl(site)}
+                  href={mapsExternalUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-full border border-border bg-background/90 px-4 py-2 text-xs font-semibold text-foreground shadow-lg shadow-black/5 backdrop-blur-md transition hover:border-orange-400/40 hover:bg-surface-hover"

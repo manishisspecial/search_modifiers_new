@@ -1,7 +1,6 @@
-import { getSite } from "@/lib/get-site";
+import { site } from "@/lib/site";
 
-export async function OrganizationJsonLd() {
-  const site = await getSite();
+export function OrganizationJsonLd() {
   const data = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -36,8 +35,7 @@ export async function OrganizationJsonLd() {
   );
 }
 
-export async function WebSiteJsonLd() {
-  const site = await getSite();
+export function WebSiteJsonLd() {
   const data = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -55,7 +53,7 @@ export async function WebSiteJsonLd() {
   );
 }
 
-export async function ServiceJsonLd({
+export function ServiceJsonLd({
   name,
   description,
   url,
@@ -64,7 +62,6 @@ export async function ServiceJsonLd({
   description: string;
   url: string;
 }) {
-  const site = await getSite();
   const data = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -83,7 +80,7 @@ export async function ServiceJsonLd({
   );
 }
 
-export async function ArticleJsonLd({
+export function ArticleJsonLd({
   title,
   description,
   datePublished,
@@ -96,7 +93,6 @@ export async function ArticleJsonLd({
   url: string;
   authorName: string;
 }) {
-  const site = await getSite();
   const data = {
     "@context": "https://schema.org",
     "@type": "Article",

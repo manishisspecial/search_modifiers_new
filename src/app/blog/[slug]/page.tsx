@@ -6,20 +6,19 @@ import { FadeIn } from "@/components/motion/fade-in";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { ArticleJsonLd } from "@/components/seo/json-ld";
-import { getPostBySlug, getPostSlugs } from "@/lib/db-queries";
-import { getSite } from "@/lib/get-site";
+import { blogPosts, getPostBySlug } from "@/lib/blog-data";
+import { site } from "@/lib/site";
 import { ArrowLeft, Calendar } from "lucide-react";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export async function generateStaticParams() {
-  const slugs = await getPostSlugs();
-  return slugs.map((slug) => ({ slug }));
+export function generateStaticParams() {
+  return blogPosts.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const [site, post] = await Promise.all([getSite(), getPostBySlug(slug)]);
+  const post = getPostBySlug(slug);
   if (!post) return {};
   return {
     title: post.title,
@@ -38,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const [site, post] = await Promise.all([getSite(), getPostBySlug(slug)]);
+  const post = getPostBySlug(slug);
   if (!post) notFound();
 
   const url = `${site.url}/blog/${post.slug}`;
