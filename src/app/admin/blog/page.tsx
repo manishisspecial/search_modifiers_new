@@ -12,6 +12,7 @@ interface BlogPost {
   excerpt: string;
   date: string;
   author: string;
+  status: "DRAFT" | "SCHEDULED" | "PUBLISHED";
 }
 
 export default function BlogPage() {
@@ -77,9 +78,22 @@ export default function BlogPage() {
             >
               <div className="flex justify-between items-start gap-4">
                 <div className="flex-1">
-                  <h3 className="font-bold font-display text-foreground mb-1">
-                    {post.title}
-                  </h3>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-bold font-display text-foreground">
+                      {post.title}
+                    </h3>
+                    <span
+                      className={`inline-block px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${
+                        post.status === "PUBLISHED"
+                          ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                          : post.status === "SCHEDULED"
+                          ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                          : "bg-yellow-500/10 text-yellow-600 dark:text-yellow-400"
+                      }`}
+                    >
+                      {post.status}
+                    </span>
+                  </div>
                   <p className="text-sm text-muted mb-2 line-clamp-1">
                     {post.excerpt}
                   </p>

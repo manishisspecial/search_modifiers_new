@@ -143,22 +143,76 @@ model ServiceFAQ {
   @@map("service_faqs")
 }
 
-model BlogPost {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  title       String
-  excerpt     String
-  content     String   @db.Text
-  date        String
-  author      String
-  readTime    String
-  category    String
+enum BlogPostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+}
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  deletedAt   DateTime?
+model BlogCategory {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  parentId  String?
+  order     Int      @default(0)
+
+  parent    BlogCategory?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children  BlogCategory[] @relation("CategoryHierarchy")
+  posts     BlogPost[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("blog_categories")
+}
+
+model BlogPost {
+  id               String         @id @default(cuid())
+  slug             String         @unique
+  title            String
+  excerpt          String
+  content          String         @db.Text
+  date             String
+  author           String
+  readTime         String
+  categoryId       String?
+  category         BlogCategory?  @relation(fields: [categoryId], references: [id])
+
+  metaTitle        String?
+  metaDescription  String?
+  metaTags         Json           @default("[]")
+  canonicalUrl     String?
+  customSchema     String?        @db.Text
+  featuredImage    String?
+  featuredImageAlt String?
+  primaryKeyword   String?
+  status           BlogPostStatus @default(DRAFT)
+  scheduledAt      DateTime?
+  publishedAt      DateTime?
+  noindex          Boolean        @default(false)
+  nofollow         Boolean        @default(false)
+  tags             Json           @default("[]")
+
+  versions         BlogPostVersion[]
+
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  deletedAt        DateTime?
 
   @@map("blog_posts")
+}
+
+model BlogPostVersion {
+  id         String   @id @default(cuid())
+  blogPostId String
+  title      String
+  content    String   @db.Text
+  snapshot   Json
+  blogPost   BlogPost @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+
+  @@map("blog_post_versions")
 }
 
 model CaseStudy {
@@ -312,11 +366,25 @@ model SiteSettings {
   instagramUrl        String?
   facebookUrl         String?
   youtubeUrl          String?
+  robotsTxt           String?  @db.Text
 
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
   @@map("site_settings")
+}
+
+model Redirect {
+  id        String   @id @default(cuid())
+  fromPath  String   @unique
+  toPath    String
+  type      Int      @default(301)
+  isActive  Boolean  @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("redirects")
 }
 
 model TrustBadge {

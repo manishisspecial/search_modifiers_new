@@ -73,7 +73,11 @@ export async function getStaticPageSlugs() {
 export async function getPosts() {
   try {
     return await prisma.blogPost.findMany({
-      where: { deletedAt: null },
+      where: {
+        deletedAt: null,
+        status: "PUBLISHED",
+      },
+      include: { category: true },
       orderBy: { date: "desc" },
     });
   } catch {
@@ -84,7 +88,8 @@ export async function getPosts() {
 export async function getPostBySlug(slug: string) {
   try {
     return await prisma.blogPost.findFirst({
-      where: { slug, deletedAt: null },
+      where: { slug, deletedAt: null, status: "PUBLISHED" },
+      include: { category: true },
     });
   } catch {
     return null;
@@ -94,10 +99,26 @@ export async function getPostBySlug(slug: string) {
 export async function getRecentBlogPosts(limit: number = 3) {
   try {
     return await prisma.blogPost.findMany({
-      where: { deletedAt: null },
+      where: {
+        deletedAt: null,
+        status: "PUBLISHED",
+      },
+      include: { category: true },
       orderBy: { date: "desc" },
       take: limit,
     });
+  } catch {
+    return [];
+  }
+}
+
+export async function getPublishedPostSlugs() {
+  try {
+    const posts = await prisma.blogPost.findMany({
+      where: { deletedAt: null, status: "PUBLISHED" },
+      select: { slug: true },
+    });
+    return posts.map((p) => p.slug);
   } catch {
     return [];
   }
@@ -201,6 +222,26 @@ export async function getStaticPageBySlug(slug: string) {
     });
   } catch {
     return null;
+  }
+}
+
+// Trust Badges
+export async function getTrustBadges() {
+  try {
+    return await prisma.trustBadge.findMany({
+      orderBy: { createdAt: "asc" },
+    });
+  } catch {
+    return [];
+  }
+}
+
+// Footer Ratings
+export async function getFooterRatings() {
+  try {
+    return await prisma.footerRating.findMany();
+  } catch {
+    return [];
   }
 }
 

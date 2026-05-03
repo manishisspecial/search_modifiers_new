@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { blogPosts } from "@/lib/blog-data";
+import { prisma } from "@/lib/db";
 import { getCaseStudySlugs } from "@/lib/case-studies";
 import { locationSlugs } from "@/lib/locations-data";
 import { serviceSlugs } from "@/lib/services-data";
@@ -21,8 +21,17 @@ const staticRoutes = [
   "/request-quote",
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = site.url.replace(/\/$/, "");
+
+  const publishedPosts = await prisma.blogPost.findMany({
+    where: {
+      status: "PUBLISHED",
+      deletedAt: null,
+      noindex: false,
+    },
+    select: { slug: true, updatedAt: true, publishedAt: true },
+  });
 
   const entries: MetadataRoute.Sitemap = [
     ...staticRoutes.map((path) => ({
@@ -43,9 +52,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
-    ...blogPosts.map((p) => ({
+    ...publishedPosts.map((p) => ({
       url: `${base}/blog/${p.slug}`,
-      lastModified: new Date(p.date),
+      lastModified: p.publishedAt || p.updatedAt,
       changeFrequency: "monthly" as const,
       priority: 0.65,
     })),

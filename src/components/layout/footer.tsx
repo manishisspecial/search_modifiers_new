@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { footerColumns } from "@/lib/navigation";
 import { site } from "@/lib/site";
+import { getTrustBadges, getFooterRatings } from "@/lib/db-queries";
 import { ArrowUpRight, Mail, MapPin, Phone, Facebook, Youtube, Linkedin, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -52,7 +53,29 @@ const footerSocialIcons = [
   },
 ] as const;
 
-export function Footer() {
+export async function Footer() {
+  const [dbBadges, dbRatings] = await Promise.all([
+    getTrustBadges(),
+    getFooterRatings(),
+  ]);
+
+  const trustBadges =
+    dbBadges.length > 0
+      ? dbBadges.map((b) => ({ label: b.label, subtitle: b.subtitle, href: b.href }))
+      : site.trustBadges;
+
+  const googleRating = dbRatings.find((r) => r.platform === "google");
+  const clutchRating = dbRatings.find((r) => r.platform === "clutch");
+
+  const footerRatings = {
+    google: googleRating
+      ? { score: googleRating.score, href: googleRating.href, maxScore: "5" }
+      : site.footerRatings.google,
+    clutch: clutchRating
+      ? { score: clutchRating.score, href: clutchRating.href }
+      : site.footerRatings.clutch,
+  };
+
   return (
     <footer className="relative bg-background">
       <div className="gradient-line" />
@@ -81,7 +104,7 @@ export function Footer() {
 
         {/* Trust badges — partner / ratings strip */}
         <div className="mb-14 flex flex-wrap gap-3 sm:gap-4">
-          {site.trustBadges.map((b) => (
+          {trustBadges.map((b) => (
             <a
               key={b.label}
               href={b.href}
@@ -168,7 +191,7 @@ export function Footer() {
 
           <div className="order-2 flex flex-wrap items-center justify-center gap-3 sm:justify-end lg:order-3">
             <a
-              href={site.footerRatings.google.href}
+              href={footerRatings.google.href}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-xs shadow-sm transition hover:border-orange-500/25"
@@ -177,12 +200,12 @@ export function Footer() {
                 G
               </span>
               <span className="text-muted">
-                <span className="font-semibold text-foreground">{site.footerRatings.google.score}</span>
-                /{site.footerRatings.google.maxScore} rating
+                <span className="font-semibold text-foreground">{footerRatings.google.score}</span>
+                /5 rating
               </span>
             </a>
             <a
-              href={site.footerRatings.clutch.href}
+              href={footerRatings.clutch.href}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-xs shadow-sm transition hover:border-orange-500/25"
@@ -191,7 +214,7 @@ export function Footer() {
                 C
               </span>
               <span className="text-muted">
-                <span className="font-semibold text-foreground">{site.footerRatings.clutch.score}</span> rating
+                <span className="font-semibold text-foreground">{footerRatings.clutch.score}</span> rating
               </span>
             </a>
           </div>

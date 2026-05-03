@@ -86,14 +86,16 @@ export function ArticleJsonLd({
   datePublished,
   url,
   authorName,
+  customSchema,
 }: {
   title: string;
   description: string;
   datePublished: string;
   url: string;
   authorName: string;
+  customSchema?: Record<string, unknown>;
 }) {
-  const data = {
+  const data = customSchema || {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: title,

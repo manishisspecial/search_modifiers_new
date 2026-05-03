@@ -30,6 +30,8 @@ import {
   Navigation2,
   Award,
   FileCode,
+  ArrowRightLeft,
+  Search,
 } from "lucide-react";
 
 const navigation = [
@@ -48,6 +50,8 @@ const navigation = [
   { label: "Trust Badges", href: "/admin/trust-badges", icon: Award },
   { label: "Footer Ratings", href: "/admin/footer-ratings", icon: Star },
   { label: "Page Content", href: "/admin/page-content", icon: FileCode },
+  { label: "Redirects", href: "/admin/redirects", icon: ArrowRightLeft },
+  { label: "SEO Tools", href: "/admin/seo", icon: Search },
   { label: "Site Settings", href: "/admin/site-settings", icon: Settings },
 ];
 
