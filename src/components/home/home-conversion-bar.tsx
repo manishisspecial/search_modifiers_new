@@ -1,7 +1,6 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import Link from "next/link";
 import { ArrowRight, Calendar, FileSearch, Phone } from "lucide-react";
 import { site } from "@/lib/site";
 import { Button } from "@/components/ui/button";
@@ -51,12 +50,12 @@ export function HomeConversionBar() {
             <Button href="/request-quote" variant="secondary" className="justify-center px-8 py-3.5 text-base">
               Request a quote
             </Button>
-            <Link
+            <a
               href={`tel:${site.phoneTel}`}
               className="text-center text-sm text-muted/70 transition-colors duration-300 hover:text-orange-400 lg:text-left"
             >
               Or call <span className="font-medium text-muted">{site.phone}</span>
-            </Link>
+            </a>
           </div>
         </div>
       </div>

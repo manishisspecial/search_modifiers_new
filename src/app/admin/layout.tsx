@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   Briefcase,
   FileText,
+  FolderTree,
   FolderKanban,
   Star,
   MapPin,
@@ -38,6 +39,7 @@ const navigation = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Services", href: "/admin/services", icon: Briefcase },
   { label: "Blog", href: "/admin/blog", icon: FileText },
+  { label: "Categories", href: "/admin/blog/categories", icon: FolderTree },
   { label: "Case Studies", href: "/admin/case-studies", icon: FolderKanban },
   { label: "Testimonials", href: "/admin/testimonials", icon: Star },
   { label: "Locations", href: "/admin/locations", icon: MapPin },
@@ -153,6 +155,10 @@ export default function AdminLayout({
   const isActive = (href: string) => {
     if (href === "/admin") {
       return pathname === "/admin";
+    }
+    if (href === "/admin/blog") {
+      // Only match exact /admin/blog or /admin/blog/new and /admin/blog/[id], not /admin/blog/categories
+      return pathname === "/admin/blog" || (pathname.startsWith("/admin/blog/") && !pathname.startsWith("/admin/blog/categories"));
     }
     return pathname.startsWith(href);
   };

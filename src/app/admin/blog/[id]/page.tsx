@@ -4,12 +4,42 @@ import { useEffect, useState, useMemo } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { FormLayout, FormField, FormInput, FormTextarea } from "@/components/admin/form-layout";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
-import { Clock, Eye, History, Search, FileText, Settings2, Upload } from "lucide-react";
+import { FeaturedImagePicker } from "@/components/admin/featured-image-picker";
+import { Clock, Eye, History, Search, FileText, Settings2, Upload, CheckCircle2, XCircle } from "lucide-react";
+import { computeSeoScore } from "@/lib/seo-score";
 
 interface BlogCategory {
   id: string;
   name: string;
   slug: string;
+  parentId: string | null;
+  order: number;
+  children?: BlogCategory[];
+}
+
+function flattenCategories(
+  cats: BlogCategory[],
+  depth = 0
+): { id: string; label: string }[] {
+  return cats.flatMap((c) => [
+    { id: c.id, label: "—".repeat(depth) + (depth > 0 ? " " : "") + c.name },
+    ...flattenCategories(c.children ?? [], depth + 1),
+  ]);
+}
+
+function buildCategoryTree(cats: BlogCategory[]): BlogCategory[] {
+  const map = new Map<string, BlogCategory>();
+  const roots: BlogCategory[] = [];
+  cats.forEach((c) => map.set(c.id, { ...c, children: [] }));
+  cats.forEach((c) => {
+    const node = map.get(c.id)!;
+    if (c.parentId && map.has(c.parentId)) {
+      map.get(c.parentId)!.children!.push(node);
+    } else {
+      roots.push(node);
+    }
+  });
+  return [...roots].sort((a, b) => a.order - b.order);
 }
 
 interface BlogVersion {
@@ -43,51 +73,6 @@ function extractHeadings(content: string): { level: number; text: string }[] {
   return headings;
 }
 
-function computeSeoScore(data: {
-  metaTitle: string;
-  metaDescription: string;
-  primaryKeyword: string;
-  featuredImageAlt: string;
-  content: string;
-}): { score: number; issues: string[] } {
-  const issues: string[] = [];
-  let score = 100;
-
-  if (!data.metaTitle) {
-    issues.push("Missing meta title");
-    score -= 15;
-  } else if (data.metaTitle.length > 60) {
-    issues.push("Meta title too long (>60 chars)");
-    score -= 5;
-  }
-
-  if (!data.metaDescription) {
-    issues.push("Missing meta description");
-    score -= 15;
-  } else if (data.metaDescription.length > 160) {
-    issues.push("Meta description too long (>160 chars)");
-    score -= 5;
-  } else if (data.metaDescription.length < 50) {
-    issues.push("Meta description too short (<50 chars)");
-    score -= 5;
-  }
-
-  if (!data.primaryKeyword) {
-    issues.push("No primary keyword assigned");
-    score -= 10;
-  } else if (data.content && !data.content.toLowerCase().includes(data.primaryKeyword.toLowerCase())) {
-    issues.push("Primary keyword not found in content");
-    score -= 10;
-  }
-
-  if (!data.featuredImageAlt) {
-    issues.push("Missing featured image alt text");
-    score -= 10;
-  }
-
-  return { score: Math.max(0, score), issues };
-}
-
 export default function EditBlogPostPage() {
   const router = useRouter();
   const params = useParams();
@@ -96,8 +81,10 @@ export default function EditBlogPostPage() {
   const [isFetching, setIsFetching] = useState(true);
   const [categories, setCategories] = useState<BlogCategory[]>([]);
   const [versions, setVersions] = useState<BlogVersion[]>([]);
+  const [allTags, setAllTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [metaTagInput, setMetaTagInput] = useState("");
+  const [showTagSuggestions, setShowTagSuggestions] = useState(false);
 
   const [formData, setFormData] = useState({
     slug: "",
@@ -126,10 +113,11 @@ export default function EditBlogPostPage() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const [postRes, catRes, verRes] = await Promise.all([
+        const [postRes, catRes, verRes, tagsRes] = await Promise.all([
           fetch(`/api/admin/blog/${params.id}`),
           fetch("/api/admin/blog/categories"),
           fetch(`/api/admin/blog/${params.id}/versions`),
+          fetch("/api/admin/blog/tags"),
         ]);
 
         if (!postRes.ok) throw new Error("Failed to fetch post");
@@ -161,6 +149,7 @@ export default function EditBlogPostPage() {
 
         if (catRes.ok) setCategories(await catRes.json());
         if (verRes.ok) setVersions(await verRes.json());
+        if (tagsRes.ok) setAllTags(await tagsRes.json());
       } catch (error) {
         console.error("Error:", error);
         alert("Failed to load blog post");
@@ -232,7 +221,8 @@ export default function EditBlogPostPage() {
   const headings = useMemo(() => extractHeadings(formData.content), [formData.content]);
   const seoScore = useMemo(
     () => computeSeoScore(formData),
-    [formData.metaTitle, formData.metaDescription, formData.primaryKeyword, formData.featuredImageAlt, formData.content]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [formData.title, formData.metaTitle, formData.metaDescription, formData.primaryKeyword, formData.featuredImageAlt, formData.content]
   );
 
   if (isFetching) {
@@ -314,22 +304,14 @@ export default function EditBlogPostPage() {
               />
             </FormField>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               <FormField label="Featured Image">
-                <div className="space-y-2">
-                  <FormInput
-                    value={formData.featuredImage}
-                    onChange={(e) => setFormData({ ...formData, featuredImage: e.target.value })}
-                    placeholder="Image URL (Cloudinary)"
-                  />
-                  {formData.featuredImage && (
-                    <img
-                      src={formData.featuredImage}
-                      alt={formData.featuredImageAlt || "Preview"}
-                      className="w-full h-32 object-cover rounded-lg border border-border"
-                    />
-                  )}
-                </div>
+                <FeaturedImagePicker
+                  value={formData.featuredImage}
+                  onChange={(url) => setFormData({ ...formData, featuredImage: url })}
+                  altValue={formData.featuredImageAlt}
+                  onAltChange={(alt) => setFormData({ ...formData, featuredImageAlt: alt })}
+                />
               </FormField>
               <FormField label="Image Alt Text">
                 <FormInput
@@ -353,12 +335,37 @@ export default function EditBlogPostPage() {
                   {seoScore.score}/100
                 </span>
               </div>
+              {/* Progress bar */}
+              <div className="w-full bg-surface rounded-full h-1.5 mb-3">
+                <div
+                  className={`h-1.5 rounded-full transition-all duration-500 ${seoScore.score >= 80 ? "bg-emerald-500" : seoScore.score >= 50 ? "bg-yellow-500" : "bg-red-500"}`}
+                  style={{ width: `${seoScore.score}%` }}
+                />
+              </div>
+              {/* Issues */}
               {seoScore.issues.length > 0 && (
-                <ul className="text-xs text-muted space-y-1">
+                <ul className="space-y-1 mb-2">
                   {seoScore.issues.map((issue, i) => (
-                    <li key={i}>• {issue}</li>
+                    <li key={i} className="flex items-start gap-1.5 text-xs text-red-400">
+                      <XCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
+                      <span>{issue}</span>
+                    </li>
                   ))}
                 </ul>
+              )}
+              {/* Passes */}
+              {seoScore.passes.length > 0 && (
+                <ul className="space-y-1">
+                  {seoScore.passes.map((pass, i) => (
+                    <li key={i} className="flex items-start gap-1.5 text-xs text-emerald-400">
+                      <CheckCircle2 className="w-3.5 h-3.5 mt-0.5 shrink-0" />
+                      <span>{pass}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {seoScore.issues.length === 0 && seoScore.passes.length === 0 && (
+                <p className="text-xs text-muted">Fill in the SEO fields below to see your score.</p>
               )}
             </div>
 
@@ -380,8 +387,10 @@ export default function EditBlogPostPage() {
                 placeholder="SEO description for search engine results"
                 rows={3}
               />
-              <span className={`text-xs ${(formData.metaDescription || "").length > 160 ? "text-red-500" : "text-muted"}`}>
+              <span className={`text-xs ${(formData.metaDescription || "").length > 160 ? "text-red-500" : (formData.metaDescription || "").length > 0 && (formData.metaDescription || "").length < 50 ? "text-yellow-500" : "text-muted"}`}>
                 {(formData.metaDescription || "").length}/160 characters
+                {(formData.metaDescription || "").length > 0 && (formData.metaDescription || "").length < 50 && " — too short"}
+                {(formData.metaDescription || "").length > 160 && " — too long"}
               </span>
             </FormField>
 
@@ -444,31 +453,53 @@ export default function EditBlogPostPage() {
               />
             </FormField>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex items-center gap-3">
-                <label className="relative inline-flex items-center cursor-pointer">
+            <div className="rounded-xl border border-border bg-card p-4 space-y-4">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-foreground">Noindex</p>
+                  <p className="text-xs text-muted mt-0.5">
+                    Prevents search engines from indexing this post in search results.
+                  </p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer shrink-0 mt-0.5">
                   <input
                     type="checkbox"
                     checked={formData.noindex}
                     onChange={(e) => setFormData({ ...formData, noindex: e.target.checked })}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-surface rounded-full peer peer-checked:bg-orange-500 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" />
+                  <div className="relative w-11 h-6 bg-gray-600 rounded-full peer peer-checked:bg-orange-500 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" />
                 </label>
-                <span className="text-sm text-foreground">Noindex</span>
               </div>
-              <div className="flex items-center gap-3">
-                <label className="relative inline-flex items-center cursor-pointer">
+
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-foreground">Nofollow</p>
+                  <p className="text-xs text-muted mt-0.5">
+                    Tells search engines not to follow outbound links on this post.
+                  </p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer shrink-0 mt-0.5">
                   <input
                     type="checkbox"
                     checked={formData.nofollow}
                     onChange={(e) => setFormData({ ...formData, nofollow: e.target.checked })}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-surface rounded-full peer peer-checked:bg-orange-500 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" />
+                  <div className="relative w-11 h-6 bg-gray-600 rounded-full peer peer-checked:bg-orange-500 transition-colors after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" />
                 </label>
-                <span className="text-sm text-foreground">Nofollow</span>
               </div>
+
+              {(formData.noindex || formData.nofollow) && (
+                <div className="rounded-lg bg-amber-500/10 border border-amber-500/30 p-3 text-xs text-amber-400">
+                  <strong>Warning:</strong>{" "}
+                  {formData.noindex && formData.nofollow
+                    ? "Search engines will not index this post or follow its links."
+                    : formData.noindex
+                    ? "This post will be excluded from search engine results."
+                    : "Search engines will not follow links on this post."}
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -522,9 +553,9 @@ export default function EditBlogPostPage() {
                 className="w-full px-4 py-2 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-brand"
               >
                 <option value="">No category</option>
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
+                {flattenCategories(buildCategoryTree(categories)).map((opt) => (
+                  <option key={opt.id} value={opt.id}>
+                    {opt.label}
                   </option>
                 ))}
               </select>
@@ -548,19 +579,46 @@ export default function EditBlogPostPage() {
                   </span>
                 ))}
               </div>
-              <div className="flex gap-2">
+              <div className="relative">
                 <FormInput
                   value={tagInput}
-                  onChange={(e) => setTagInput(e.target.value)}
+                  onChange={(e) => { setTagInput(e.target.value); setShowTagSuggestions(true); }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault();
                       addTag(tagInput, "tags");
                       setTagInput("");
+                      setShowTagSuggestions(false);
                     }
+                    if (e.key === "Escape") setShowTagSuggestions(false);
                   }}
+                  onFocus={() => setShowTagSuggestions(true)}
+                  onBlur={() => setTimeout(() => setShowTagSuggestions(false), 150)}
                   placeholder="Type and press Enter to add tags"
                 />
+                {showTagSuggestions && tagInput && (
+                  <div className="absolute top-full left-0 right-0 z-10 mt-1 rounded-lg border border-border bg-card shadow-lg overflow-hidden max-h-40 overflow-y-auto">
+                    {allTags
+                      .filter((t) => t.toLowerCase().includes(tagInput.toLowerCase()) && !formData.tags.includes(t))
+                      .map((t) => (
+                        <button
+                          key={t}
+                          type="button"
+                          onMouseDown={() => {
+                            addTag(t, "tags");
+                            setTagInput("");
+                            setShowTagSuggestions(false);
+                          }}
+                          className="w-full text-left px-4 py-2 text-sm text-foreground hover:bg-surface transition-colors"
+                        >
+                          {t}
+                        </button>
+                      ))}
+                    {allTags.filter((t) => t.toLowerCase().includes(tagInput.toLowerCase()) && !formData.tags.includes(t)).length === 0 && (
+                      <p className="px-4 py-2 text-sm text-muted">Press Enter to add &ldquo;{tagInput}&rdquo;</p>
+                    )}
+                  </div>
+                )}
               </div>
             </FormField>
           </div>

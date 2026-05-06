@@ -5,8 +5,8 @@ export const site = {
     "Search Modifiers is a results-driven digital marketing agency specializing in online reputation management, PR, SEO, paid media, and web development helping brands control their online presence, build trust, and generate measurable business growth.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://searchmodifiers.com",
   email: "hello@searchmodifiers.com",
-  phone: "8851037172",
-  phoneTel: "+918851037172",
+  phone: "+91 88510 37172",
+  phoneTel: "+91-8851037172",
   whatsapp: "918851037172",
   /** Region label for the office section heading */
   officeRegion: "Delhi NCR",

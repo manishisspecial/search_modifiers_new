@@ -5,7 +5,6 @@ import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { Magnetic } from "@/components/motion/magnetic";
 import { MaskReveal } from "@/components/motion/mask-reveal";
 import type { ServiceBlock } from "@/lib/services-data";
 import type { ServiceMeta } from "@/lib/services-meta";
@@ -125,24 +124,20 @@ export function ServiceHero({
             ) : null}
 
             <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
-              <Magnetic strength={0.3}>
-                <Button
-                  href="/request-quote"
-                  className="group min-h-[50px] px-8 py-3 text-base shadow-xl shadow-orange-500/25"
-                >
-                  Get a custom proposal
-                  <ArrowRight className="cta-arrow-nudge h-4 w-4 shrink-0" />
-                </Button>
-              </Magnetic>
-              <Magnetic strength={0.25}>
-                <Button
-                  href="/free-website-audit"
-                  variant="outline"
-                  className="min-h-[50px] px-8 py-3 text-base"
-                >
-                  Free website audit
-                </Button>
-              </Magnetic>
+              <Button
+                href="/request-quote"
+                className="group min-h-[50px] px-8 py-3 text-base shadow-xl shadow-orange-500/25"
+              >
+                Get a custom proposal
+                <ArrowRight className="cta-arrow-nudge h-4 w-4 shrink-0" />
+              </Button>
+              <Button
+                href="/free-website-audit"
+                variant="outline"
+                className="min-h-[50px] px-8 py-3 text-base"
+              >
+                Free website audit
+              </Button>
             </div>
           </div>
 

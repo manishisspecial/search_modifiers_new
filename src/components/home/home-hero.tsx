@@ -16,7 +16,6 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { AnimatedCounter } from "@/components/motion/animated-counter";
 import { MaskReveal } from "@/components/motion/mask-reveal";
-import { Magnetic } from "@/components/motion/magnetic";
 import { ScrollHint } from "@/components/motion/scroll-hint";
 import { Tilt3D } from "@/components/motion/tilt-3d";
 import { Button } from "@/components/ui/button";
@@ -40,7 +39,6 @@ const stats: HeroStat[] = [
  *  2. Animated grid overlay that fades with scroll (scroll-linked).
  *  3. Mask-reveal kinetic headline with gradient accent.
  *  4. 3D tilt dashboard mockup on the right with holo sheen + SVG chart.
- *  5. Magnetic CTAs that pull toward the cursor.
  */
 export function HomeHero() {
   const reduce = useReducedMotion();
@@ -204,24 +202,20 @@ export function HomeHero() {
               transition={{ delay: 1.0, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
               className="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center"
             >
-              <Magnetic strength={0.3}>
-                <Button
-                  href="/request-quote"
-                  className="group min-h-[50px] px-8 py-3 text-base shadow-xl shadow-orange-500/25"
-                >
-                  Get a custom proposal
-                  <ArrowRight className="cta-arrow-nudge h-4 w-4 shrink-0" />
-                </Button>
-              </Magnetic>
-              <Magnetic strength={0.25}>
-                <Button
-                  href="/free-website-audit"
-                  variant="outline"
-                  className="min-h-[50px] px-8 py-3 text-base"
-                >
-                  Free website audit
-                </Button>
-              </Magnetic>
+              <Button
+                href="/request-quote"
+                className="group min-h-[50px] px-8 py-3 text-base shadow-xl shadow-orange-500/25"
+              >
+                Get a custom proposal
+                <ArrowRight className="cta-arrow-nudge h-4 w-4 shrink-0" />
+              </Button>
+              <Button
+                href="/free-website-audit"
+                variant="outline"
+                className="min-h-[50px] px-8 py-3 text-base"
+              >
+                Free website audit
+              </Button>
               <div className="inline-flex max-w-full flex-col gap-2 text-sm font-medium text-muted sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-2">
                 <a
                   href={`tel:${site.phoneTel}`}

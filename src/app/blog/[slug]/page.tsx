@@ -6,7 +6,7 @@ import { FadeIn } from "@/components/motion/fade-in";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { ArticleJsonLd } from "@/components/seo/json-ld";
-import { getPostBySlug, getPublishedPostSlugs } from "@/lib/db-queries";
+import { getPostBySlug, getPublishedPostSlugs, getPrimaryKeywords } from "@/lib/db-queries";
 import { site } from "@/lib/site";
 import { ArrowLeft, Calendar } from "lucide-react";
 
@@ -48,8 +48,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const [post, allKeywords] = await Promise.all([
+    getPostBySlug(slug),
+    getPrimaryKeywords(),
+  ]);
   if (!post) notFound();
+
+  // Build keyword→href pairs from other posts (skip the current post to avoid self-linking)
+  const keywordLinks = allKeywords
+    .filter((k) => k.slug !== slug)
+    .map((k) => ({ keyword: k.primaryKeyword, href: `/blog/${k.slug}` }));
 
   const url = `${site.url}/blog/${post.slug}`;
 
@@ -96,7 +104,13 @@ export default async function BlogPostPage({ params }: Props) {
             )}
 
             <p className="mt-8 text-xs font-semibold uppercase tracking-wider text-orange-400/90">
-              {post.category?.name || "Uncategorized"}
+              {post.category ? (
+                <Link href={`/blog/category/${post.category.slug}`} className="hover:underline">
+                  {post.category.name}
+                </Link>
+              ) : (
+                "Uncategorized"
+              )}
             </p>
             <h1 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
               {post.title}
@@ -118,18 +132,19 @@ export default async function BlogPostPage({ params }: Props) {
             {Array.isArray(post.tags) && (post.tags as string[]).length > 0 && (
               <div className="mt-4 flex flex-wrap gap-2">
                 {(post.tags as string[]).map((tag) => (
-                  <span
+                  <Link
                     key={tag}
-                    className="inline-block px-2.5 py-0.5 text-xs rounded-full bg-surface text-muted border border-border"
+                    href={`/blog/tag/${tag.toLowerCase().replace(/\s+/g, "-")}`}
+                    className="inline-block px-2.5 py-0.5 text-xs rounded-full bg-surface text-muted border border-border hover:border-orange-500/40 hover:text-orange-400 transition-colors"
                   >
-                    {tag}
-                  </span>
+                    #{tag}
+                  </Link>
                 ))}
               </div>
             )}
           </FadeIn>
           <div className="prose-invert mt-12">
-            <BlogBody content={post.content} />
+            <BlogBody content={post.content} keywordLinks={keywordLinks} />
           </div>
           <FadeIn className="mt-16 rounded-2xl border border-border bg-card p-8 text-center">
             <p className="text-muted">Want this level of thinking on your growth program?</p>

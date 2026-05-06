@@ -2,7 +2,64 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-export function BlogBody({ content }: { content: string }) {
+export interface KeywordLink {
+  keyword: string;
+  href: string;
+}
+
+/**
+ * Preprocesses markdown content to inject internal links for the first
+ * occurrence of each keyword. Skips code blocks, inline code, existing links,
+ * and heading lines to avoid breaking markdown structure.
+ */
+function injectKeywordLinks(markdown: string, keywordLinks: KeywordLink[]): string {
+  if (!keywordLinks.length) return markdown;
+
+  let result = markdown;
+
+  for (const { keyword, href } of keywordLinks) {
+    if (!keyword.trim()) continue;
+
+    const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    let replaced = false;
+
+    // Split on fenced code blocks, inline code, and existing markdown links
+    // Segments at odd indices are "protected" (code/links) — leave them untouched
+    const parts = result.split(/(```[\s\S]*?```|`[^`]*`|\[.*?\]\(.*?\))/);
+
+    result = parts
+      .map((part, i) => {
+        if (i % 2 !== 0 || replaced) return part;
+
+        const lines = part.split("\n");
+        const newLines = lines.map((line) => {
+          if (replaced) return line;
+          // Skip heading lines
+          if (/^#{1,6}\s/.test(line)) return line;
+
+          const regex = new RegExp(`\\b(${escaped})\\b`, "i");
+          return line.replace(regex, (match) => {
+            replaced = true;
+            return `[${match}](${href})`;
+          });
+        });
+        return newLines.join("\n");
+      })
+      .join("");
+  }
+
+  return result;
+}
+
+export function BlogBody({
+  content,
+  keywordLinks = [],
+}: {
+  content: string;
+  keywordLinks?: KeywordLink[];
+}) {
+  const processedContent = injectKeywordLinks(content, keywordLinks);
+
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
@@ -50,7 +107,7 @@ export function BlogBody({ content }: { content: string }) {
         },
       }}
     >
-      {content}
+      {processedContent}
     </ReactMarkdown>
   );
 }

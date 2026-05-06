@@ -124,6 +124,95 @@ export async function getPublishedPostSlugs() {
   }
 }
 
+// Blog Categories
+export async function getCategories() {
+  try {
+    return await prisma.blogCategory.findMany({
+      orderBy: { order: "asc" },
+      include: {
+        children: { orderBy: { order: "asc" } },
+        _count: { select: { posts: { where: { deletedAt: null, status: "PUBLISHED" } } } },
+      },
+    });
+  } catch {
+    return [];
+  }
+}
+
+export async function getCategoryBySlug(slug: string) {
+  try {
+    return await prisma.blogCategory.findUnique({
+      where: { slug },
+      include: {
+        parent: true,
+        children: { orderBy: { order: "asc" } },
+      },
+    });
+  } catch {
+    return null;
+  }
+}
+
+export async function getPostsByCategory(categoryId: string) {
+  try {
+    return await prisma.blogPost.findMany({
+      where: { deletedAt: null, status: "PUBLISHED", categoryId },
+      include: { category: true },
+      orderBy: { date: "desc" },
+    });
+  } catch {
+    return [];
+  }
+}
+
+// Blog Tags
+export async function getAllTags(): Promise<string[]> {
+  try {
+    const posts = await prisma.blogPost.findMany({
+      where: { deletedAt: null, status: "PUBLISHED" },
+      select: { tags: true },
+    });
+    const tagSet = new Set<string>();
+    for (const post of posts) {
+      const tags = post.tags as string[];
+      if (Array.isArray(tags)) tags.forEach((t) => t && tagSet.add(t));
+    }
+    return Array.from(tagSet).sort();
+  } catch {
+    return [];
+  }
+}
+
+export async function getPostsByTag(tag: string) {
+  try {
+    const posts = await prisma.blogPost.findMany({
+      where: { deletedAt: null, status: "PUBLISHED" },
+      include: { category: true },
+      orderBy: { date: "desc" },
+    });
+    return posts.filter((p) => {
+      const tags = p.tags as string[];
+      return Array.isArray(tags) && tags.some((t) => t.toLowerCase() === tag.toLowerCase());
+    });
+  } catch {
+    return [];
+  }
+}
+
+export async function getPrimaryKeywords(): Promise<{ slug: string; primaryKeyword: string }[]> {
+  try {
+    const posts = await prisma.blogPost.findMany({
+      where: { deletedAt: null, status: "PUBLISHED", primaryKeyword: { not: null } },
+      select: { slug: true, primaryKeyword: true },
+    });
+    return posts
+      .filter((p) => p.primaryKeyword)
+      .map((p) => ({ slug: p.slug, primaryKeyword: p.primaryKeyword as string }));
+  } catch {
+    return [];
+  }
+}
+
 // Case Studies
 export async function getCaseStudies() {
   try {
