@@ -7,6 +7,8 @@ import { z } from "zod";
 const FaqItemSchema = z.object({
   q: z.string().min(1),
   a: z.string().min(1),
+  placement: z.enum(["PAGE", "BLOG", "COUNTRY", "CITY"]).optional().default("PAGE"),
+  targetSlug: z.string().optional().nullable(),
   order: z.number().optional().default(0),
 });
 
@@ -35,8 +37,11 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const data = FaqItemSchema.parse(body);
-    const item = await prisma.faqItem.create({ data });
+    const item = await prisma.faqItem.create({
+      data: { ...data, targetSlug: data.targetSlug || null },
+    });
     revalidatePath("/faq");
+    revalidatePath("/");
     return NextResponse.json(item, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {

@@ -1,8 +1,19 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
-import { footerColumns } from "@/lib/navigation";
-import { site } from "@/lib/site";
-import { getTrustBadges, getFooterRatings } from "@/lib/db-queries";
+import {
+  footerColumns,
+  servicesNav as staticServicesNav,
+  locationsNav as staticLocationsNav,
+  type NavItem,
+} from "@/lib/navigation";
+import { getSite } from "@/lib/get-site";
+import {
+  getTrustBadges,
+  getFooterRatings,
+  getServicesNav,
+  getLocationsNav,
+  getFooterNav,
+} from "@/lib/db-queries";
 import { ArrowUpRight, Mail, MapPin, Phone, Facebook, Youtube, Linkedin, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -20,44 +31,67 @@ function WhatsAppIcon({ className }: { className?: string }) {
   );
 }
 
-const footerSocialIcons = [
-  {
-    name: "Facebook",
-    href: site.social.facebook,
-    Icon: Facebook,
-    className: "bg-[#1877F2] text-white hover:brightness-110",
-  },
-  {
-    name: "X",
-    href: site.social.twitter,
-    Icon: X,
-    className: "bg-foreground text-background hover:bg-foreground/90",
-  },
-  {
-    name: "YouTube",
-    href: site.social.youtube,
-    Icon: Youtube,
-    className: "bg-[#FF0000] text-white hover:brightness-110",
-  },
-  {
-    name: "LinkedIn",
-    href: site.social.linkedin,
-    Icon: Linkedin,
-    className: "bg-[#0A66C2] text-white hover:brightness-110",
-  },
-  {
-    name: "WhatsApp",
-    href: `https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Hi Search Modifiers — I'd like to discuss a growth project.")}`,
-    Icon: WhatsAppIcon,
-    className: "bg-[#25D366] text-white hover:brightness-110",
-  },
-] as const;
-
 export async function Footer() {
-  const [dbBadges, dbRatings] = await Promise.all([
+  const [site, dbBadges, dbRatings, dbServices, dbLocations, dbFooterNav] = await Promise.all([
+    getSite(),
     getTrustBadges(),
     getFooterRatings(),
+    getServicesNav(),
+    getLocationsNav(),
+    getFooterNav(),
   ]);
+
+  const toItems = (rows: { label: string; href: string }[]): NavItem[] =>
+    rows.map((r) => ({ label: r.label, href: r.href }));
+
+  // Build the footer columns from the DB nav with a static fallback so the
+  // footer always has links even before anything is set in the admin panel.
+  const services = dbServices.length ? toItems(dbServices) : staticServicesNav;
+  const locations = dbLocations.length ? toItems(dbLocations) : staticLocationsNav;
+  const companyLinks = dbFooterNav.length ? toItems(dbFooterNav) : footerColumns[0].links;
+
+  const columns: { title: string; links: NavItem[] }[] = [
+    { title: "Company", links: companyLinks },
+    { title: "Services", links: services.slice(0, 6) },
+    {
+      title: "More services",
+      links: [...services.slice(6), { label: "All services", href: "/services/digital-marketing" }],
+    },
+    { title: "Locations", links: locations },
+  ];
+
+  const footerSocialIcons = [
+    {
+      name: "Facebook",
+      href: site.social.facebook,
+      Icon: Facebook,
+      className: "bg-[#1877F2] text-white hover:brightness-110",
+    },
+    {
+      name: "X",
+      href: site.social.twitter,
+      Icon: X,
+      className: "bg-foreground text-background hover:bg-foreground/90",
+    },
+    {
+      name: "YouTube",
+      href: site.social.youtube,
+      Icon: Youtube,
+      className: "bg-[#FF0000] text-white hover:brightness-110",
+    },
+    {
+      name: "LinkedIn",
+      href: site.social.linkedin,
+      Icon: Linkedin,
+      className: "bg-[#0A66C2] text-white hover:brightness-110",
+    },
+    {
+      name: "WhatsApp",
+      href: `https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Hi Search Modifiers — I'd like to discuss a growth project.")}`,
+      Icon: WhatsAppIcon,
+      className: "bg-[#25D366] text-white hover:brightness-110",
+    },
+  ] as const;
 
   const trustBadges =
     dbBadges.length > 0
@@ -143,7 +177,7 @@ export async function Footer() {
             </ul>
           </div>
 
-          {footerColumns.slice(0, 4).map((col) => (
+          {columns.map((col) => (
             <div key={col.title}>
               <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-muted/70">{col.title}</h3>
               <ul className="mt-5 space-y-2.5">

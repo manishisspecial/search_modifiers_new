@@ -7,6 +7,7 @@ import { z } from "zod";
 const LocationUpdateSchema = z.object({
   slug: z.string().min(1),
   title: z.string().min(1),
+  type: z.enum(["COUNTRY", "CITY"]).optional().default("COUNTRY"),
   metaTitle: z.string().min(1),
   metaDescription: z.string().min(1),
   heroEyebrow: z.string(),
@@ -94,6 +95,7 @@ export async function PUT(
       data: {
         slug: validatedData.slug,
         title: validatedData.title,
+        type: validatedData.type,
         metaTitle: validatedData.metaTitle,
         metaDescription: validatedData.metaDescription,
         heroEyebrow: validatedData.heroEyebrow,
@@ -134,7 +136,7 @@ export async function PUT(
       },
     });
 
-    revalidatePath(`/locations/${validatedData.slug}`);
+    revalidatePath(`/location/${validatedData.slug}`);
     revalidatePath("/");
     return NextResponse.json(location);
   } catch (error) {

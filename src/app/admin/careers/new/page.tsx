@@ -11,6 +11,8 @@ export default function NewCareerRolePage() {
     title: "",
     type: "",
     description: "",
+    location: "",
+    applyUrl: "",
     isOpen: true,
     order: 0,
   });
@@ -26,13 +28,19 @@ export default function NewCareerRolePage() {
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) throw new Error("Failed to create career role");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        const msg = errorData?.error
+          ? typeof errorData.error === "string" ? errorData.error : JSON.stringify(errorData.error)
+          : `Failed to create career role (${response.status})`;
+        throw new Error(msg);
+      }
 
       const data = await response.json();
       router.push(`/admin/careers/${data.id}`);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error:", error);
-      alert("Failed to create career role");
+      alert(error?.message || "Failed to create career role");
     } finally {
       setIsLoading(false);
     }
@@ -79,6 +87,28 @@ export default function NewCareerRolePage() {
             rows={4}
           />
         </FormField>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField label="Location">
+            <FormInput
+              value={formData.location}
+              onChange={(e) =>
+                setFormData({ ...formData, location: e.target.value })
+              }
+              placeholder="e.g. Delhi NCR / Remote"
+            />
+          </FormField>
+
+          <FormField label="Apply URL">
+            <FormInput
+              value={formData.applyUrl}
+              onChange={(e) =>
+                setFormData({ ...formData, applyUrl: e.target.value })
+              }
+              placeholder="https://… (external form). Leave blank to use the contact page."
+            />
+          </FormField>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField label="Status">

@@ -27,13 +27,19 @@ export default function NewTeamMemberPage() {
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) throw new Error("Failed to create team member");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        const msg = errorData?.error
+          ? typeof errorData.error === "string" ? errorData.error : JSON.stringify(errorData.error)
+          : `Failed to create team member (${response.status})`;
+        throw new Error(msg);
+      }
 
       const data = await response.json();
       router.push(`/admin/team/${data.id}`);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error:", error);
-      alert("Failed to create team member");
+      alert(error?.message || "Failed to create team member");
     } finally {
       setIsLoading(false);
     }

@@ -8,17 +8,23 @@ import { ServiceBenefitIcon } from "@/components/services/service-benefit-icon";
 
 type Benefit = { title: string; description: string; icon: string };
 
-export function ServiceBenefitsGrid({ benefits }: { benefits: Benefit[] }) {
+export function ServiceBenefitsGrid({
+  benefits,
+  eyebrow = "Outcomes",
+  title = "Benefits that show up in your metrics",
+  description = "We optimize for pipeline, revenue proxies, and durable organic equity — not vanity dashboards.",
+}: {
+  benefits: Benefit[];
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+}) {
 
   return (
     <section className="relative py-20 sm:py-24">
       <div className="gradient-line absolute inset-x-0 top-0" />
       <Container>
-        <SectionHeading
-          eyebrow="Outcomes"
-          title="Benefits that show up in your metrics"
-          description="We optimize for pipeline, revenue proxies, and durable organic equity — not vanity dashboards."
-        />
+        <SectionHeading eyebrow={eyebrow} title={title} description={description} />
         <Stagger className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {benefits.map((b, i) => (
             <StaggerItem key={b.title}>

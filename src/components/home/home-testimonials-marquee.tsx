@@ -2,7 +2,7 @@
 
 import { Quote, Star } from "lucide-react";
 import { KineticMarquee } from "@/components/motion/kinetic-marquee";
-import { testimonials } from "@/lib/testimonials";
+import { testimonials as staticTestimonials, type Testimonial } from "@/lib/testimonials";
 
 /**
  * Premium testimonials marquee. Two counter-rotating rows of 3D-feeling
@@ -10,7 +10,8 @@ import { testimonials } from "@/lib/testimonials";
  * the parent's hover state. Unlike a static carousel, this scans as a
  * continuous wall of social proof.
  */
-export function HomeTestimonialsMarquee() {
+export function HomeTestimonialsMarquee({ items }: { items?: Testimonial[] }) {
+  const testimonials = items && items.length > 0 ? items : staticTestimonials;
   // Split the testimonials across two rows for visual balance
   const rowA = testimonials.slice(0, Math.ceil(testimonials.length / 2) + 1);
   const rowB = [...testimonials.slice(Math.ceil(testimonials.length / 2)), testimonials[0]];

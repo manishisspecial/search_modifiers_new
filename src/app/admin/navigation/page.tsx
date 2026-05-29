@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Edit, Trash2, Plus } from "lucide-react";
+import { Edit, Trash2, Plus, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface NavigationItem {
@@ -23,6 +23,9 @@ const CATEGORY_LABELS: Record<string, string> = {
 export default function NavigationPage() {
   const [items, setItems] = useState<NavigationItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [dragCategory, setDragCategory] = useState<string | null>(null);
+  const [dragId, setDragId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchItems();
@@ -51,12 +54,64 @@ export default function NavigationPage() {
     }
   };
 
+  const persistOrder = async (reordered: NavigationItem[]) => {
+    setIsSaving(true);
+    try {
+      await fetch("/api/admin/navigation/reorder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: reordered.map((it) => ({ id: it.id, order: it.order })),
+        }),
+      });
+    } catch (error) {
+      console.error("Failed to save order", error);
+      alert("Failed to save the new order");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  // Reorder within a single category and renumber `order` 0..n
+  const handleDrop = (category: string, targetId: string) => {
+    if (!dragId || dragCategory !== category || dragId === targetId) {
+      setDragId(null);
+      setDragCategory(null);
+      return;
+    }
+
+    const categoryItems = items
+      .filter((i) => i.category === category)
+      .sort((a, b) => a.order - b.order);
+
+    const fromIndex = categoryItems.findIndex((i) => i.id === dragId);
+    const toIndex = categoryItems.findIndex((i) => i.id === targetId);
+    if (fromIndex === -1 || toIndex === -1) return;
+
+    const next = [...categoryItems];
+    const [moved] = next.splice(fromIndex, 1);
+    next.splice(toIndex, 0, moved);
+
+    const renumbered = next.map((it, idx) => ({ ...it, order: idx }));
+
+    // Merge back with the other categories
+    const others = items.filter((i) => i.category !== category);
+    const merged = [...others, ...renumbered];
+    setItems(merged);
+    setDragId(null);
+    setDragCategory(null);
+    persistOrder(renumbered);
+  };
+
   const grouped = items.reduce<Record<string, NavigationItem[]>>((acc, item) => {
     const key = item.category;
     if (!acc[key]) acc[key] = [];
     acc[key].push(item);
     return acc;
   }, {});
+
+  // Keep each category sorted by order
+  Object.keys(grouped).forEach((k) => grouped[k].sort((a, b) => a.order - b.order));
 
   return (
     <div className="p-6">
@@ -65,7 +120,9 @@ export default function NavigationPage() {
           <h1 className="text-3xl font-bold font-display text-foreground">
             Navigation
           </h1>
-          <p className="text-muted">Manage navigation links across the site</p>
+          <p className="text-muted">
+            Drag items by the handle to reorder. {isSaving && <span className="text-orange-500">Saving…</span>}
+          </p>
         </div>
         <Link href="/admin/navigation/new">
           <Button variant="primary" className="flex items-center gap-2">
@@ -92,11 +149,27 @@ export default function NavigationPage() {
                 {categoryItems.map((item) => (
                   <div
                     key={item.id}
-                    className="glass rounded-xl p-4 border border-border hover:shadow-lg transition-shadow flex items-center justify-between"
+                    draggable
+                    onDragStart={() => {
+                      setDragId(item.id);
+                      setDragCategory(category);
+                    }}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={() => handleDrop(category, item.id)}
+                    className={`glass rounded-xl p-4 border transition-shadow flex items-center justify-between ${
+                      dragId === item.id
+                        ? "border-orange-500/60 opacity-60"
+                        : "border-border hover:shadow-lg"
+                    }`}
                   >
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-foreground">{item.label}</p>
-                      <p className="text-xs text-muted truncate">{item.href}</p>
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <span className="cursor-grab active:cursor-grabbing text-muted/60 hover:text-foreground" title="Drag to reorder">
+                        <GripVertical className="w-4 h-4" />
+                      </span>
+                      <div className="min-w-0">
+                        <p className="font-medium text-foreground">{item.label}</p>
+                        <p className="text-xs text-muted truncate">{item.href}</p>
+                      </div>
                     </div>
                     <div className="flex items-center gap-2 ml-4">
                       <span className="text-xs text-muted bg-surface px-2 py-1 rounded">

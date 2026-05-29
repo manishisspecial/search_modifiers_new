@@ -7,6 +7,55 @@ export interface KeywordLink {
   href: string;
 }
 
+/** Slugify heading text into a stable anchor id. */
+function slugifyHeading(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
+/** Flatten React markdown children into a plain string for id/text extraction. */
+function nodeToText(node: React.ReactNode): string {
+  if (node == null || node === false) return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(nodeToText).join("");
+  if (typeof node === "object" && "props" in (node as Record<string, unknown>)) {
+    // @ts-expect-error - React element children
+    return nodeToText((node as { props: { children?: React.ReactNode } }).props.children);
+  }
+  return "";
+}
+
+interface TocEntry {
+  level: 2 | 3;
+  text: string;
+  id: string;
+}
+
+/** Extract a table of contents from markdown ## and ### headings. */
+function extractToc(markdown: string): TocEntry[] {
+  const lines = markdown.split("\n");
+  const entries: TocEntry[] = [];
+  let inFence = false;
+  for (const line of lines) {
+    if (/^```/.test(line.trim())) {
+      inFence = !inFence;
+      continue;
+    }
+    if (inFence) continue;
+    const match = line.match(/^(#{2,3})\s+(.*)$/);
+    if (match) {
+      const level = match[1].length as 2 | 3;
+      const text = match[2].replace(/[#*_`]/g, "").trim();
+      if (text) entries.push({ level, text, id: slugifyHeading(text) });
+    }
+  }
+  return entries;
+}
+
 /**
  * Preprocesses markdown content to inject internal links for the first
  * occurrence of each keyword. Skips code blocks, inline code, existing links,
@@ -54,23 +103,59 @@ function injectKeywordLinks(markdown: string, keywordLinks: KeywordLink[]): stri
 export function BlogBody({
   content,
   keywordLinks = [],
+  showToc = true,
 }: {
   content: string;
   keywordLinks?: KeywordLink[];
+  showToc?: boolean;
 }) {
   const processedContent = injectKeywordLinks(content, keywordLinks);
+  const toc = extractToc(content);
+  // Auto-show a table of contents when the article has enough headings.
+  const renderToc = showToc && toc.length >= 2;
 
   return (
-    <ReactMarkdown
-      remarkPlugins={[remarkGfm]}
-      components={{
+    <>
+      {renderToc && (
+        <nav
+          aria-label="Table of contents"
+          className="mb-10 rounded-2xl border border-border bg-card/60 p-6"
+        >
+          <p className="font-display text-sm font-semibold uppercase tracking-wider text-orange-400/90">
+            Table of contents
+          </p>
+          <ol className="mt-4 space-y-2 text-sm">
+            {toc.map((entry, i) => (
+              <li key={`${entry.id}-${i}`} className={entry.level === 3 ? "pl-4" : ""}>
+                <a
+                  href={`#${entry.id}`}
+                  className="text-foreground/70 transition-colors hover:text-orange-400"
+                >
+                  {entry.text}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
         h2: ({ children }) => (
-          <h2 className="mt-12 scroll-mt-28 font-display text-2xl font-semibold text-foreground first:mt-0 sm:text-3xl">
+          <h2
+            id={slugifyHeading(nodeToText(children))}
+            className="mt-12 scroll-mt-28 font-display text-2xl font-semibold text-foreground first:mt-0 sm:text-3xl"
+          >
             {children}
           </h2>
         ),
         h3: ({ children }) => (
-          <h3 className="mt-8 scroll-mt-28 font-display text-xl font-semibold text-foreground sm:text-2xl">{children}</h3>
+          <h3
+            id={slugifyHeading(nodeToText(children))}
+            className="mt-8 scroll-mt-28 font-display text-xl font-semibold text-foreground sm:text-2xl"
+          >
+            {children}
+          </h3>
         ),
         p: ({ children }) => (
           <p className="mt-5 text-base leading-relaxed text-foreground/80 sm:text-lg">{children}</p>
@@ -105,9 +190,10 @@ export function BlogBody({
             </Link>
           );
         },
-      }}
-    >
-      {processedContent}
-    </ReactMarkdown>
+        }}
+      >
+        {processedContent}
+      </ReactMarkdown>
+    </>
   );
 }

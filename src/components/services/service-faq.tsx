@@ -9,7 +9,17 @@ import { useHasMounted } from "@/lib/use-has-mounted";
 
 type Faq = { q: string; a: string };
 
-export function ServiceFaq({ faqs }: { faqs: Faq[] }) {
+export function ServiceFaq({
+  faqs,
+  eyebrow = "FAQ",
+  title = "Questions clients ask first",
+  description = "Don't see yours? Drop us a line — we usually reply within one business day.",
+}: {
+  faqs: Faq[];
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+}) {
   const reduce = useReducedMotion();
   const mounted = useHasMounted();
   const [open, setOpen] = useState<number | null>(0);
@@ -22,11 +32,7 @@ export function ServiceFaq({ faqs }: { faqs: Faq[] }) {
       <div className="pointer-events-none absolute -left-20 top-1/4 h-72 w-72 rounded-full bg-orange-500/5 blur-[100px]" />
       <div className="pointer-events-none absolute -right-20 bottom-1/4 h-72 w-72 rounded-full bg-rose-500/5 blur-[100px]" />
       <Container>
-        <SectionHeading
-          eyebrow="FAQ"
-          title="Questions clients ask first"
-          description="Don't see yours? Drop us a line — we usually reply within one business day."
-        />
+        <SectionHeading eyebrow={eyebrow} title={title} description={description} />
 
         <div className="mx-auto mt-12 max-w-3xl space-y-3">
           {faqs.map((f, i) => {

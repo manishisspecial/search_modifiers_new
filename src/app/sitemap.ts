@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/db";
-import { getCaseStudySlugs } from "@/lib/case-studies";
+import { getCaseStudySlugs as getStaticCaseStudySlugs } from "@/lib/case-studies";
 import { locationSlugs } from "@/lib/locations-data";
 import { serviceSlugs } from "@/lib/services-data";
+import { getLocationSlugs, getCaseStudySlugs } from "@/lib/db-queries";
 import { site } from "@/lib/site";
 
 const staticRoutes = [
@@ -33,6 +34,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     select: { slug: true, updatedAt: true, publishedAt: true },
   });
 
+  const dbLocationSlugs = await getLocationSlugs();
+  const effectiveLocationSlugs = dbLocationSlugs.length > 0 ? dbLocationSlugs : [...locationSlugs];
+
+  const dbCaseStudySlugs = await getCaseStudySlugs();
+  const effectiveCaseStudySlugs = dbCaseStudySlugs.length > 0 ? dbCaseStudySlugs : getStaticCaseStudySlugs();
+
   const entries: MetadataRoute.Sitemap = [
     ...staticRoutes.map((path) => ({
       url: `${base}${path}`,
@@ -46,8 +53,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly" as const,
       priority: 0.75,
     })),
-    ...locationSlugs.map((slug) => ({
-      url: `${base}/locations/${slug}`,
+    ...effectiveLocationSlugs.map((slug) => ({
+      url: `${base}/location/${slug}`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.7,
@@ -58,7 +65,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.65,
     })),
-    ...getCaseStudySlugs().map((slug) => ({
+    ...effectiveCaseStudySlugs.map((slug) => ({
       url: `${base}/case-studies/${slug}`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,

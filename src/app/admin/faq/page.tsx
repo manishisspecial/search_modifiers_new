@@ -9,8 +9,17 @@ interface FaqItem {
   id: string;
   q: string;
   a: string;
+  placement?: string;
+  targetSlug?: string | null;
   order: number;
 }
+
+const PLACEMENT_LABELS: Record<string, string> = {
+  PAGE: "Page",
+  BLOG: "Blog",
+  COUNTRY: "Country Pages",
+  CITY: "City Pages",
+};
 
 export default function FaqAdminPage() {
   const [faqs, setFaqs] = useState<FaqItem[]>([]);
@@ -74,6 +83,19 @@ export default function FaqAdminPage() {
               className="glass rounded-2xl p-6 border border-border hover:shadow-lg transition-shadow"
             >
               <div className="space-y-2 mb-4">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="px-1.5 py-0.5 text-[10px] rounded bg-orange-500/10 text-orange-500 border border-orange-500/20">
+                    {PLACEMENT_LABELS[faq.placement || "PAGE"]}
+                  </span>
+                  {faq.targetSlug ? (
+                    <span className="px-1.5 py-0.5 text-[10px] rounded bg-surface text-muted border border-border font-mono">
+                      {faq.targetSlug}
+                    </span>
+                  ) : (
+                    <span className="text-[10px] text-muted/70">all</span>
+                  )}
+                  <span className="text-[10px] text-muted/70">· seq {faq.order}</span>
+                </div>
                 <p className="font-semibold text-foreground line-clamp-2">{faq.q}</p>
                 <p className="text-sm text-muted line-clamp-2">{faq.a}</p>
               </div>

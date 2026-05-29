@@ -8,6 +8,8 @@ const CareerRoleSchema = z.object({
   title: z.string().min(1),
   type: z.string().min(1),
   description: z.string().min(1),
+  location: z.string().optional().nullable(),
+  applyUrl: z.string().optional().nullable(),
   isOpen: z.boolean().optional().default(true),
   order: z.number().optional().default(0),
 });
@@ -39,6 +41,7 @@ export async function POST(req: NextRequest) {
     const data = CareerRoleSchema.parse(body);
     const item = await prisma.careerRole.create({ data });
     revalidatePath("/careers");
+    revalidatePath("/");
     return NextResponse.json(item, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {

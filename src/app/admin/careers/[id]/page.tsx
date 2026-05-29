@@ -13,6 +13,8 @@ export default function EditCareerRolePage() {
     title: "",
     type: "",
     description: "",
+    location: "",
+    applyUrl: "",
     isOpen: true,
     order: 0,
   });
@@ -27,6 +29,8 @@ export default function EditCareerRolePage() {
           title: data.title || "",
           type: data.type || "",
           description: data.description || "",
+          location: data.location || "",
+          applyUrl: data.applyUrl || "",
           isOpen: data.isOpen ?? true,
           order: data.order || 0,
         });
@@ -120,6 +124,28 @@ export default function EditCareerRolePage() {
             rows={4}
           />
         </FormField>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField label="Location">
+            <FormInput
+              value={formData.location}
+              onChange={(e) =>
+                setFormData({ ...formData, location: e.target.value })
+              }
+              placeholder="e.g. Delhi NCR / Remote"
+            />
+          </FormField>
+
+          <FormField label="Apply URL">
+            <FormInput
+              value={formData.applyUrl}
+              onChange={(e) =>
+                setFormData({ ...formData, applyUrl: e.target.value })
+              }
+              placeholder="https://… (external form). Leave blank to use the contact page."
+            />
+          </FormField>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField label="Status">

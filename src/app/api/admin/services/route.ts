@@ -19,6 +19,15 @@ const ServiceSchema = z.object({
   related: z.array(z.string()).optional().default([]),
   proof: z.array(z.object({ value: z.string(), label: z.string() })).optional().default([]),
   dashMeta: z.record(z.unknown()).optional(),
+  benefitsEyebrow: z.string().optional(),
+  benefitsTitle: z.string().optional(),
+  benefitsDescription: z.string().optional(),
+  processEyebrow: z.string().optional(),
+  processTitle: z.string().optional(),
+  processDescription: z.string().optional(),
+  faqEyebrow: z.string().optional(),
+  faqTitle: z.string().optional(),
+  faqDescription: z.string().optional(),
   benefits: z.array(
     z.object({
       title: z.string(),
@@ -93,6 +102,15 @@ export async function POST(req: NextRequest) {
         related: validatedData.related,
         proof: validatedData.proof,
         dashMeta: validatedData.dashMeta ?? undefined,
+        benefitsEyebrow: validatedData.benefitsEyebrow || null,
+        benefitsTitle: validatedData.benefitsTitle || null,
+        benefitsDescription: validatedData.benefitsDescription || null,
+        processEyebrow: validatedData.processEyebrow || null,
+        processTitle: validatedData.processTitle || null,
+        processDescription: validatedData.processDescription || null,
+        faqEyebrow: validatedData.faqEyebrow || null,
+        faqTitle: validatedData.faqTitle || null,
+        faqDescription: validatedData.faqDescription || null,
         benefits: {
           createMany: {
             data: validatedData.benefits.map((benefit, index) => ({

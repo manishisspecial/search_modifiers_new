@@ -16,6 +16,15 @@ export type ServiceBlock = {
   explanation: string;
   /** Rich markdown (headings, lists, GFM tables) rendered in the primary service narrative block. */
   detailMarkdown?: string;
+  benefitsEyebrow?: string | null;
+  benefitsTitle?: string | null;
+  benefitsDescription?: string | null;
+  processEyebrow?: string | null;
+  processTitle?: string | null;
+  processDescription?: string | null;
+  faqEyebrow?: string | null;
+  faqTitle?: string | null;
+  faqDescription?: string | null;
   benefits: { title: string; description: string; icon: string }[];
   process: { step: string; title: string; description: string }[];
   faqs: { q: string; a: string }[];

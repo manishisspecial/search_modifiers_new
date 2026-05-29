@@ -25,13 +25,19 @@ export default function NewTrustBadgePage() {
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) throw new Error("Failed to create trust badge");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        const msg = errorData?.error
+          ? typeof errorData.error === "string" ? errorData.error : JSON.stringify(errorData.error)
+          : `Failed to create trust badge (${response.status})`;
+        throw new Error(msg);
+      }
 
       const data = await response.json();
       router.push(`/admin/trust-badges/${data.id}`);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error:", error);
-      alert("Failed to create trust badge");
+      alert(error?.message || "Failed to create trust badge");
     } finally {
       setIsLoading(false);
     }

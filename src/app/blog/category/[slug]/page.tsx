@@ -5,6 +5,7 @@ import { FadeIn, Stagger, StaggerItem } from "@/components/motion/fade-in";
 import { PageHero } from "@/components/pages/page-hero";
 import { Container } from "@/components/ui/container";
 import { getCategoryBySlug, getPostsByCategory, getCategories } from "@/lib/db-queries";
+import { toMediaUrl } from "@/lib/media";
 import { site } from "@/lib/site";
 import { ArrowUpRight, Calendar, FolderTree, ChevronRight } from "lucide-react";
 
@@ -95,7 +96,7 @@ export default async function BlogCategoryPage({ params }: Props) {
                     <article className="glass group flex h-full flex-col rounded-2xl p-8 transition hover:border-orange-500/20">
                       {post.featuredImage && (
                         <img
-                          src={post.featuredImage}
+                          src={toMediaUrl(post.featuredImage)}
                           alt={post.featuredImageAlt || post.title}
                           className="w-full h-48 object-cover rounded-xl mb-4"
                         />

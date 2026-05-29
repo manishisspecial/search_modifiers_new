@@ -21,17 +21,17 @@ import { Tilt3D } from "@/components/motion/tilt-3d";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { site } from "@/lib/site";
+import { defaultHomeContent, type HomeContent } from "@/lib/home-content";
 
-type HeroStat =
-  | { value: string; label: string; countTo: number; suffix?: string; decimals?: number }
-  | { value: string; label: string };
-
-const stats: HeroStat[] = [
-  { value: "14+", countTo: 14, suffix: "+", label: "Years collective exp." },
-  { value: "320+", countTo: 320, suffix: "+", label: "Campaigns shipped" },
-  { value: "4.9", countTo: 4.9, suffix: "", label: "Avg. client rating", decimals: 1 },
-  { value: "24h", label: "First response SLA" },
-];
+/** Parse a stat string like "14+", "4.9", "24h" into animated-counter params. */
+function parseStat(value: string): { countTo: number; suffix: string; decimals: number } | null {
+  const match = value.match(/^(\d+(?:\.\d+)?)(.*)$/);
+  if (!match) return null;
+  const num = parseFloat(match[1]);
+  if (Number.isNaN(num)) return null;
+  const decimals = match[1].includes(".") ? match[1].split(".")[1].length : 0;
+  return { countTo: num, suffix: match[2] ?? "", decimals };
+}
 
 /**
  * Next-level hero. Layered motion system:
@@ -40,7 +40,9 @@ const stats: HeroStat[] = [
  *  3. Mask-reveal kinetic headline with gradient accent.
  *  4. 3D tilt dashboard mockup on the right with holo sheen + SVG chart.
  */
-export function HomeHero() {
+export function HomeHero({ content }: { content?: HomeContent["hero"] }) {
+  const c = content ?? defaultHomeContent.hero;
+  const stats = c.stats;
   const reduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const orbsRef = useRef<HTMLDivElement>(null);
@@ -135,7 +137,7 @@ export function HomeHero() {
               </span>
               <Sparkles className="h-3.5 w-3.5 text-orange-500" />
               <span className="tracking-wide">
-                Delhi NCR · Remote-first · Global campaigns
+                {c.badge}
               </span>
             </motion.div>
 
@@ -143,20 +145,20 @@ export function HomeHero() {
               <MaskReveal
                 as="span"
                 className="block"
-                text="Growth marketing that feels"
+                text={c.titlePrefix}
               />
               <span className="mt-1 block">
                 <MaskReveal
                   as="span"
                   className="inline"
-                  text="inevitable"
+                  text={c.titleAccent}
                   delay={0.3}
                   accentIndex={0}
                 />{" "}
                 <MaskReveal
                   as="span"
                   className="inline text-foreground"
-                  text="— not improvised"
+                  text={c.titleSuffix}
                   delay={0.42}
                 />
               </span>
@@ -168,7 +170,7 @@ export function HomeHero() {
               transition={{ delay: 0.7, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="mt-7 max-w-xl text-lg leading-relaxed text-muted sm:text-xl"
             >
-              {site.description}
+              {c.subtitle}
             </motion.p>
 
             <motion.ul
@@ -177,12 +179,7 @@ export function HomeHero() {
               transition={{ delay: 0.85, duration: 0.45 }}
               className="mt-6 grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-2.5"
             >
-              {[
-                "Dedicated marketing strategist for every account",
-                "Fast response times with clear communication",
-                "ROI-focused campaigns across SEO, Ads & Social",
-                "Transparent monthly reporting & insights",
-              ].map((line, i) => (
+              {c.bullets.map((line, i) => (
                 <motion.li
                   key={line}
                   initial={reduce ? false : { opacity: 0, x: -12 }}
@@ -203,18 +200,18 @@ export function HomeHero() {
               className="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center"
             >
               <Button
-                href="/request-quote"
+                href={c.primaryCtaHref}
                 className="group min-h-[50px] px-8 py-3 text-base shadow-xl shadow-orange-500/25"
               >
-                Get a custom proposal
+                {c.primaryCtaLabel}
                 <ArrowRight className="cta-arrow-nudge h-4 w-4 shrink-0" />
               </Button>
               <Button
-                href="/free-website-audit"
+                href={c.secondaryCtaHref}
                 variant="outline"
                 className="min-h-[50px] px-8 py-3 text-base"
               >
-                Free website audit
+                {c.secondaryCtaLabel}
               </Button>
               <div className="inline-flex max-w-full flex-col gap-2 text-sm font-medium text-muted sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-2">
                 <a
@@ -257,32 +254,35 @@ export function HomeHero() {
               transition={{ delay: 1.1, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
               className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4"
             >
-              {stats.map((s, i) => (
-                <motion.div
-                  key={s.label}
-                  initial={reduce ? false : { opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.18 + i * 0.06, duration: 0.5 }}
-                  className="glass group relative overflow-hidden rounded-2xl px-4 py-5 text-center transition-shadow duration-500 hover:shadow-lg hover:shadow-orange-500/10 sm:text-left"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-500/0 opacity-0 transition-opacity duration-500 group-hover:from-orange-500/[0.08] group-hover:to-transparent group-hover:opacity-100" />
-                  <p className="relative font-display text-2xl font-bold tabular-nums text-foreground sm:text-[1.75rem]">
-                    {"countTo" in s ? (
-                      <AnimatedCounter
-                        value={s.value}
-                        countTo={s.countTo}
-                        suffix={s.suffix ?? ""}
-                        decimals={s.decimals ?? 0}
-                      />
-                    ) : (
-                      s.value
-                    )}
-                  </p>
-                  <p className="relative mt-1.5 text-[11px] leading-snug text-muted/70 sm:text-xs">
-                    {s.label}
-                  </p>
-                </motion.div>
-              ))}
+              {stats.map((s, i) => {
+                const parsed = parseStat(s.value);
+                return (
+                  <motion.div
+                    key={`${s.label}-${i}`}
+                    initial={reduce ? false : { opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1.18 + i * 0.06, duration: 0.5 }}
+                    className="glass group relative overflow-hidden rounded-2xl px-4 py-5 text-center transition-shadow duration-500 hover:shadow-lg hover:shadow-orange-500/10 sm:text-left"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-500/0 opacity-0 transition-opacity duration-500 group-hover:from-orange-500/[0.08] group-hover:to-transparent group-hover:opacity-100" />
+                    <p className="relative font-display text-2xl font-bold tabular-nums text-foreground sm:text-[1.75rem]">
+                      {parsed ? (
+                        <AnimatedCounter
+                          value={s.value}
+                          countTo={parsed.countTo}
+                          suffix={parsed.suffix}
+                          decimals={parsed.decimals}
+                        />
+                      ) : (
+                        s.value
+                      )}
+                    </p>
+                    <p className="relative mt-1.5 text-[11px] leading-snug text-muted/70 sm:text-xs">
+                      {s.label}
+                    </p>
+                  </motion.div>
+                );
+              })}
             </motion.div>
           </div>
 

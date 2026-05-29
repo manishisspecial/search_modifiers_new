@@ -65,11 +65,26 @@ export function ServicePageBody({ service, meta, relatedServices }: {
         </Container>
       </section>
 
-      <ServiceBenefitsGrid benefits={service.benefits} />
+      <ServiceBenefitsGrid
+        benefits={service.benefits}
+        eyebrow={service.benefitsEyebrow || undefined}
+        title={service.benefitsTitle || undefined}
+        description={service.benefitsDescription || undefined}
+      />
 
-      <ServiceProcessTimeline steps={service.process} />
+      <ServiceProcessTimeline
+        steps={service.process}
+        eyebrow={service.processEyebrow || undefined}
+        title={service.processTitle || undefined}
+        description={service.processDescription || undefined}
+      />
 
-      <ServiceFaq faqs={service.faqs} />
+      <ServiceFaq
+        faqs={service.faqs}
+        eyebrow={service.faqEyebrow || undefined}
+        title={service.faqTitle || undefined}
+        description={service.faqDescription || undefined}
+      />
 
       <ServiceRelated services={relatedServices} />
 

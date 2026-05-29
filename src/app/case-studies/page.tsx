@@ -4,7 +4,8 @@ import { FadeIn, Stagger, StaggerItem } from "@/components/motion/fade-in";
 import { PageHero } from "@/components/pages/page-hero";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { caseStudies } from "@/lib/case-studies";
+import { caseStudies as staticCaseStudies } from "@/lib/case-studies";
+import { getCaseStudies } from "@/lib/db-queries";
 import { site } from "@/lib/site";
 import { ArrowUpRight } from "lucide-react";
 
@@ -14,7 +15,20 @@ export const metadata: Metadata = {
   alternates: { canonical: `${site.url}/case-studies` },
 };
 
-export default function CaseStudiesPage() {
+export default async function CaseStudiesPage() {
+  const dbCaseStudies = await getCaseStudies();
+  const caseStudies =
+    dbCaseStudies.length > 0
+      ? dbCaseStudies.map((c) => ({
+          slug: c.slug,
+          title: c.title,
+          industry: c.industry,
+          result: c.result,
+          summary: c.summary,
+          content: c.content,
+          metrics: c.metrics.map((m) => ({ label: m.label, value: m.value })),
+        }))
+      : staticCaseStudies;
   return (
     <>
       <PageHero

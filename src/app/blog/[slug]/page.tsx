@@ -5,8 +5,9 @@ import { BlogBody } from "@/components/blog/blog-body";
 import { FadeIn } from "@/components/motion/fade-in";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { ArticleJsonLd } from "@/components/seo/json-ld";
-import { getPostBySlug, getPublishedPostSlugs, getPrimaryKeywords } from "@/lib/db-queries";
+import { ArticleJsonLd, FAQJsonLd } from "@/components/seo/json-ld";
+import { getPostBySlug, getPublishedPostSlugs, getPrimaryKeywords, getFaqs } from "@/lib/db-queries";
+import { toMediaUrl } from "@/lib/media";
 import { site } from "@/lib/site";
 import { ArrowLeft, Calendar } from "lucide-react";
 
@@ -25,10 +26,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = post.metaTitle || post.title;
   const description = post.metaDescription || post.excerpt;
   const canonical = post.canonicalUrl || `${site.url}/blog/${slug}`;
+  const metaKeywords = Array.isArray(post.metaTags) ? (post.metaTags as string[]) : [];
 
   return {
     title,
     description,
+    ...(metaKeywords.length > 0 && { keywords: metaKeywords }),
     alternates: { canonical },
     robots: {
       index: !post.noindex,
@@ -41,16 +44,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: post.publishedAt?.toISOString() || post.date,
       authors: [post.author],
       url: `${site.url}/blog/${slug}`,
-      ...(post.featuredImage && { images: [{ url: post.featuredImage }] }),
+      ...(post.featuredImage && { images: [{ url: `${site.url}${toMediaUrl(post.featuredImage)}` }] }),
     },
   };
 }
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const [post, allKeywords] = await Promise.all([
+  const [post, allKeywords, blogFaqs] = await Promise.all([
     getPostBySlug(slug),
     getPrimaryKeywords(),
+    getFaqs("BLOG", slug),
   ]);
   if (!post) notFound();
 
@@ -97,7 +101,7 @@ export default async function BlogPostPage({ params }: Props) {
 
             {post.featuredImage && (
               <img
-                src={post.featuredImage}
+                src={toMediaUrl(post.featuredImage)}
                 alt={post.featuredImageAlt || post.title}
                 className="mt-6 w-full h-64 sm:h-80 object-cover rounded-2xl"
               />
@@ -146,6 +150,23 @@ export default async function BlogPostPage({ params }: Props) {
           <div className="prose-invert mt-12">
             <BlogBody content={post.content} keywordLinks={keywordLinks} />
           </div>
+
+          {blogFaqs.length > 0 && (
+            <section className="mt-16">
+              <FAQJsonLd faqs={blogFaqs.map((f) => ({ q: f.q, a: f.a }))} />
+              <h2 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">
+                Frequently asked questions
+              </h2>
+              <div className="mt-6 space-y-4">
+                {blogFaqs.map((f) => (
+                  <div key={f.id} className="rounded-2xl border border-border bg-card p-6">
+                    <h3 className="font-medium text-foreground">{f.q}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">{f.a}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
           <FadeIn className="mt-16 rounded-2xl border border-border bg-card p-8 text-center">
             <p className="text-muted">Want this level of thinking on your growth program?</p>
             <div className="mt-6 flex flex-wrap justify-center gap-4">

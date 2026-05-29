@@ -8,6 +8,8 @@ const UpdateSchema = z.object({
   title: z.string().min(1),
   type: z.string().min(1),
   description: z.string().min(1),
+  location: z.string().optional().nullable(),
+  applyUrl: z.string().optional().nullable(),
   isOpen: z.boolean().optional().default(true),
   order: z.number().optional().default(0),
 });

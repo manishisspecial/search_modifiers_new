@@ -6,19 +6,51 @@ import { FadeIn } from "@/components/motion/fade-in";
 import { PageHero } from "@/components/pages/page-hero";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { getCaseStudyBySlug, getCaseStudySlugs } from "@/lib/case-studies";
+import {
+  getCaseStudyBySlug as getStaticCaseStudyBySlug,
+  getCaseStudySlugs as getStaticCaseStudySlugs,
+} from "@/lib/case-studies";
+import { getCaseStudyBySlug as getDbCaseStudyBySlug, getCaseStudySlugs as getDbCaseStudySlugs } from "@/lib/db-queries";
 import { site } from "@/lib/site";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return getCaseStudySlugs().map((slug) => ({ slug }));
+type CaseStudyView = {
+  slug: string;
+  title: string;
+  industry: string;
+  result: string;
+  summary: string;
+  content: string;
+  metrics: { label: string; value: string }[];
+};
+
+async function resolveCaseStudy(slug: string): Promise<CaseStudyView | null> {
+  const db = await getDbCaseStudyBySlug(slug);
+  if (db) {
+    return {
+      slug: db.slug,
+      title: db.title,
+      industry: db.industry,
+      result: db.result,
+      summary: db.summary,
+      content: db.content,
+      metrics: db.metrics.map((m) => ({ label: m.label, value: m.value })),
+    };
+  }
+  return getStaticCaseStudyBySlug(slug) ?? null;
+}
+
+export async function generateStaticParams() {
+  const dbSlugs = await getDbCaseStudySlugs();
+  const slugs = dbSlugs.length > 0 ? dbSlugs : getStaticCaseStudySlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const c = getCaseStudyBySlug(slug);
+  const c = await resolveCaseStudy(slug);
   if (!c) return {};
   const description = c.summary.length > 155 ? `${c.summary.slice(0, 152)}…` : c.summary;
   return {
@@ -36,7 +68,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CaseStudyDetailPage({ params }: Props) {
   const { slug } = await params;
-  const c = getCaseStudyBySlug(slug);
+  const c = await resolveCaseStudy(slug);
   if (!c) notFound();
 
   return (

@@ -3,8 +3,10 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowRight } from "lucide-react";
+import { defaultHomeContent, type HomeContent } from "@/lib/home-content";
 
-export function HomeMidCta() {
+export function HomeMidCta({ content }: { content?: HomeContent["midCta"] }) {
+  const c = content ?? defaultHomeContent.midCta;
   const reduce = useReducedMotion();
 
   return (
@@ -26,14 +28,14 @@ export function HomeMidCta() {
             <Calendar className="h-7 w-7" />
           </motion.span>
           <div>
-            <h3 className="font-display text-xl font-semibold text-foreground sm:text-2xl">20-minute fit call — zero pitch deck</h3>
+            <h3 className="font-display text-xl font-semibold text-foreground sm:text-2xl">{c.title}</h3>
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">
-              We&apos;ll tell you honestly if we&apos;re not the right fit. If we are, you&apos;ll leave with 2–3 high-leverage ideas either way.
+              {c.description}
             </p>
           </div>
         </div>
-        <Button href="/contact" className="group shrink-0 px-8 py-3.5 text-base">
-          Book the call
+        <Button href={c.ctaHref} className="group shrink-0 px-8 py-3.5 text-base">
+          {c.ctaLabel}
           <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
         </Button>
       </div>

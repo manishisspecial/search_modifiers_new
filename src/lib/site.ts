@@ -1,9 +1,11 @@
+import { normalizeSiteUrl } from "@/lib/site-defaults";
+
 export const site = {
   name: "Search Modifiers",
   tagline: "Performance-led digital growth for ambitious brands",
   description:
     "Search Modifiers is a results-driven digital marketing agency specializing in online reputation management, PR, SEO, paid media, and web development helping brands control their online presence, build trust, and generate measurable business growth.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://searchmodifiers.com",
+  url: normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.searchmodifiers.com"),
   email: "hello@searchmodifiers.com",
   phone: "+91 88510 37172",
   phoneTel: "+91-8851037172",

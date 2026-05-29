@@ -98,7 +98,23 @@ async function main() {
 
   // Seed Blog Posts
   console.log("📚 Seeding blog posts...");
+  const categoryCache = new Map<string, string>();
   for (const post of blogData.blogPosts) {
+    let categoryId: string | undefined;
+    if (post.category) {
+      if (categoryCache.has(post.category)) {
+        categoryId = categoryCache.get(post.category);
+      } else {
+        const slug = post.category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+        const cat = await prisma.blogCategory.upsert({
+          where: { slug },
+          update: {},
+          create: { name: post.category, slug },
+        });
+        categoryCache.set(post.category, cat.id);
+        categoryId = cat.id;
+      }
+    }
     await prisma.blogPost.create({
       data: {
         slug: post.slug,
@@ -108,7 +124,9 @@ async function main() {
         date: post.date,
         author: post.author,
         readTime: post.readTime,
-        category: post.category,
+        status: "PUBLISHED",
+        publishedAt: new Date(post.date),
+        ...(categoryId ? { categoryId } : {}),
       },
     });
   }
@@ -195,17 +213,21 @@ async function main() {
 
   // Seed Navigation
   console.log("🗂️ Seeding navigation...");
-  const mainNav = [
+  const navItems = [
     { label: "Home", href: "/", category: "main", order: 0 },
-    { label: "Services", href: "/services", category: "main", order: 1 },
-    { label: "Blog", href: "/blog", category: "main", order: 2 },
+    { label: "About", href: "/about", category: "main", order: 1 },
+    { label: "Services", href: "/services", category: "main", order: 2 },
     { label: "Case Studies", href: "/case-studies", category: "main", order: 3 },
-    { label: "Locations", href: "/locations", category: "main", order: 4 },
-    { label: "About", href: "/about", category: "main", order: 5 },
-    { label: "Contact", href: "/contact", category: "main", order: 6 },
+    { label: "Blog", href: "/blog", category: "main", order: 4 },
+    { label: "Contact", href: "/contact", category: "main", order: 5 },
+    { label: "Delhi", href: "/location/digital-marketing-delhi", category: "locations", order: 0 },
+    { label: "Noida", href: "/location/digital-marketing-noida", category: "locations", order: 1 },
+    { label: "Gurgaon", href: "/location/digital-marketing-gurgaon", category: "locations", order: 2 },
+    { label: "SEO Delhi NCR", href: "/location/seo-delhi-ncr", category: "locations", order: 3 },
+    { label: "ORM Delhi", href: "/location/orm-delhi", category: "locations", order: 4 },
   ];
 
-  for (const item of mainNav) {
+  for (const item of navItems) {
     await prisma.navigationItem.create({
       data: item,
     });

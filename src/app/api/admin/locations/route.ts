@@ -7,6 +7,7 @@ import { z } from "zod";
 const LocationSchema = z.object({
   slug: z.string().min(1),
   title: z.string().min(1),
+  type: z.enum(["COUNTRY", "CITY"]).optional().default("COUNTRY"),
   metaTitle: z.string().min(1),
   metaDescription: z.string().min(1),
   heroEyebrow: z.string(),
@@ -32,20 +33,26 @@ const LocationSchema = z.object({
   ),
 });
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const session = await auth();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
+    const { searchParams } = new URL(req.url);
+    const type = searchParams.get("type");
     const locations = await prisma.location.findMany({
-      where: { deletedAt: null },
+      where: {
+        deletedAt: null,
+        ...(type === "COUNTRY" || type === "CITY" ? { type } : {}),
+      },
       include: {
         sections: { orderBy: { order: "asc" } },
         localStats: { orderBy: { order: "asc" } },
         faqs: { orderBy: { order: "asc" } },
       },
+      orderBy: { createdAt: "desc" },
     });
 
     return NextResponse.json(locations);
@@ -72,6 +79,7 @@ export async function POST(req: NextRequest) {
       data: {
         slug: validatedData.slug,
         title: validatedData.title,
+        type: validatedData.type,
         metaTitle: validatedData.metaTitle,
         metaDescription: validatedData.metaDescription,
         heroEyebrow: validatedData.heroEyebrow,
@@ -112,7 +120,21 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    // Auto-add navigation item for the new location
+    const existingNavCount = await prisma.navigationItem.count({
+      where: { category: "locations" },
+    });
+    await prisma.navigationItem.create({
+      data: {
+        category: "locations",
+        label: validatedData.title,
+        href: `/location/${validatedData.slug}`,
+        order: existingNavCount,
+      },
+    });
+
     revalidatePath("/");
+    revalidatePath(`/location/${validatedData.slug}`);
     return NextResponse.json(location, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {

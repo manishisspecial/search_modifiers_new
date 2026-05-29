@@ -36,6 +36,8 @@ export async function POST(req: NextRequest) {
     const data = PageContentSchema.parse(body);
     const item = await prisma.pageContent.create({ data });
     revalidatePath("/");
+    if (data.slug === "about-hero") revalidatePath("/about");
+    if (data.slug === "home") revalidatePath("/");
     return NextResponse.json(item, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FormLayout, FormField, FormInput } from "@/components/admin/form-layout";
 
@@ -12,12 +12,24 @@ const PLATFORMS = [
 export default function NewFooterRatingPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [existingPlatforms, setExistingPlatforms] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     platform: "google",
     score: "",
     maxScore: "",
     href: "",
   });
+
+  useEffect(() => {
+    fetch("/api/admin/footer-ratings")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setExistingPlatforms(data.map((r: any) => r.platform));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,13 +47,19 @@ export default function NewFooterRatingPage() {
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) throw new Error("Failed to create footer rating");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        const msg = errorData?.error
+          ? typeof errorData.error === "string" ? errorData.error : JSON.stringify(errorData.error)
+          : "Failed to create footer rating";
+        throw new Error(msg);
+      }
 
       const data = await response.json();
       router.push(`/admin/footer-ratings/${data.id}`);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error:", error);
-      alert("Failed to create footer rating");
+      alert(error?.message || "Failed to create footer rating");
     } finally {
       setIsLoading(false);
     }
@@ -68,6 +86,11 @@ export default function NewFooterRatingPage() {
               </option>
             ))}
           </select>
+          {existingPlatforms.includes(formData.platform) && (
+            <p className="mt-2 text-sm text-amber-500">
+              A rating for &quot;{formData.platform}&quot; already exists. Submitting will update the existing entry.
+            </p>
+          )}
         </FormField>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -3,6 +3,10 @@
 
 import { prisma } from "@/lib/db";
 
+function logDbError(context: string, error: unknown) {
+  console.error(`[db-queries] ${context}:`, error instanceof Error ? error.message : error);
+}
+
 // Services
 export async function getServices() {
   try {
@@ -14,8 +18,8 @@ export async function getServices() {
         faqs: { orderBy: { order: "asc" } },
       },
     });
-  } catch {
-    // Fallback to static data if database is not available
+  } catch (e) {
+    logDbError("getServices", e);
     return [];
   }
 }
@@ -30,7 +34,8 @@ export async function getServiceBySlug(slug: string) {
         faqs: { orderBy: { order: "asc" } },
       },
     });
-  } catch {
+  } catch (e) {
+    logDbError("getServiceBySlug", e);
     return null;
   }
 }
@@ -42,7 +47,8 @@ export async function getServiceSlugs() {
       select: { slug: true },
     });
     return services.map((s) => s.slug);
-  } catch {
+  } catch (e) {
+    logDbError("getServiceSlugs", e);
     return [];
   }
 }
@@ -64,7 +70,8 @@ export async function getStaticPageSlugs() {
       select: { slug: true },
     });
     return pages.map((p) => p.slug);
-  } catch {
+  } catch (e) {
+    logDbError("getStaticPageSlugs", e);
     return [];
   }
 }
@@ -80,7 +87,8 @@ export async function getPosts() {
       include: { category: true },
       orderBy: { date: "desc" },
     });
-  } catch {
+  } catch (e) {
+    logDbError("getPosts", e);
     return [];
   }
 }
@@ -91,7 +99,8 @@ export async function getPostBySlug(slug: string) {
       where: { slug, deletedAt: null, status: "PUBLISHED" },
       include: { category: true },
     });
-  } catch {
+  } catch (e) {
+    logDbError("getPostBySlug", e);
     return null;
   }
 }
@@ -107,7 +116,8 @@ export async function getRecentBlogPosts(limit: number = 3) {
       orderBy: { date: "desc" },
       take: limit,
     });
-  } catch {
+  } catch (e) {
+    logDbError("getRecentBlogPosts", e);
     return [];
   }
 }
@@ -119,7 +129,8 @@ export async function getPublishedPostSlugs() {
       select: { slug: true },
     });
     return posts.map((p) => p.slug);
-  } catch {
+  } catch (e) {
+    logDbError("getPublishedPostSlugs", e);
     return [];
   }
 }
@@ -134,7 +145,8 @@ export async function getCategories() {
         _count: { select: { posts: { where: { deletedAt: null, status: "PUBLISHED" } } } },
       },
     });
-  } catch {
+  } catch (e) {
+    logDbError("getCategories", e);
     return [];
   }
 }
@@ -148,7 +160,8 @@ export async function getCategoryBySlug(slug: string) {
         children: { orderBy: { order: "asc" } },
       },
     });
-  } catch {
+  } catch (e) {
+    logDbError("getCategoryBySlug", e);
     return null;
   }
 }
@@ -160,7 +173,8 @@ export async function getPostsByCategory(categoryId: string) {
       include: { category: true },
       orderBy: { date: "desc" },
     });
-  } catch {
+  } catch (e) {
+    logDbError("getPostsByCategory", e);
     return [];
   }
 }
@@ -178,7 +192,8 @@ export async function getAllTags(): Promise<string[]> {
       if (Array.isArray(tags)) tags.forEach((t) => t && tagSet.add(t));
     }
     return Array.from(tagSet).sort();
-  } catch {
+  } catch (e) {
+    logDbError("getAllTags", e);
     return [];
   }
 }
@@ -194,7 +209,8 @@ export async function getPostsByTag(tag: string) {
       const tags = p.tags as string[];
       return Array.isArray(tags) && tags.some((t) => t.toLowerCase() === tag.toLowerCase());
     });
-  } catch {
+  } catch (e) {
+    logDbError("getPostsByTag", e);
     return [];
   }
 }
@@ -208,7 +224,8 @@ export async function getPrimaryKeywords(): Promise<{ slug: string; primaryKeywo
     return posts
       .filter((p) => p.primaryKeyword)
       .map((p) => ({ slug: p.slug, primaryKeyword: p.primaryKeyword as string }));
-  } catch {
+  } catch (e) {
+    logDbError("getPrimaryKeywords", e);
     return [];
   }
 }
@@ -220,7 +237,8 @@ export async function getCaseStudies() {
       where: { deletedAt: null },
       include: { metrics: { orderBy: { order: "asc" } } },
     });
-  } catch {
+  } catch (e) {
+    logDbError("getCaseStudies", e);
     return [];
   }
 }
@@ -231,7 +249,8 @@ export async function getCaseStudyBySlug(slug: string) {
       where: { slug, deletedAt: null },
       include: { metrics: { orderBy: { order: "asc" } } },
     });
-  } catch {
+  } catch (e) {
+    logDbError("getCaseStudyBySlug", e);
     return null;
   }
 }
@@ -243,7 +262,8 @@ export async function getCaseStudySlugs() {
       select: { slug: true },
     });
     return studies.map((s) => s.slug);
-  } catch {
+  } catch (e) {
+    logDbError("getCaseStudySlugs", e);
     return [];
   }
 }
@@ -255,7 +275,8 @@ export async function getTestimonials() {
       where: { deletedAt: null },
       orderBy: { order: "asc" },
     });
-  } catch {
+  } catch (e) {
+    logDbError("getTestimonials", e);
     return [];
   }
 }
@@ -271,7 +292,8 @@ export async function getLocations() {
         faqs: { orderBy: { order: "asc" } },
       },
     });
-  } catch {
+  } catch (e) {
+    logDbError("getLocations", e);
     return [];
   }
 }
@@ -286,7 +308,8 @@ export async function getLocationBySlug(slug: string) {
         faqs: { orderBy: { order: "asc" } },
       },
     });
-  } catch {
+  } catch (e) {
+    logDbError("getLocationBySlug", e);
     return null;
   }
 }
@@ -298,7 +321,8 @@ export async function getLocationSlugs() {
       select: { slug: true },
     });
     return locations.map((l) => l.slug);
-  } catch {
+  } catch (e) {
+    logDbError("getLocationSlugs", e);
     return [];
   }
 }
@@ -309,7 +333,117 @@ export async function getStaticPageBySlug(slug: string) {
     return await prisma.staticPage.findFirst({
       where: { slug, deletedAt: null },
     });
-  } catch {
+  } catch (e) {
+    logDbError("getStaticPageBySlug", e);
+    return null;
+  }
+}
+
+// Locations by type (Country Pages / City Pages)
+export async function getLocationsByType(type: "COUNTRY" | "CITY") {
+  try {
+    return await prisma.location.findMany({
+      where: { deletedAt: null, type },
+      include: {
+        sections: { orderBy: { order: "asc" } },
+        localStats: { orderBy: { order: "asc" } },
+        faqs: { orderBy: { order: "asc" } },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (e) {
+    logDbError("getLocationsByType", e);
+    return [];
+  }
+}
+
+// Managed Locations (admin-only dropdown source)
+export async function getManagedLocations(type?: "COUNTRY" | "CITY") {
+  try {
+    return await prisma.managedLocation.findMany({
+      where: type ? { type } : undefined,
+      orderBy: [{ type: "asc" }, { name: "asc" }],
+    });
+  } catch (e) {
+    logDbError("getManagedLocations", e);
+    return [];
+  }
+}
+
+// Team
+export async function getTeamMembers() {
+  try {
+    return await prisma.teamMember.findMany({
+      where: { deletedAt: null },
+      orderBy: { order: "asc" },
+    });
+  } catch (e) {
+    logDbError("getTeamMembers", e);
+    return [];
+  }
+}
+
+// Careers
+export async function getCareerRoles() {
+  try {
+    return await prisma.careerRole.findMany({
+      where: { deletedAt: null },
+      orderBy: { order: "asc" },
+    });
+  } catch (e) {
+    logDbError("getCareerRoles", e);
+    return [];
+  }
+}
+
+// Portfolio
+export async function getPortfolioItems() {
+  try {
+    return await prisma.portfolioItem.findMany({
+      where: { deletedAt: null },
+      orderBy: { order: "asc" },
+    });
+  } catch (e) {
+    logDbError("getPortfolioItems", e);
+    return [];
+  }
+}
+
+// FAQs by placement + optional target slug
+export async function getFaqs(
+  placement: "PAGE" | "BLOG" | "COUNTRY" | "CITY",
+  targetSlug?: string
+) {
+  try {
+    const items = await prisma.faqItem.findMany({
+      where: { deletedAt: null, placement },
+      orderBy: { order: "asc" },
+    });
+    return items.filter((f) => !f.targetSlug || (targetSlug && f.targetSlug === targetSlug));
+  } catch (e) {
+    logDbError("getFaqs", e);
+    return [];
+  }
+}
+
+export async function getAllFaqs() {
+  try {
+    return await prisma.faqItem.findMany({
+      where: { deletedAt: null },
+      orderBy: { order: "asc" },
+    });
+  } catch (e) {
+    logDbError("getAllFaqs", e);
+    return [];
+  }
+}
+
+// Page Content (homepage and other editable blocks)
+export async function getPageContent(slug: string) {
+  try {
+    return await prisma.pageContent.findUnique({ where: { slug } });
+  } catch (e) {
+    logDbError("getPageContent", e);
     return null;
   }
 }
@@ -318,9 +452,10 @@ export async function getStaticPageBySlug(slug: string) {
 export async function getTrustBadges() {
   try {
     return await prisma.trustBadge.findMany({
-      orderBy: { createdAt: "asc" },
+      orderBy: { order: "asc" },
     });
-  } catch {
+  } catch (e) {
+    logDbError("getTrustBadges", e);
     return [];
   }
 }
@@ -329,7 +464,8 @@ export async function getTrustBadges() {
 export async function getFooterRatings() {
   try {
     return await prisma.footerRating.findMany();
-  } catch {
+  } catch (e) {
+    logDbError("getFooterRatings", e);
     return [];
   }
 }
@@ -338,7 +474,8 @@ export async function getFooterRatings() {
 export async function getSiteSettings() {
   try {
     return await prisma.siteSettings.findFirst();
-  } catch {
+  } catch (e) {
+    logDbError("getSiteSettings", e);
     return null;
   }
 }
@@ -350,7 +487,8 @@ export async function getNavigationItems(category: string) {
       where: { category },
       orderBy: { order: "asc" },
     });
-  } catch {
+  } catch (e) {
+    logDbError("getNavigationItems", e);
     return [];
   }
 }
@@ -365,4 +503,8 @@ export async function getServicesNav() {
 
 export async function getLocationsNav() {
   return getNavigationItems("locations");
+}
+
+export async function getFooterNav() {
+  return getNavigationItems("footer");
 }

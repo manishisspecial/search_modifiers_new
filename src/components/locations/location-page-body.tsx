@@ -8,8 +8,15 @@ import type { LocationPage } from "@/lib/locations-data";
 import { site } from "@/lib/site";
 import { MapPin } from "lucide-react";
 
-export function LocationPageBody({ loc }: { loc: LocationPage }) {
-  const url = `${site.url}/locations/${loc.slug}`;
+export function LocationPageBody({
+  loc,
+  extraFaqs = [],
+}: {
+  loc: LocationPage;
+  extraFaqs?: { q: string; a: string }[];
+}) {
+  const url = `${site.url}/location/${loc.slug}`;
+  const faqs = [...loc.faqs, ...extraFaqs];
 
   return (
     <>
@@ -27,7 +34,7 @@ export function LocationPageBody({ loc }: { loc: LocationPage }) {
           }),
         }}
       />
-      <FAQJsonLd faqs={loc.faqs} />
+      <FAQJsonLd faqs={faqs} />
 
       <PageHero eyebrow={loc.heroEyebrow} title={loc.headline} description={loc.intro}>
         <Button href="/request-quote">Get a quote</Button>
@@ -76,7 +83,7 @@ export function LocationPageBody({ loc }: { loc: LocationPage }) {
         <Container>
           <SectionHeading eyebrow="FAQ" title={`Common questions — ${loc.title}`} />
           <div className="mx-auto mt-10 max-w-3xl space-y-6">
-            {loc.faqs.map((f) => (
+            {faqs.map((f) => (
               <div key={f.q} className="rounded-2xl border border-border bg-card p-6">
                 <h3 className="font-medium text-foreground">{f.q}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{f.a}</p>

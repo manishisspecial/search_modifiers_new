@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { z } from "zod";
 
@@ -8,6 +9,7 @@ const SiteSettingsSchema = z.object({
   tagline: z.string(),
   description: z.string(),
   url: z.string(),
+  robotsTxt: z.string().optional().nullable(),
   email: z.string(),
   phone: z.string(),
   phoneTel: z.string(),
@@ -83,6 +85,10 @@ export async function PUT(req: NextRequest) {
       where: { id: body.id },
       data: validatedData,
     });
+
+    // Reflect updated settings (incl. robots.txt) across the public site.
+    revalidatePath("/", "layout");
+    revalidatePath("/robots.txt");
 
     return NextResponse.json(settings);
   } catch (error) {

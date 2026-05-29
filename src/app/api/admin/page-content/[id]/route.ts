@@ -42,6 +42,8 @@ export async function PUT(
     const data = UpdateSchema.parse(body);
     const item = await prisma.pageContent.update({ where: { id }, data });
     revalidatePath("/");
+    if (data.slug === "about-hero") revalidatePath("/about");
+    if (data.slug === "home") revalidatePath("/");
     return NextResponse.json(item);
   } catch (error) {
     if (error instanceof z.ZodError)

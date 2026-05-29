@@ -33,11 +33,11 @@ export const servicesNav: NavItem[] = [
 ];
 
 export const locationsNav: NavItem[] = [
-  { label: "Delhi", href: "/locations/digital-marketing-delhi" },
-  { label: "Noida", href: "/locations/digital-marketing-noida" },
-  { label: "Gurgaon", href: "/locations/digital-marketing-gurgaon" },
-  { label: "SEO Delhi NCR", href: "/locations/seo-delhi-ncr" },
-  { label: "ORM Delhi", href: "/locations/orm-delhi" },
+  { label: "Delhi", href: "/location/digital-marketing-delhi" },
+  { label: "Noida", href: "/location/digital-marketing-noida" },
+  { label: "Gurgaon", href: "/location/digital-marketing-gurgaon" },
+  { label: "SEO Delhi NCR", href: "/location/seo-delhi-ncr" },
+  { label: "ORM Delhi", href: "/location/orm-delhi" },
 ];
 
 export const footerColumns: { title: string; links: NavItem[] }[] = [

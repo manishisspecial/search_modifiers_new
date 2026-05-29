@@ -179,12 +179,18 @@ export default function EditBlogPostPage() {
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) throw new Error("Failed to update blog post");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        const msg = errorData?.error
+          ? typeof errorData.error === "string" ? errorData.error : JSON.stringify(errorData.error)
+          : `Failed to update blog post (${response.status})`;
+        throw new Error(msg);
+      }
       alert("Blog post updated successfully");
       router.push("/admin/blog");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error:", error);
-      alert("Failed to update blog post");
+      alert(error?.message || "Failed to update blog post");
     } finally {
       setIsLoading(false);
     }

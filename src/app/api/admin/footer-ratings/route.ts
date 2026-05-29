@@ -40,8 +40,13 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const validatedData = FooterRatingSchema.parse(body);
 
-    const rating = await prisma.footerRating.create({
-      data: validatedData,
+    const rating = await prisma.footerRating.upsert({
+      where: { platform: validatedData.platform },
+      update: {
+        score: validatedData.score,
+        href: validatedData.href,
+      },
+      create: validatedData,
     });
 
     revalidatePath("/");

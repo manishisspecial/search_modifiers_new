@@ -19,10 +19,14 @@ import { SpotlightContainer } from "@/components/motion/spotlight-cards";
 import { Tilt3D } from "@/components/motion/tilt-3d";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { caseStudies } from "@/lib/case-studies";
+import { caseStudies as staticCaseStudies } from "@/lib/case-studies";
+import { getCaseStudies, getTestimonials } from "@/lib/db-queries";
+import { getHomeContent } from "@/lib/home-content";
 import { site } from "@/lib/site";
 import type { LucideIcon } from "lucide-react";
 import { BarChart3, Layers, LineChart, Users } from "lucide-react";
+
+const whyIcons: LucideIcon[] = [BarChart3, LineChart, Layers, Users];
 
 export const metadata: Metadata = {
   title: "Digital Marketing & SEO Agency",
@@ -30,34 +34,37 @@ export const metadata: Metadata = {
   alternates: { canonical: site.url },
 };
 
-const why = [
-  {
-    title: "Data-Driven Strategy",
-    body: "Every move powered by analytics, market intelligence, and performance data — engineered to maximize ROI.",
-    icon: BarChart3,
-  },
-  {
-    title: "Transparent Reporting",
-    body: "Clear monthly dashboards with verified metrics, campaign progress, and expansion opportunities.",
-    icon: LineChart,
-  },
-  {
-    title: "Full-Service Expertise",
-    body: "From web systems and SEO to paid media and social growth, a complete performance ecosystem under one roof.",
-    icon: Layers,
-  },
-  {
-    title: "Dedicated Support",
-    body: "Rapid communication, proactive updates, and a growth-focused team aligned with your success.",
-    icon: Users,
-  },
-];
-
-export default function HomePage() {
+export default async function HomePage() {
+  const [dbCaseStudies, dbTestimonials, homeContent] = await Promise.all([
+    getCaseStudies(),
+    getTestimonials(),
+    getHomeContent(),
+  ]);
+  const why = homeContent.why.cards.map((card, i) => ({
+    title: card.title,
+    body: card.body,
+    icon: whyIcons[i % whyIcons.length],
+  }));
+  const caseStudies =
+    dbCaseStudies.length > 0
+      ? dbCaseStudies.map((c) => ({
+          slug: c.slug,
+          title: c.title,
+          industry: c.industry,
+          result: c.result,
+          summary: c.summary,
+          content: c.content,
+          metrics: c.metrics.map((m) => ({ label: m.label, value: m.value })),
+        }))
+      : staticCaseStudies;
+  const testimonials =
+    dbTestimonials.length > 0
+      ? dbTestimonials.map((t) => ({ quote: t.quote, name: t.name, role: t.role, company: t.company }))
+      : undefined;
   return (
     <>
       <HomeStickyCta />
-      <HomeHero />
+      <HomeHero content={homeContent.hero} />
 
       {/* Logo marquee */}
       <HomeLogoWall />
@@ -83,9 +90,9 @@ export default function HomePage() {
         <div className="gradient-line absolute inset-x-0 top-0" />
         <Container>
           <AnimatedSectionHeading
-            eyebrow="Why Search Modifiers"
-            title="Built for brands that outgrow fragmented agencies"
-            description="We're obsessive about craft, speed, and integrity — the trifecta that compounds into unfair advantages."
+            eyebrow={homeContent.why.eyebrow}
+            title={homeContent.why.title}
+            description={homeContent.why.description}
           />
           <SpotlightContainer className="mt-16 grid gap-6 md:grid-cols-2">
             {why.map((w, idx) => (
@@ -102,7 +109,7 @@ export default function HomePage() {
       {/* Mid CTA */}
       <section className="py-6 sm:py-8">
         <Container>
-          <HomeMidCta />
+          <HomeMidCta content={homeContent.midCta} />
         </Container>
       </section>
 
@@ -149,7 +156,7 @@ export default function HomePage() {
           />
         </Container>
         <div className="mt-16">
-          <HomeTestimonialsMarquee />
+          <HomeTestimonialsMarquee items={testimonials} />
         </div>
       </section>
 

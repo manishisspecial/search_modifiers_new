@@ -23,6 +23,15 @@ export default function NewServicePage() {
     pill: "",
     related: [] as string[],
     proof: [] as { value: string; label: string }[],
+    benefitsEyebrow: "",
+    benefitsTitle: "",
+    benefitsDescription: "",
+    processEyebrow: "",
+    processTitle: "",
+    processDescription: "",
+    faqEyebrow: "",
+    faqTitle: "",
+    faqDescription: "",
     benefits: [] as { title: string; description: string; icon: string }[],
     process: [] as { step: string; title: string; description: string }[],
     faqs: [] as { q: string; a: string }[],
@@ -39,13 +48,19 @@ export default function NewServicePage() {
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) throw new Error("Failed to create service");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        const msg = errorData?.error
+          ? typeof errorData.error === "string" ? errorData.error : JSON.stringify(errorData.error)
+          : `Failed to create service (${response.status})`;
+        throw new Error(msg);
+      }
 
       const data = await response.json();
       router.push(`/admin/services/${data.id}`);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error:", error);
-      alert("Failed to create service");
+      alert(error?.message || "Failed to create service");
     } finally {
       setIsLoading(false);
     }
@@ -220,6 +235,85 @@ export default function NewServicePage() {
               { name: "label", label: "Label", placeholder: "Top-3 rankings won" },
             ]}
           />
+        </div>
+
+        <div className="border-t pt-6 mt-6">
+          <h3 className="text-lg font-semibold mb-4">Section Headings (leave blank for defaults)</h3>
+
+          <p className="text-sm text-muted mb-3 font-medium">Benefits Section</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <FormField label="Eyebrow">
+              <FormInput
+                value={formData.benefitsEyebrow}
+                onChange={(e) => setFormData({ ...formData, benefitsEyebrow: e.target.value })}
+                placeholder="Outcomes"
+              />
+            </FormField>
+            <FormField label="Title">
+              <FormInput
+                value={formData.benefitsTitle}
+                onChange={(e) => setFormData({ ...formData, benefitsTitle: e.target.value })}
+                placeholder="Benefits that show up in your metrics"
+              />
+            </FormField>
+            <FormField label="Description">
+              <FormInput
+                value={formData.benefitsDescription}
+                onChange={(e) => setFormData({ ...formData, benefitsDescription: e.target.value })}
+                placeholder="We optimize for pipeline..."
+              />
+            </FormField>
+          </div>
+
+          <p className="text-sm text-muted mb-3 font-medium">Process Section</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <FormField label="Eyebrow">
+              <FormInput
+                value={formData.processEyebrow}
+                onChange={(e) => setFormData({ ...formData, processEyebrow: e.target.value })}
+                placeholder="Process"
+              />
+            </FormField>
+            <FormField label="Title">
+              <FormInput
+                value={formData.processTitle}
+                onChange={(e) => setFormData({ ...formData, processTitle: e.target.value })}
+                placeholder="How we work with your team"
+              />
+            </FormField>
+            <FormField label="Description">
+              <FormInput
+                value={formData.processDescription}
+                onChange={(e) => setFormData({ ...formData, processDescription: e.target.value })}
+                placeholder="Transparent phases..."
+              />
+            </FormField>
+          </div>
+
+          <p className="text-sm text-muted mb-3 font-medium">FAQ Section</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FormField label="Eyebrow">
+              <FormInput
+                value={formData.faqEyebrow}
+                onChange={(e) => setFormData({ ...formData, faqEyebrow: e.target.value })}
+                placeholder="FAQ"
+              />
+            </FormField>
+            <FormField label="Title">
+              <FormInput
+                value={formData.faqTitle}
+                onChange={(e) => setFormData({ ...formData, faqTitle: e.target.value })}
+                placeholder="Questions clients ask first"
+              />
+            </FormField>
+            <FormField label="Description">
+              <FormInput
+                value={formData.faqDescription}
+                onChange={(e) => setFormData({ ...formData, faqDescription: e.target.value })}
+                placeholder="Don't see yours?..."
+              />
+            </FormField>
+          </div>
         </div>
 
         <NestedFieldArray

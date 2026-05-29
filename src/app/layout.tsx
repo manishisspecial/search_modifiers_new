@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
     default: `${site.name} | Digital Marketing & SEO Agency`,
-    template: `%s | ${site.name}`,
+    template: `%s`,
   },
   description: site.description,
   keywords: [
@@ -64,6 +64,10 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
 };
+
+// Content is admin-managed (DB-backed). Render dynamically so edits in the
+// admin panel reflect on the public site immediately without a rebuild.
+export const dynamic = "force-dynamic";
 
 export default function RootLayout({
   children,

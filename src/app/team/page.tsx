@@ -5,6 +5,8 @@ import { PageHero } from "@/components/pages/page-hero";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { site } from "@/lib/site";
+import { getTeamMembers } from "@/lib/db-queries";
+import { toMediaUrl } from "@/lib/media";
 import { Linkedin } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -13,7 +15,7 @@ export const metadata: Metadata = {
   alternates: { canonical: `${site.url}/team` },
 };
 
-const team = [
+const staticTeam = [
   {
     name: "Priya Malhotra",
     role: "Founder & CEO",
@@ -52,7 +54,20 @@ const team = [
   },
 ];
 
-export default function TeamPage() {
+export default async function TeamPage() {
+  const dbTeam = await getTeamMembers();
+  const team =
+    dbTeam.length > 0
+      ? dbTeam.map((m) => ({
+          name: m.name,
+          role: m.role,
+          bio: m.bio,
+          image:
+            toMediaUrl(m.image) ||
+            "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop",
+          linkedinUrl: m.linkedinUrl || undefined,
+        }))
+      : staticTeam;
   return (
     <>
       <PageHero
@@ -82,7 +97,7 @@ export default function TeamPage() {
                     <p className="text-sm font-medium text-orange-400/90">{m.role}</p>
                     <p className="mt-3 text-sm leading-relaxed text-muted">{m.bio}</p>
                     <a
-                      href={site.social.linkedin}
+                      href={("linkedinUrl" in m && m.linkedinUrl) ? m.linkedinUrl : site.social.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-muted/70 hover:text-foreground"

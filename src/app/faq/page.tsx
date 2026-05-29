@@ -4,6 +4,7 @@ import { PageHero } from "@/components/pages/page-hero";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { FAQJsonLd } from "@/components/seo/json-ld";
+import { getFaqs } from "@/lib/db-queries";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   alternates: { canonical: `${site.url}/faq` },
 };
 
-const faqs = [
+const staticFaqs = [
   {
     q: "What does a typical engagement look like?",
     a: "We start with a focused discovery (goals, economics, stack). Week 2–3 is roadmap and instrumentation. Execution runs in weekly sprints with a shared dashboard and monthly executive reviews.",
@@ -39,7 +40,9 @@ const faqs = [
   },
 ];
 
-export default function FAQPage() {
+export default async function FAQPage() {
+  const dbFaqs = await getFaqs("PAGE", "faq");
+  const faqs = dbFaqs.length > 0 ? dbFaqs.map((f) => ({ q: f.q, a: f.a })) : staticFaqs;
   return (
     <>
       <FAQJsonLd faqs={faqs} />

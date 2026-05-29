@@ -37,12 +37,15 @@ import {
 
 const navigation = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
+  { label: "Homepage Edits", href: "/admin/homepage", icon: Sparkles },
   { label: "Services", href: "/admin/services", icon: Briefcase },
   { label: "Blog", href: "/admin/blog", icon: FileText },
   { label: "Categories", href: "/admin/blog/categories", icon: FolderTree },
   { label: "Case Studies", href: "/admin/case-studies", icon: FolderKanban },
   { label: "Testimonials", href: "/admin/testimonials", icon: Star },
-  { label: "Locations", href: "/admin/locations", icon: MapPin },
+  { label: "Country Pages", href: "/admin/locations", icon: MapPin },
+  { label: "City Pages", href: "/admin/city-pages", icon: MapPin },
+  { label: "Manage Locations", href: "/admin/managed-locations", icon: MapPin },
   { label: "Static Pages", href: "/admin/static-pages", icon: FileStack },
   { label: "Team", href: "/admin/team", icon: Users },
   { label: "Careers", href: "/admin/careers", icon: GraduationCap },

@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { site } from "@/lib/site";
 import { Target, Heart, Lightbulb } from "lucide-react";
+import { getAboutContent } from "@/lib/about-content";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -27,18 +28,20 @@ const values = [
   },
   {
     title: "Outcomes own the agenda",
-    body: "We align on economic goals first — then reverse-engineer channel mix, creative, and technical work to match.",
+    body: "We align on economic goals first \u2014 then reverse-engineer channel mix, creative, and technical work to match.",
     icon: Target,
   },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const content = await getAboutContent();
+
   return (
     <>
       <PageHero
-        eyebrow="About"
-        title="We’re operators, not deck factories"
-        description="Search Modifiers started as a specialist SEO studio and evolved into a full-funnel partner — because growth doesn’t respect channel silos."
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        description={content.hero.description}
       >
         <Button href="/team">Meet the team</Button>
         <Button href="/careers" variant="outline">
@@ -50,16 +53,11 @@ export default function AboutPage() {
         <Container>
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <FadeIn>
-              <h2 className="font-display text-3xl font-semibold text-foreground sm:text-4xl">Our story</h2>
+              <h2 className="font-display text-3xl font-semibold text-foreground sm:text-4xl">{content.story.heading}</h2>
               <div className="mt-6 space-y-4 text-lg leading-relaxed text-muted">
-                <p>
-                  We built Search Modifiers for teams tired of juggling five agencies with five excuses. Today we run integrated programs across SEO,
-                  paid media, ORM, content, and web — with one accountable pod and one north star: sustainable revenue impact.
-                </p>
-                <p>
-                  Headquartered in {site.address.city}, we serve Delhi NCR on-site and global clients remotely with the same sprint cadence and
-                  documentation standards.
-                </p>
+                {content.story.paragraphs.map((p, i) => (
+                  <p key={i}>{p}</p>
+                ))}
               </div>
             </FadeIn>
             <FadeIn delay={0.08}>
@@ -67,12 +65,12 @@ export default function AboutPage() {
                 <h3 className="font-display text-xl font-semibold text-foreground">How we hire & train</h3>
                 <p className="mt-4 text-muted">
                   Strategists rotate through delivery squads. Media buyers pair with SEO leads on landing page tests. Designers sit in performance reviews.
-                  Cross-training isn’t a perk — it’s how we avoid blind spots.
+                  Cross-training isn&apos;t a perk \u2014 it&apos;s how we avoid blind spots.
                 </p>
                 <ul className="mt-6 space-y-3 text-sm text-foreground/80">
-                  <li>• Weekly learning blocks on platform updates</li>
-                  <li>• Ethical guidelines for ORM and paid claims</li>
-                  <li>• Quarterly client listening tours with leadership</li>
+                  <li>\u2022 Weekly learning blocks on platform updates</li>
+                  <li>\u2022 Ethical guidelines for ORM and paid claims</li>
+                  <li>\u2022 Quarterly client listening tours with leadership</li>
                 </ul>
               </div>
             </FadeIn>
@@ -84,7 +82,7 @@ export default function AboutPage() {
         <Container>
           <SectionHeading
             eyebrow="Values"
-            title="Principles you’ll feel in week one"
+            title="Principles you'll feel in week one"
             description="Culture shows up in Slack threads, change logs, and how we behave when campaigns dip."
           />
           <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -107,7 +105,7 @@ export default function AboutPage() {
         <Container>
           <FadeIn>
             <div className="glass gradient-border rounded-3xl px-8 py-12 text-center">
-              <h2 className="font-display text-2xl font-bold text-foreground sm:text-3xl">See if we’re a fit</h2>
+              <h2 className="font-display text-2xl font-bold text-foreground sm:text-3xl">See if we&apos;re a fit</h2>
               <p className="mx-auto mt-4 max-w-lg text-muted">Two calls: discovery and recommendations. No obligation pitch deck marathon.</p>
               <div className="mt-8 flex flex-wrap justify-center gap-4">
                 <Button href="/contact">Contact us</Button>

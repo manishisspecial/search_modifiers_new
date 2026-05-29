@@ -40,6 +40,7 @@ export async function POST(req: NextRequest) {
     const data = TeamMemberSchema.parse(body);
     const item = await prisma.teamMember.create({ data });
     revalidatePath("/team");
+    revalidatePath("/");
     return NextResponse.json(item, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {

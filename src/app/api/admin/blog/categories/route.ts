@@ -19,7 +19,10 @@ export async function GET() {
   try {
     const categories = await prisma.blogCategory.findMany({
       orderBy: { order: "asc" },
-      include: { children: true },
+      include: {
+        children: true,
+        _count: { select: { posts: { where: { deletedAt: null } } } },
+      },
     });
     return NextResponse.json(categories);
   } catch (error) {

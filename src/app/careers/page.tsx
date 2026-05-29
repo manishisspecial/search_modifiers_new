@@ -4,6 +4,7 @@ import { PageHero } from "@/components/pages/page-hero";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { site } from "@/lib/site";
+import { getCareerRoles } from "@/lib/db-queries";
 import { MapPin, Clock } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -12,30 +13,46 @@ export const metadata: Metadata = {
   alternates: { canonical: `${site.url}/careers` },
 };
 
-const roles = [
+const staticRoles = [
   {
     title: "Senior Performance Marketing Manager",
     type: "Full-time · Hybrid (Delhi)",
     desc: "Own Google Ads + Meta for 3–5 accounts; mentor associates; partner with SEO on landing tests.",
+    applyUrl: "",
   },
   {
     title: "Technical SEO Lead",
     type: "Full-time · Remote-friendly",
     desc: "Lead crawls, migrations, and CWV programs for enterprise sites; comfortable in Next.js stacks.",
+    applyUrl: "",
   },
   {
     title: "Content Strategist",
     type: "Full-time · Delhi",
     desc: "Build topical maps, brief writers, and align editorial to pipeline stages for B2B clients.",
+    applyUrl: "",
   },
   {
     title: "ORM Specialist",
     type: "Full-time · Delhi",
     desc: "Review programs, SERP projects, and crisis workflows for regulated and consumer brands.",
+    applyUrl: "",
   },
 ];
 
-export default function CareersPage() {
+export default async function CareersPage() {
+  const dbRoles = await getCareerRoles();
+  const roles =
+    dbRoles.length > 0
+      ? dbRoles
+          .filter((r) => r.isOpen)
+          .map((r) => ({
+            title: r.title,
+            type: r.location ? `${r.type} · ${r.location}` : r.type,
+            desc: r.description,
+            applyUrl: r.applyUrl || "",
+          }))
+      : staticRoles;
   return (
     <>
       <PageHero
@@ -67,7 +84,7 @@ export default function CareersPage() {
                     <p className="mt-3 max-w-2xl text-sm text-muted">{r.desc}</p>
                   </div>
                   <Button
-                    href={`mailto:${site.email}?subject=${encodeURIComponent("Application: " + r.title)}`}
+                    href={r.applyUrl || `/contact?role=${encodeURIComponent(r.title)}`}
                     variant="outline"
                     className="shrink-0"
                   >

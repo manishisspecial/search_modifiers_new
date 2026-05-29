@@ -85,6 +85,17 @@ model Service {
   proof               Json     @default("[]")
   dashMeta            Json?
 
+  // Section headings (editable from admin)
+  benefitsEyebrow     String?
+  benefitsTitle       String?
+  benefitsDescription String?
+  processEyebrow      String?
+  processTitle        String?
+  processDescription  String?
+  faqEyebrow          String?
+  faqTitle            String?
+  faqDescription      String?
+
   benefits            ServiceBenefit[]
   process             ServiceProcess[]
   faqs                ServiceFAQ[]
@@ -272,6 +283,8 @@ model Location {
   heroEyebrow         String
   headline            String
   intro               String
+  // "COUNTRY" | "CITY" — drives Country Pages vs City Pages
+  type                String   @default("COUNTRY")
 
   sections            LocationSection[]
   localStats          LocationStat[]
@@ -282,6 +295,23 @@ model Location {
   deletedAt           DateTime?
 
   @@map("locations")
+}
+
+// Admin-only directory of selectable locations (not rendered publicly).
+// Powers the dropdowns in Country Pages & City Pages.
+model ManagedLocation {
+  id          String   @id @default(cuid())
+  name        String
+  // "COUNTRY" | "CITY"
+  type        String   @default("CITY")
+  slug        String   @unique
+  // Optional parent country name for cities
+  country     String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("managed_locations")
 }
 
 model LocationSection {
@@ -392,6 +422,7 @@ model TrustBadge {
   label       String
   subtitle    String
   href        String
+  order       Int      @default(0)
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -445,6 +476,8 @@ model CareerRole {
   title       String
   type        String
   description String
+  location    String?
+  applyUrl    String?
   isOpen      Boolean  @default(true)
   order       Int      @default(0)
 
@@ -459,6 +492,11 @@ model FaqItem {
   id          String   @id @default(cuid())
   q           String
   a           String   @db.Text
+  // Where to insert: "PAGE" | "BLOG" | "COUNTRY" | "CITY"
+  placement   String   @default("PAGE")
+  // Slug of the exact page/post/location to attach to (null = all of that type)
+  targetSlug  String?
+  // Sequence within the target
   order       Int      @default(0)
 
   createdAt   DateTime @default(now())

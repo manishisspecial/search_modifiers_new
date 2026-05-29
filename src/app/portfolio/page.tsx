@@ -4,7 +4,8 @@ import { PageHero } from "@/components/pages/page-hero";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { site } from "@/lib/site";
-import { Palette, Layout, Share2, Search } from "lucide-react";
+import { getPortfolioItems } from "@/lib/db-queries";
+import { Palette, Layout, Share2, Search, Sparkles, type LucideIcon } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -12,7 +13,15 @@ export const metadata: Metadata = {
   alternates: { canonical: `${site.url}/portfolio` },
 };
 
-const items = [
+const iconMap: Record<string, LucideIcon> = {
+  sparkles: Sparkles,
+  layout: Layout,
+  share2: Share2,
+  search: Search,
+  palette: Palette,
+};
+
+const staticItems = [
   {
     title: "Fintech rebrand + site relaunch",
     cat: "Brand & Web",
@@ -39,7 +48,17 @@ const items = [
   },
 ];
 
-export default function PortfolioPage() {
+export default async function PortfolioPage() {
+  const dbItems = await getPortfolioItems();
+  const items =
+    dbItems.length > 0
+      ? dbItems.map((it) => ({
+          title: it.title,
+          cat: it.category,
+          desc: it.description,
+          icon: iconMap[it.icon?.toLowerCase()] ?? Sparkles,
+        }))
+      : staticItems;
   return (
     <>
       <PageHero

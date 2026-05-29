@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
-import { testimonials } from "@/lib/testimonials";
+import { testimonials as staticTestimonials, type Testimonial } from "@/lib/testimonials";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/button";
 
-export function HomeTestimonials() {
+export function HomeTestimonials({ items }: { items?: Testimonial[] }) {
+  const testimonials = items && items.length > 0 ? items : staticTestimonials;
   const [i, setI] = useState(0);
   const reduce = useReducedMotion();
 

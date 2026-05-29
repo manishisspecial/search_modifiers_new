@@ -4,7 +4,8 @@ import { FadeIn, Stagger, StaggerItem } from "@/components/motion/fade-in";
 import { PageHero } from "@/components/pages/page-hero";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { testimonials } from "@/lib/testimonials";
+import { testimonials as staticTestimonials } from "@/lib/testimonials";
+import { getTestimonials } from "@/lib/db-queries";
 import { site } from "@/lib/site";
 import { Quote } from "lucide-react";
 
@@ -14,7 +15,12 @@ export const metadata: Metadata = {
   alternates: { canonical: `${site.url}/testimonials` },
 };
 
-export default function TestimonialsPage() {
+export default async function TestimonialsPage() {
+  const dbTestimonials = await getTestimonials();
+  const testimonials =
+    dbTestimonials.length > 0
+      ? dbTestimonials.map((t) => ({ quote: t.quote, name: t.name, role: t.role, company: t.company }))
+      : staticTestimonials;
   return (
     <>
       <PageHero
@@ -28,7 +34,7 @@ export default function TestimonialsPage() {
         <Container>
           <h2 className="text-center font-display text-xl font-semibold text-foreground">Featured slider</h2>
           <div className="mt-10">
-            <HomeTestimonials />
+            <HomeTestimonials items={testimonials} />
           </div>
         </Container>
       </section>

@@ -228,11 +228,11 @@ async function seedNavigationItems() {
     { category: "services", label: "Influencer Marketing", href: "/services/influencer-marketing", order: 15 },
     { category: "services", label: "Website Development", href: "/services/website-development", order: 16 },
     // Locations nav
-    { category: "locations", label: "Delhi", href: "/locations/digital-marketing-delhi", order: 0 },
-    { category: "locations", label: "Noida", href: "/locations/digital-marketing-noida", order: 1 },
-    { category: "locations", label: "Gurgaon", href: "/locations/digital-marketing-gurgaon", order: 2 },
-    { category: "locations", label: "SEO Delhi NCR", href: "/locations/seo-delhi-ncr", order: 3 },
-    { category: "locations", label: "ORM Delhi", href: "/locations/orm-delhi", order: 4 },
+    { category: "locations", label: "Delhi", href: "/location/digital-marketing-delhi", order: 0 },
+    { category: "locations", label: "Noida", href: "/location/digital-marketing-noida", order: 1 },
+    { category: "locations", label: "Gurgaon", href: "/location/digital-marketing-gurgaon", order: 2 },
+    { category: "locations", label: "SEO Delhi NCR", href: "/location/seo-delhi-ncr", order: 3 },
+    { category: "locations", label: "ORM Delhi", href: "/location/orm-delhi", order: 4 },
   ];
 
   for (let i = 0; i < navItems.length; i++) {
