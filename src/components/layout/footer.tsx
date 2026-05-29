@@ -221,6 +221,17 @@ export async function Footer() {
               © {new Date().getFullYear()} {site.name}. All rights reserved.
             </p>
             <p className="mt-1 text-[11px] text-muted/55">Crafted for speed, accessibility, and search visibility.</p>
+            <p className="mt-2 text-[11px] text-muted/55">
+              Designed &amp; developed by{" "}
+              <a
+                href="https://www.shahworks.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold gradient-text transition hover:brightness-110"
+              >
+                Shah Works
+              </a>
+            </p>
           </div>
 
           <div className="order-2 flex flex-wrap items-center justify-center gap-3 sm:justify-end lg:order-3">
