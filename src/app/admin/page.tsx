@@ -15,6 +15,7 @@ import {
   Sparkles,
   ArrowRight,
   Activity,
+  Bell,
 } from "lucide-react";
 
 interface Stats {
@@ -23,6 +24,8 @@ interface Stats {
   caseStudies: number;
   testimonials: number;
   locations: number;
+  cityPages: number;
+  careerLeads: number;
 }
 
 function AnimatedCounter({ value, duration = 1.5 }: { value: number; duration?: number }) {
@@ -128,6 +131,8 @@ export default function AdminDashboard() {
     caseStudies: 0,
     testimonials: 0,
     locations: 0,
+    cityPages: 0,
+    careerLeads: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [greeting, setGreeting] = useState("Welcome back");
@@ -197,14 +202,34 @@ export default function AdminDashboard() {
       description: "Client reviews",
     },
     {
-      label: "Locations",
+      label: "Country Pages",
       value: stats.locations,
       href: "/admin/locations",
       icon: MapPin,
       gradient: "from-rose-500 via-pink-600 to-purple-600",
       bgGlow: "bg-rose-500/20",
       iconBg: "bg-rose-500/10",
-      description: "Office locations",
+      description: "Country pages",
+    },
+    {
+      label: "City Pages",
+      value: stats.cityPages,
+      href: "/admin/city-pages",
+      icon: MapPin,
+      gradient: "from-sky-500 via-cyan-600 to-teal-600",
+      bgGlow: "bg-sky-500/20",
+      iconBg: "bg-sky-500/10",
+      description: "City pages",
+    },
+    {
+      label: "Career Leads",
+      value: stats.careerLeads,
+      href: "/admin/career-leads",
+      icon: Bell,
+      gradient: "from-pink-500 via-rose-500 to-red-500",
+      bgGlow: "bg-pink-500/20",
+      iconBg: "bg-pink-500/10",
+      description: "Applications received",
     },
   ];
 
@@ -213,7 +238,8 @@ export default function AdminDashboard() {
     { label: "Add Blog Post", href: "/admin/blog/new", icon: FileText, color: "from-violet-500 to-purple-600" },
     { label: "Add Case Study", href: "/admin/case-studies/new", icon: FolderKanban, color: "from-emerald-500 to-teal-600" },
     { label: "Add Testimonial", href: "/admin/testimonials/new", icon: Star, color: "from-amber-500 to-orange-500" },
-    { label: "Add Location", href: "/admin/locations/new", icon: MapPin, color: "from-rose-500 to-pink-600" },
+    { label: "Add Country Page", href: "/admin/locations/new", icon: MapPin, color: "from-rose-500 to-pink-600" },
+    { label: "Add City Page", href: "/admin/city-pages/new", icon: MapPin, color: "from-sky-500 to-teal-600" },
     { label: "Site Settings", href: "/admin/site-settings", icon: Settings, color: "from-slate-500 to-slate-700", isOutline: true },
   ];
 
@@ -505,7 +531,7 @@ export default function AdminDashboard() {
         <div className="flex items-center gap-2">
           <span>Total Content:</span>
           <span className="font-semibold text-foreground">
-            {stats.services + stats.blogPosts + stats.caseStudies + stats.testimonials + stats.locations} items
+            {stats.services + stats.blogPosts + stats.caseStudies + stats.testimonials + stats.locations + stats.cityPages} items
           </span>
         </div>
       </motion.div>

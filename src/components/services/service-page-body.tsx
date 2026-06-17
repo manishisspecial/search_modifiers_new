@@ -45,7 +45,14 @@ export function ServicePageBody({ service, meta, relatedServices }: {
               <div className="pointer-events-none absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-rose-500/10 blur-[80px]" />
               <div className="relative">
                 {service.detailMarkdown ? (
-                  <BlogBody content={service.detailMarkdown} />
+                  service.detailMarkdown.trim().startsWith("<") ? (
+                    <div
+                      className="prose dark:prose-invert prose-sm sm:prose-base max-w-none prose-headings:font-display prose-headings:text-foreground prose-p:text-foreground/80 prose-a:text-orange-400 prose-strong:text-foreground prose-img:rounded-xl"
+                      dangerouslySetInnerHTML={{ __html: service.detailMarkdown }}
+                    />
+                  ) : (
+                    <BlogBody content={service.detailMarkdown} />
+                  )
                 ) : (
                   <>
                     <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-orange-400/90">

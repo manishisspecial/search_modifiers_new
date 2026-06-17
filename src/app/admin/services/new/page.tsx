@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FormLayout, FormField, FormInput, FormTextarea } from "@/components/admin/form-layout";
 import { NestedFieldArray } from "@/components/admin/nested-field-array";
-import { MarkdownEditor } from "@/components/admin/markdown-editor";
+import { RichTextEditor } from "@/components/admin/rich-text-editor";
 
 export default function NewServicePage() {
   const router = useRouter();
@@ -16,6 +16,7 @@ export default function NewServicePage() {
     shortDescription: "",
     metaTitle: "",
     metaDescription: "",
+    metaKeywords: "",
     heroEyebrow: "",
     intro: "",
     explanation: "",
@@ -149,6 +150,16 @@ export default function NewServicePage() {
           />
         </FormField>
 
+        <FormField label="Meta Keywords">
+          <FormInput
+            value={formData.metaKeywords}
+            onChange={(e) =>
+              setFormData({ ...formData, metaKeywords: e.target.value })
+            }
+            placeholder="Comma-separated keywords for SEO"
+          />
+        </FormField>
+
         <FormField label="Intro" required>
           <FormTextarea
             value={formData.intro}
@@ -171,8 +182,8 @@ export default function NewServicePage() {
           />
         </FormField>
 
-        <FormField label="Detail Markdown (Optional)">
-          <MarkdownEditor
+        <FormField label="Detail Content (Rich Text)">
+          <RichTextEditor
             value={formData.detailMarkdown}
             onChange={(value) =>
               setFormData({ ...formData, detailMarkdown: value })

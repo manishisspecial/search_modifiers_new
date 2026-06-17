@@ -6,7 +6,7 @@ export default function CityPagesPage() {
       type="CITY"
       basePath="/admin/city-pages"
       title="City Pages"
-      description="Manage city-level location pages (permalink: /location/slug)"
+      description="Manage city-level location pages (permalink: /city/slug e.g. /delhi/seo-company-delhi)"
       addLabel="New City Page"
     />
   );

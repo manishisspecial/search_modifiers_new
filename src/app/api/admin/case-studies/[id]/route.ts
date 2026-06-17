@@ -120,12 +120,13 @@ export async function DELETE(
 
   try {
     const { id } = await params;
-    await prisma.caseStudy.update({
+    const study = await prisma.caseStudy.update({
       where: { id },
       data: { deletedAt: new Date() },
     });
 
     revalidatePath("/case-studies");
+    revalidatePath(`/case-studies/${study.slug}`);
     revalidatePath("/");
     return NextResponse.json({ message: "Case study deleted" });
   } catch (error) {

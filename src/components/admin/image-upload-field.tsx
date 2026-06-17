@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Upload, X } from "lucide-react";
+import { toMediaUrl } from "@/lib/media";
 
 interface ImageUploadFieldProps {
   value: string;
@@ -31,7 +32,7 @@ export function ImageUploadField({
       if (!response.ok) throw new Error("Upload failed");
 
       const data = await response.json();
-      onChange(data.secure_url);
+      onChange(toMediaUrl(data.secure_url));
     } catch (error) {
       console.error("Upload error:", error);
       alert("Failed to upload image");

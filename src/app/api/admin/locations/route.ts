@@ -6,10 +6,12 @@ import { z } from "zod";
 
 const LocationSchema = z.object({
   slug: z.string().min(1),
+  prefix: z.string().optional().default(""),
   title: z.string().min(1),
   type: z.enum(["COUNTRY", "CITY"]).optional().default("COUNTRY"),
   metaTitle: z.string().min(1),
   metaDescription: z.string().min(1),
+  metaKeywords: z.string().optional(),
   heroEyebrow: z.string(),
   headline: z.string(),
   intro: z.string(),
@@ -40,8 +42,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const { searchParams } = new URL(req.url);
-    const type = searchParams.get("type");
+    const type = req.nextUrl.searchParams.get("type");
     const locations = await prisma.location.findMany({
       where: {
         deletedAt: null,
@@ -78,10 +79,12 @@ export async function POST(req: NextRequest) {
     const location = await prisma.location.create({
       data: {
         slug: validatedData.slug,
+        prefix: validatedData.prefix || "",
         title: validatedData.title,
         type: validatedData.type,
         metaTitle: validatedData.metaTitle,
         metaDescription: validatedData.metaDescription,
+        metaKeywords: validatedData.metaKeywords || null,
         heroEyebrow: validatedData.heroEyebrow,
         headline: validatedData.headline,
         intro: validatedData.intro,
@@ -120,6 +123,11 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    // Build the public URL: /{prefix}/{slug} if prefix exists, else /location/{slug}
+    const publicPath = validatedData.prefix
+      ? `/${validatedData.prefix}/${validatedData.slug}`
+      : `/location/${validatedData.slug}`;
+
     // Auto-add navigation item for the new location
     const existingNavCount = await prisma.navigationItem.count({
       where: { category: "locations" },
@@ -128,13 +136,13 @@ export async function POST(req: NextRequest) {
       data: {
         category: "locations",
         label: validatedData.title,
-        href: `/location/${validatedData.slug}`,
+        href: publicPath,
         order: existingNavCount,
       },
     });
 
     revalidatePath("/");
-    revalidatePath(`/location/${validatedData.slug}`);
+    revalidatePath(publicPath);
     return NextResponse.json(location, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {

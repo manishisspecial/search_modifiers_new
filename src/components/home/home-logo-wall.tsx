@@ -2,6 +2,7 @@
 
 import { KineticMarquee } from "@/components/motion/kinetic-marquee";
 import { cn } from "@/lib/cn";
+import type { HomeContent } from "@/lib/home-content";
 
 const logos: { name: string; svg: React.ReactNode }[] = [
   {
@@ -54,7 +55,9 @@ const logos: { name: string; svg: React.ReactNode }[] = [
   },
 ];
 
-export function HomeLogoWall() {
+export function HomeLogoWall({ content }: { content?: HomeContent["logoWall"] }) {
+  const label = content?.label ?? "Trusted by growth teams at";
+
   return (
     <section className="relative overflow-hidden border-y border-border bg-background/70 py-12 sm:py-14">
       <div className="noise-overlay" />
@@ -62,7 +65,7 @@ export function HomeLogoWall() {
       <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-background to-transparent sm:w-32" />
 
       <p className="relative mb-8 text-center text-[11px] font-semibold uppercase tracking-[0.28em] text-muted/70">
-        Trusted by growth teams at
+        {label}
       </p>
 
       <KineticMarquee duration={46} rowClassName="gap-14 sm:gap-20 items-center">

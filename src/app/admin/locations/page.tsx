@@ -6,7 +6,7 @@ export default function CountryPagesPage() {
       type="COUNTRY"
       basePath="/admin/locations"
       title="Country Pages"
-      description="Manage country-level location pages (permalink: /location/slug)"
+      description="Manage country-level location pages (permalink: /country/slug e.g. /india/seo-company-india)"
       addLabel="New Country Page"
     />
   );

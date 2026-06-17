@@ -16,8 +16,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   try {
-    const { searchParams } = new URL(req.url);
-    const type = searchParams.get("type");
+    const type = req.nextUrl.searchParams.get("type");
     const items = await prisma.managedLocation.findMany({
       where: type === "COUNTRY" || type === "CITY" ? { type } : undefined,
       orderBy: [{ type: "asc" }, { name: "asc" }],

@@ -1,11 +1,12 @@
 import { prisma } from "@/lib/db";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 
 // Always render fresh so admin edits to robots.txt take effect immediately,
 // and so the stored text is emitted verbatim (preserving multi-agent rules).
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  const site = await getSite();
   const base = site.url.replace(/\/$/, "");
   const sitemapLine = `Sitemap: ${base}/sitemap.xml`;
 

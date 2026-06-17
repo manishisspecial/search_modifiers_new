@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 interface LocationRow {
   id: string;
   slug: string;
+  prefix?: string;
   title: string;
   type: string;
 }
@@ -82,7 +83,9 @@ export function LocationList({
               className="glass rounded-2xl p-6 border border-border hover:shadow-lg transition-shadow"
             >
               <h3 className="font-bold font-display text-foreground mb-1">{location.title}</h3>
-              <p className="text-xs text-muted font-mono mb-4">/location/{location.slug}</p>
+              <p className="text-xs text-muted font-mono mb-4">
+                {location.prefix ? `/${location.prefix}/${location.slug}` : `/location/${location.slug}`}
+              </p>
               <div className="flex gap-2">
                 <Link href={`${basePath}/${location.id}`} className="flex-1">
                   <Button variant="outline" className="w-full flex items-center justify-center gap-2">

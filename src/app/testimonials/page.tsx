@@ -6,21 +6,28 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { testimonials as staticTestimonials } from "@/lib/testimonials";
 import { getTestimonials } from "@/lib/db-queries";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 import { Quote } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Testimonials",
-  description: "What clients say about working with Search Modifiers — performance, communication, and integrity.",
-  alternates: { canonical: `${site.url}/testimonials` },
-};
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return {
+    title: "Testimonials",
+    description: "What clients say about working with Search Modifiers — performance, communication, and integrity.",
+    alternates: { canonical: `${site.url}/testimonials` },
+  };
+}
 
 export default async function TestimonialsPage() {
   const dbTestimonials = await getTestimonials();
-  const testimonials =
-    dbTestimonials.length > 0
-      ? dbTestimonials.map((t) => ({ quote: t.quote, name: t.name, role: t.role, company: t.company }))
-      : staticTestimonials;
+  const dbMapped = dbTestimonials.map((t) => ({ quote: t.quote, name: t.name, role: t.role, company: t.company }));
+  const dbKeys = new Set(dbMapped.map((t) => `${t.name}|${t.company}`));
+  const testimonials = [
+    ...dbMapped,
+    ...staticTestimonials.filter((t) => !dbKeys.has(`${t.name}|${t.company}`)),
+  ];
   return (
     <>
       <PageHero

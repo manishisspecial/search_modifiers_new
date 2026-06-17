@@ -16,7 +16,7 @@ interface NavigationItem {
 const CATEGORY_LABELS: Record<string, string> = {
   main: "Main Nav",
   services: "Services",
-  locations: "Locations",
+  locations: "Country Pages",
   footer: "Footer",
 };
 

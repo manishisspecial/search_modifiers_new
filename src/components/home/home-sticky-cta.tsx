@@ -4,13 +4,21 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { X, Sparkles } from "lucide-react";
+import type { HomeContent } from "@/lib/home-content";
 
 const STORAGE_KEY = "sm-sticky-cta-dismissed";
 
-export function HomeStickyCta() {
+export function HomeStickyCta({ content }: { content?: HomeContent["stickyCta"] }) {
   const reduce = useReducedMotion();
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+
+  const c = content ?? {
+    title: "Free site audit — 2-day turnaround",
+    subtitle: "Technical SEO, speed & CRO notes you can ship.",
+    ctaLabel: "Claim yours →",
+    ctaHref: "/free-website-audit",
+  };
 
   useEffect(() => {
     const id = requestAnimationFrame(() => {
@@ -58,13 +66,13 @@ export function HomeStickyCta() {
               <Sparkles className="h-5 w-5" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold text-foreground">Free site audit — 2-day turnaround</p>
-              <p className="mt-0.5 text-xs text-muted">Technical SEO, speed &amp; CRO notes you can ship.</p>
+              <p className="text-sm font-semibold text-foreground">{c.title}</p>
+              <p className="mt-0.5 text-xs text-muted">{c.subtitle}</p>
               <Link
-                href="/free-website-audit"
+                href={c.ctaHref}
                 className="mt-2 inline-flex text-xs font-semibold uppercase tracking-wider text-orange-400 hover:text-orange-500"
               >
-                Claim yours →
+                {c.ctaLabel}
               </Link>
             </div>
             <button

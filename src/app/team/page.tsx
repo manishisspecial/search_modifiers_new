@@ -4,16 +4,19 @@ import { FadeIn, Stagger, StaggerItem } from "@/components/motion/fade-in";
 import { PageHero } from "@/components/pages/page-hero";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 import { getTeamMembers } from "@/lib/db-queries";
 import { toMediaUrl } from "@/lib/media";
 import { Linkedin } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Team",
-  description: "Meet the strategists, media buyers, and creatives behind Search Modifiers.",
-  alternates: { canonical: `${site.url}/team` },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return {
+    title: "Team",
+    description: "Meet the strategists, media buyers, and creatives behind Search Modifiers.",
+    alternates: { canonical: `${site.url}/team` },
+  };
+}
 
 const staticTeam = [
   {
@@ -55,6 +58,7 @@ const staticTeam = [
 ];
 
 export default async function TeamPage() {
+  const site = await getSite();
   const dbTeam = await getTeamMembers();
   const team =
     dbTeam.length > 0

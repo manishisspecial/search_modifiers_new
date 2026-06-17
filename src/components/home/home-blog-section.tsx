@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { cn } from "@/lib/cn";
 import { getRecentBlogPosts } from "@/lib/db-queries";
+import type { HomeContent } from "@/lib/home-content";
+import { toMediaUrl } from "@/lib/media";
 
 interface BlogPostDisplay {
   slug: string;
@@ -41,7 +43,7 @@ function BlogThumb({ category, image, alt, className }: { category: string; imag
   if (image) {
     return (
       <div className={cn("relative overflow-hidden", className)}>
-        <img src={image} alt={alt || ""} className="w-full h-full object-cover" />
+        <img src={toMediaUrl(image)} alt={alt || ""} className="w-full h-full object-cover" />
       </div>
     );
   }
@@ -135,9 +137,17 @@ function CompactCard({ post }: { post: BlogPostDisplay }) {
   );
 }
 
-export async function HomeBlogSection() {
+export async function HomeBlogSection({ content }: { content?: HomeContent["blogHeading"] }) {
   const recent = await getRecentBlogPosts(3);
   if (recent.length === 0) return null;
+
+  const c = content ?? {
+    eyebrow: "Insights",
+    title: "Related blog posts",
+    description: "Long-form notes on SEO, paid media, social, and web — the same frameworks we ship for clients.",
+    ctaLabel: "View all",
+    ctaHref: "/blog",
+  };
 
   const featured = recent[0];
   const stacked = recent.slice(1, 3);
@@ -148,9 +158,9 @@ export async function HomeBlogSection() {
       <div className="gradient-line absolute inset-x-0 top-0" />
       <Container>
         <AnimatedSectionHeading
-          eyebrow="Insights"
-          title="Related blog posts"
-          description="Long-form notes on SEO, paid media, social, and web — the same frameworks we ship for clients."
+          eyebrow={c.eyebrow}
+          title={c.title}
+          description={c.description}
         />
 
         <div
@@ -176,8 +186,8 @@ export async function HomeBlogSection() {
         </div>
 
         <FadeIn className="mt-12 flex justify-center" delay={0.12}>
-          <Button href="/blog" className="group px-8 py-3 text-base">
-            View all
+          <Button href={c.ctaHref} className="group px-8 py-3 text-base">
+            {c.ctaLabel}
             <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Button>
         </FadeIn>

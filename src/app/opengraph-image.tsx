@@ -1,12 +1,13 @@
 import { ImageResponse } from "next/og";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 
 export const runtime = "edge";
-export const alt = site.name;
+export const alt = "Search Modifiers";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OpenGraphImage() {
+export default async function OpenGraphImage() {
+  const site = await getSite();
   return new ImageResponse(
     (
       <div

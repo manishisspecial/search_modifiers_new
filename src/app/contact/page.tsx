@@ -3,20 +3,24 @@ import { ContactForm } from "@/components/forms/contact-form";
 import { OfficeInfoSection } from "@/components/layout/office-info-section";
 import { PageHero } from "@/components/pages/page-hero";
 import { Container } from "@/components/ui/container";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description: `Contact ${site.name} for digital marketing, SEO, and paid media. ${site.phone} · ${site.email}`,
-  alternates: { canonical: `${site.url}/contact` },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return {
+    title: "Contact",
+    description: `Contact ${site.name} for digital marketing, SEO, and paid media. ${site.phone} · ${site.email}`,
+    alternates: { canonical: `${site.url}/contact` },
+  };
+}
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const site = await getSite();
   return (
     <>
       <PageHero
         eyebrow="Contact"
-        title="Tell us what you’re building"
+        title="Tell us what you're building"
         description="We respond within one business day with next steps — usually a 30-minute discovery and a tailored recommendation outline."
       />
       <OfficeInfoSection className="pb-12 sm:pb-16" compactHeading />
@@ -27,7 +31,7 @@ export default function ContactPage() {
               <ContactForm />
             </div>
             <p className="mt-8 text-center text-sm text-muted/70">
-              For RFPs and security questionnaires, email {site.email} with “RFP” in the subject — we’ll route to our
+              For RFPs and security questionnaires, email {site.email} with &quot;RFP&quot; in the subject — we&apos;ll route to our
               solutions team.
             </p>
           </div>

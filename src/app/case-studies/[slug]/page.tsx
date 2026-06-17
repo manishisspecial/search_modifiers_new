@@ -11,8 +11,10 @@ import {
   getCaseStudySlugs as getStaticCaseStudySlugs,
 } from "@/lib/case-studies";
 import { getCaseStudyBySlug as getDbCaseStudyBySlug, getCaseStudySlugs as getDbCaseStudySlugs } from "@/lib/db-queries";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
+
+export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -44,11 +46,13 @@ async function resolveCaseStudy(slug: string): Promise<CaseStudyView | null> {
 
 export async function generateStaticParams() {
   const dbSlugs = await getDbCaseStudySlugs();
-  const slugs = dbSlugs.length > 0 ? dbSlugs : getStaticCaseStudySlugs();
-  return slugs.map((slug) => ({ slug }));
+  const staticSlugs = getStaticCaseStudySlugs();
+  const all = Array.from(new Set([...dbSlugs, ...staticSlugs]));
+  return all.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const site = await getSite();
   const { slug } = await params;
   const c = await resolveCaseStudy(slug);
   if (!c) return {};

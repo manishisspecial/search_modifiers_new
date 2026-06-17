@@ -3,8 +3,8 @@ import { prisma } from "@/lib/db";
 import { getCaseStudySlugs as getStaticCaseStudySlugs } from "@/lib/case-studies";
 import { locationSlugs } from "@/lib/locations-data";
 import { serviceSlugs } from "@/lib/services-data";
-import { getLocationSlugs, getCaseStudySlugs } from "@/lib/db-queries";
-import { site } from "@/lib/site";
+import { getLocationSlugs, getLocationPaths, getCaseStudySlugs } from "@/lib/db-queries";
+import { getSite } from "@/lib/get-site";
 
 const staticRoutes = [
   "/",
@@ -23,6 +23,7 @@ const staticRoutes = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const site = await getSite();
   const base = site.url.replace(/\/$/, "");
 
   const publishedPosts = await prisma.blogPost.findMany({
@@ -34,7 +35,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     select: { slug: true, updatedAt: true, publishedAt: true },
   });
 
-  const dbLocationSlugs = await getLocationSlugs();
+  const dbLocationPaths = await getLocationPaths();
+  const dbLocationSlugs = dbLocationPaths.map((l) => l.slug);
   const effectiveLocationSlugs = dbLocationSlugs.length > 0 ? dbLocationSlugs : [...locationSlugs];
 
   const dbCaseStudySlugs = await getCaseStudySlugs();
@@ -53,12 +55,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly" as const,
       priority: 0.75,
     })),
-    ...effectiveLocationSlugs.map((slug) => ({
-      url: `${base}/location/${slug}`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    })),
+    ...effectiveLocationSlugs.map((slug) => {
+      const loc = dbLocationPaths.find((l) => l.slug === slug);
+      const path = loc?.prefix ? `/${loc.prefix}/${slug}` : `/location/${slug}`;
+      return {
+        url: `${base}${path}`,
+        lastModified: new Date(),
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      };
+    }),
     ...publishedPosts.map((p) => ({
       url: `${base}/blog/${p.slug}`,
       lastModified: p.publishedAt || p.updatedAt,

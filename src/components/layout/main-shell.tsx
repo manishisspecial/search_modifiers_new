@@ -8,12 +8,15 @@ import { SmoothScrollProvider } from "@/components/motion/smooth-scroll-provider
 import { NavProvider } from "@/lib/nav-context";
 import { getMainNav, getServicesNav, getLocationsNav } from "@/lib/db-queries";
 import { mainNav, servicesNav, locationsNav } from "@/lib/navigation";
+import { getSite } from "@/lib/get-site";
+import { SiteProvider } from "@/lib/site-context";
 
 export async function MainShell({ children }: { children: React.ReactNode }) {
-  const [dbMain, dbServices, dbLocations] = await Promise.all([
+  const [dbMain, dbServices, dbLocations, siteConfig] = await Promise.all([
     getMainNav(),
     getServicesNav(),
     getLocationsNav(),
+    getSite(),
   ]);
 
   const toItems = (rows: { label: string; href: string }[]) =>
@@ -28,17 +31,19 @@ export async function MainShell({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <NavProvider value={navData}>
-      <SmoothScrollProvider>
-        <ScrollProgress />
-        <TopBar />
-        <Navbar />
-        <main className="flex-1 pt-[112px] lg:pt-[120px]">
-          <PageTransition>{children}</PageTransition>
-        </main>
-        <Footer />
-        <WhatsAppFloat />
-      </SmoothScrollProvider>
-    </NavProvider>
+    <SiteProvider value={siteConfig}>
+      <NavProvider value={navData}>
+        <SmoothScrollProvider>
+          <ScrollProgress />
+          <TopBar />
+          <Navbar />
+          <main className="flex-1 pt-[112px] lg:pt-[120px]">
+            <PageTransition>{children}</PageTransition>
+          </main>
+          <Footer />
+          <WhatsAppFloat whatsapp={siteConfig.whatsapp} />
+        </SmoothScrollProvider>
+      </NavProvider>
+    </SiteProvider>
   );
 }

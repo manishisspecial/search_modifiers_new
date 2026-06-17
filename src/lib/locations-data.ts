@@ -23,7 +23,7 @@ export const locations: LocationPage[] = [
   {
     slug: "digital-marketing-delhi",
     title: "Digital Marketing Company in Delhi",
-    metaTitle: "Digital Marketing Company in Delhi | Search Modifiers",
+    metaTitle: "Digital Marketing Company in Delhi",
     metaDescription:
       "Delhi’s performance marketing partner for SEO, paid media, and growth creative. Search Modifiers helps brands across CP, Saket, and NCR scale with clarity.",
     heroEyebrow: "Delhi & NCR",
@@ -59,7 +59,7 @@ export const locations: LocationPage[] = [
   {
     slug: "digital-marketing-noida",
     title: "Digital Marketing Company in Noida",
-    metaTitle: "Digital Marketing Company in Noida | Search Modifiers",
+    metaTitle: "Digital Marketing Company in Noida",
     metaDescription:
       "Growth marketing for Noida’s tech corridor: SEO, Google Ads, Meta, and content for SaaS, edtech, and e-commerce teams based in Sector 62, 18, and Film City.",
     heroEyebrow: "Noida",
@@ -89,7 +89,7 @@ export const locations: LocationPage[] = [
   {
     slug: "digital-marketing-gurgaon",
     title: "Digital Marketing Company in Gurgaon",
-    metaTitle: "Digital Marketing Company in Gurgaon | Search Modifiers",
+    metaTitle: "Digital Marketing Company in Gurgaon",
     metaDescription:
       "Premium digital marketing for Gurgaon HQ brands: performance creative, executive reporting, and global-ready campaigns from Cyber City to Golf Course Road.",
     heroEyebrow: "Gurugram",
@@ -119,7 +119,7 @@ export const locations: LocationPage[] = [
   {
     slug: "seo-delhi-ncr",
     title: "SEO Company in Delhi NCR",
-    metaTitle: "SEO Company in Delhi NCR | Search Modifiers",
+    metaTitle: "SEO Company in Delhi NCR",
     metaDescription:
       "Technical SEO, content clusters, and digital PR for Delhi NCR brands competing in India and abroad. Audits, retainers, and migration support.",
     heroEyebrow: "Delhi NCR SEO",
@@ -149,7 +149,7 @@ export const locations: LocationPage[] = [
   {
     slug: "orm-delhi",
     title: "ORM Company in Delhi",
-    metaTitle: "ORM Company in Delhi | Search Modifiers",
+    metaTitle: "ORM Company in Delhi",
     metaDescription:
       "Online reputation management for Delhi brands: review programs, SERP shaping, crisis response, and executive visibility — discreet and compliant.",
     heroEyebrow: "Reputation",

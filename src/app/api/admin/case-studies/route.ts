@@ -29,6 +29,7 @@ export async function GET() {
     const studies = await prisma.caseStudy.findMany({
       where: { deletedAt: null },
       include: { metrics: { orderBy: { order: "asc" } } },
+      orderBy: { createdAt: "desc" },
     });
 
     return NextResponse.json(studies);
@@ -73,6 +74,7 @@ export async function POST(req: NextRequest) {
     });
 
     revalidatePath("/case-studies");
+    revalidatePath(`/case-studies/${validatedData.slug}`);
     revalidatePath("/");
     return NextResponse.json(study, { status: 201 });
   } catch (error) {

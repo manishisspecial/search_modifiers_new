@@ -74,6 +74,7 @@ model Service {
   shortDescription    String
   metaTitle           String
   metaDescription     String
+  metaKeywords        String?
   heroEyebrow         String
   intro               String
   explanation         String
@@ -277,9 +278,12 @@ model Testimonial {
 model Location {
   id                  String   @id @default(cuid())
   slug                String   @unique
+  // URL prefix segment: e.g. "india" → /india/seo-company-india
+  prefix              String   @default("")
   title               String
   metaTitle           String
   metaDescription     String
+  metaKeywords        String?
   heroEyebrow         String
   headline            String
   intro               String
@@ -360,14 +364,15 @@ model LocationFAQ {
 }
 
 model StaticPage {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  title       String
-  content     String   @db.Text
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  title           String
+  metaDescription String?
+  content         String   @db.Text
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  deletedAt   DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  deletedAt       DateTime?
 
   @@map("static_pages")
 }
@@ -486,6 +491,24 @@ model CareerRole {
   deletedAt   DateTime?
 
   @@map("career_roles")
+}
+
+model CareerApplication {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  roleTitle   String
+  resumeUrl   String?
+  coverLetter String?  @db.Text
+  // "NEW" | "REVIEWED" | "SHORTLISTED" | "REJECTED" | "HIRED"
+  status      String   @default("NEW")
+  notes       String?  @db.Text
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("career_applications")
 }
 
 model FaqItem {

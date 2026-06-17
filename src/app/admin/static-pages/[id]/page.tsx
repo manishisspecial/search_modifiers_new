@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { FormLayout, FormField, FormInput } from "@/components/admin/form-layout";
+import { FormLayout, FormField, FormInput, FormTextarea } from "@/components/admin/form-layout";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 
 export default function EditStaticPagePage() {
@@ -13,6 +13,7 @@ export default function EditStaticPagePage() {
   const [formData, setFormData] = useState({
     slug: "",
     title: "",
+    metaDescription: "",
     content: "",
   });
 
@@ -25,6 +26,7 @@ export default function EditStaticPagePage() {
         setFormData({
           slug: data.slug || "",
           title: data.title || "",
+          metaDescription: data.metaDescription || "",
           content: data.content || "",
         });
       } catch (error) {
@@ -80,7 +82,7 @@ export default function EditStaticPagePage() {
     <div className="p-6">
       <FormLayout
         title="Edit Static Page"
-        description="Update static page content"
+        description={`Permalink: /p/${formData.slug || "your-slug"}`}
         onSubmit={handleSubmit}
         isLoading={isLoading}
         submitLabel="Update Page"
@@ -107,7 +109,16 @@ export default function EditStaticPagePage() {
           </FormField>
         </div>
 
-        <FormField label="Content" required>
+        <FormField label="Meta Description">
+          <FormTextarea
+            value={formData.metaDescription}
+            onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
+            placeholder="SEO description for this page"
+            rows={2}
+          />
+        </FormField>
+
+        <FormField label="Content (Markdown)" required>
           <MarkdownEditor
             value={formData.content}
             onChange={(value) => setFormData({ ...formData, content: value })}

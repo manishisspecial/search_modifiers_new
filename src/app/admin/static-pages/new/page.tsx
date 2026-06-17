@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FormLayout, FormField, FormInput } from "@/components/admin/form-layout";
+import { FormLayout, FormField, FormInput, FormTextarea } from "@/components/admin/form-layout";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 
 export default function NewStaticPagePage() {
@@ -11,6 +11,7 @@ export default function NewStaticPagePage() {
   const [formData, setFormData] = useState({
     slug: "",
     title: "",
+    metaDescription: "",
     content: "",
   });
 
@@ -48,7 +49,7 @@ export default function NewStaticPagePage() {
     <div className="p-6">
       <FormLayout
         title="Create Static Page"
-        description="Add a new static content page"
+        description={`Permalink: /p/${formData.slug || "your-slug"}`}
         onSubmit={handleSubmit}
         isLoading={isLoading}
         submitLabel="Create Page"
@@ -80,7 +81,16 @@ export default function NewStaticPagePage() {
           </FormField>
         </div>
 
-        <FormField label="Content" required>
+        <FormField label="Meta Description">
+          <FormTextarea
+            value={formData.metaDescription}
+            onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
+            placeholder="SEO description for this page"
+            rows={2}
+          />
+        </FormField>
+
+        <FormField label="Content (Markdown)" required>
           <MarkdownEditor
             value={formData.content}
             onChange={(value) => setFormData({ ...formData, content: value })}

@@ -3,15 +3,20 @@ import { FadeIn, Stagger, StaggerItem } from "@/components/motion/fade-in";
 import { PageHero } from "@/components/pages/page-hero";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 import { getPortfolioItems } from "@/lib/db-queries";
 import { Palette, Layout, Share2, Search, Sparkles, type LucideIcon } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Portfolio",
-  description: "Selected brand, web, and campaign work from Search Modifiers across B2B, D2C, and regulated sectors.",
-  alternates: { canonical: `${site.url}/portfolio` },
-};
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return {
+    title: "Portfolio",
+    description: "Selected brand, web, and campaign work from Search Modifiers across B2B, D2C, and regulated sectors.",
+    alternates: { canonical: `${site.url}/portfolio` },
+  };
+}
 
 const iconMap: Record<string, LucideIcon> = {
   sparkles: Sparkles,
@@ -49,16 +54,19 @@ const staticItems = [
 ];
 
 export default async function PortfolioPage() {
+  const site = await getSite();
   const dbItems = await getPortfolioItems();
-  const items =
-    dbItems.length > 0
-      ? dbItems.map((it) => ({
-          title: it.title,
-          cat: it.category,
-          desc: it.description,
-          icon: iconMap[it.icon?.toLowerCase()] ?? Sparkles,
-        }))
-      : staticItems;
+  const dbMapped = dbItems.map((it) => ({
+    title: it.title,
+    cat: it.category,
+    desc: it.description,
+    icon: iconMap[it.icon?.toLowerCase()] ?? Sparkles,
+  }));
+  const dbTitles = new Set(dbMapped.map((it) => it.title));
+  const items = [
+    ...dbMapped,
+    ...staticItems.filter((it) => !dbTitles.has(it.title)),
+  ];
   return (
     <>
       <PageHero

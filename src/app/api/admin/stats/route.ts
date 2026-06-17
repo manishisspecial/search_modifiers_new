@@ -10,13 +10,15 @@ export async function GET() {
   }
 
   try {
-    const [services, blogPosts, caseStudies, testimonials, locations] =
+    const [services, blogPosts, caseStudies, testimonials, countryPages, cityPages, careerLeads] =
       await Promise.all([
         prisma.service.count({ where: { deletedAt: null } }),
         prisma.blogPost.count({ where: { deletedAt: null } }),
         prisma.caseStudy.count({ where: { deletedAt: null } }),
         prisma.testimonial.count({ where: { deletedAt: null } }),
-        prisma.location.count({ where: { deletedAt: null } }),
+        prisma.location.count({ where: { deletedAt: null, type: "COUNTRY" } }),
+        prisma.location.count({ where: { deletedAt: null, type: "CITY" } }),
+        prisma.careerApplication.count(),
       ]);
 
     return NextResponse.json({
@@ -24,7 +26,9 @@ export async function GET() {
       blogPosts,
       caseStudies,
       testimonials,
-      locations,
+      locations: countryPages,
+      cityPages,
+      careerLeads,
     });
   } catch (error) {
     console.error(error);

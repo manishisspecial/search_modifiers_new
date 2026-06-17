@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { FormLayout, FormField, FormInput, FormTextarea } from "@/components/admin/form-layout";
 import { NestedFieldArray } from "@/components/admin/nested-field-array";
-import { MarkdownEditor } from "@/components/admin/markdown-editor";
+import { RichTextEditor } from "@/components/admin/rich-text-editor";
 
 export default function EditServicePage() {
   const router = useRouter();
@@ -18,6 +18,7 @@ export default function EditServicePage() {
     shortDescription: "",
     metaTitle: "",
     metaDescription: "",
+    metaKeywords: "",
     heroEyebrow: "",
     intro: "",
     explanation: "",
@@ -52,6 +53,7 @@ export default function EditServicePage() {
           shortDescription: data.shortDescription || "",
           metaTitle: data.metaTitle || "",
           metaDescription: data.metaDescription || "",
+          metaKeywords: data.metaKeywords || "",
           heroEyebrow: data.heroEyebrow || "",
           intro: data.intro || "",
           explanation: data.explanation || "",
@@ -218,6 +220,16 @@ export default function EditServicePage() {
           />
         </FormField>
 
+        <FormField label="Meta Keywords">
+          <FormInput
+            value={formData.metaKeywords}
+            onChange={(e) =>
+              setFormData({ ...formData, metaKeywords: e.target.value })
+            }
+            placeholder="Comma-separated keywords for SEO"
+          />
+        </FormField>
+
         <FormField label="Intro" required>
           <FormTextarea
             value={formData.intro}
@@ -240,8 +252,8 @@ export default function EditServicePage() {
           />
         </FormField>
 
-        <FormField label="Detail Markdown (Optional)">
-          <MarkdownEditor
+        <FormField label="Detail Content (Rich Text)">
+          <RichTextEditor
             value={formData.detailMarkdown}
             onChange={(value) =>
               setFormData({ ...formData, detailMarkdown: value })

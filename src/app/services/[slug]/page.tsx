@@ -19,9 +19,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const [site, s] = await Promise.all([getSite(), getServiceBySlug(slug)]);
   if (!s) return {};
+  const keywords = s.metaKeywords
+    ? s.metaKeywords.split(",").map((k: string) => k.trim()).filter(Boolean)
+    : undefined;
   return {
     title: s.metaTitle,
     description: s.metaDescription,
+    ...(keywords && { keywords }),
     alternates: { canonical: `${site.url}/services/${slug}` },
     openGraph: { title: s.metaTitle, description: s.metaDescription, url: `${site.url}/services/${slug}` },
   };

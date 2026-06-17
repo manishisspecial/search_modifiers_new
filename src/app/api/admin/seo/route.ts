@@ -15,9 +15,32 @@ export async function GET() {
   }
 
   try {
-    const settings = await prisma.siteSettings.findFirst({
+    let settings = await prisma.siteSettings.findFirst({
       select: { robotsTxt: true },
     });
+
+    if (!settings) {
+      await prisma.siteSettings.create({
+        data: {
+          name: "Search Modifiers",
+          tagline: "Digital Marketing Agency",
+          description: "Professional digital marketing services",
+          url: "https://searchmodifiers.com",
+          email: "info@searchmodifiers.com",
+          phone: "+91",
+          phoneTel: "+91",
+          officeRegion: "India",
+          officeBadge: "Based in India",
+          streetAddress: "",
+          city: "",
+          region: "",
+          postalCode: "",
+          country: "India",
+          addressDetail: "",
+        },
+      });
+      settings = { robotsTxt: null };
+    }
 
     const publishedCount = await prisma.blogPost.count({
       where: { status: "PUBLISHED", deletedAt: null, noindex: false },
@@ -52,18 +75,34 @@ export async function PUT(req: NextRequest) {
   try {
     const { robotsTxt } = await req.json();
 
-    const existing = await prisma.siteSettings.findFirst();
+    let existing = await prisma.siteSettings.findFirst();
     if (!existing) {
-      return NextResponse.json(
-        { error: "Site settings have not been initialised yet" },
-        { status: 404 }
-      );
+      existing = await prisma.siteSettings.create({
+        data: {
+          name: "Search Modifiers",
+          tagline: "Digital Marketing Agency",
+          description: "Professional digital marketing services",
+          url: "https://searchmodifiers.com",
+          email: "info@searchmodifiers.com",
+          phone: "+91",
+          phoneTel: "+91",
+          officeRegion: "India",
+          officeBadge: "Based in India",
+          streetAddress: "",
+          city: "",
+          region: "",
+          postalCode: "",
+          country: "India",
+          addressDetail: "",
+          robotsTxt,
+        },
+      });
+    } else {
+      await prisma.siteSettings.update({
+        where: { id: existing.id },
+        data: { robotsTxt },
+      });
     }
-
-    await prisma.siteSettings.update({
-      where: { id: existing.id },
-      data: { robotsTxt },
-    });
 
     revalidatePath("/robots.txt");
 

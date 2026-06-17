@@ -6,7 +6,7 @@ import { PageHero } from "@/components/pages/page-hero";
 import { Container } from "@/components/ui/container";
 import { getCategoryBySlug, getPostsByCategory, getCategories } from "@/lib/db-queries";
 import { toMediaUrl } from "@/lib/media";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 import { ArrowUpRight, Calendar, FolderTree, ChevronRight } from "lucide-react";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -17,6 +17,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const site = await getSite();
   const { slug } = await params;
   const category = await getCategoryBySlug(slug);
   if (!category) return {};
@@ -110,7 +111,22 @@ export default async function BlogCategoryPage({ params }: Props) {
                         </Link>
                       </h2>
                       <p className="mt-3 flex-1 text-sm leading-relaxed text-muted">{post.excerpt}</p>
-                      <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-muted/70">
+
+                      {Array.isArray(post.tags) && (post.tags as string[]).length > 0 && (
+                        <div className="mt-4 flex flex-wrap gap-1.5">
+                          {(post.tags as string[]).slice(0, 4).map((tag) => (
+                            <Link
+                              key={tag}
+                              href={`/blog/tag/${tag.toLowerCase().replace(/\s+/g, "-")}`}
+                              className="inline-block px-2 py-0.5 text-xs rounded-full bg-surface text-muted border border-border hover:border-orange-500/30 hover:text-orange-400 transition-colors"
+                            >
+                              #{tag}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-muted/70">
                         <span className="inline-flex items-center gap-1">
                           <Calendar className="h-3.5 w-3.5" />
                           {new Date(post.date).toLocaleDateString("en-IN", {

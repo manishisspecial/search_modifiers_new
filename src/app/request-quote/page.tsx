@@ -2,15 +2,19 @@ import type { Metadata } from "next";
 import { QuoteForm } from "@/components/forms/quote-form";
 import { PageHero } from "@/components/pages/page-hero";
 import { Container } from "@/components/ui/container";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 
-export const metadata: Metadata = {
-  title: "Request a Quote",
-  description: "Request a tailored proposal from Search Modifiers for SEO, paid media, ORM, content, or web projects.",
-  alternates: { canonical: `${site.url}/request-quote` },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return {
+    title: "Request a Quote",
+    description: "Request a tailored proposal from Search Modifiers for SEO, paid media, ORM, content, or web projects.",
+    alternates: { canonical: `${site.url}/request-quote` },
+  };
+}
 
-export default function RequestQuotePage() {
+export default async function RequestQuotePage() {
+  const site = await getSite();
   return (
     <>
       <PageHero

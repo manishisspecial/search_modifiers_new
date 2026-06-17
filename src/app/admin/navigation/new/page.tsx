@@ -7,7 +7,7 @@ import { FormLayout, FormField, FormInput } from "@/components/admin/form-layout
 const CATEGORIES = [
   { value: "main", label: "Main Nav" },
   { value: "services", label: "Services" },
-  { value: "locations", label: "Locations" },
+  { value: "locations", label: "Country Pages" },
   { value: "footer", label: "Footer" },
 ];
 

@@ -6,10 +6,12 @@ import { z } from "zod";
 
 const LocationUpdateSchema = z.object({
   slug: z.string().min(1),
+  prefix: z.string().optional().default(""),
   title: z.string().min(1),
   type: z.enum(["COUNTRY", "CITY"]).optional().default("COUNTRY"),
   metaTitle: z.string().min(1),
   metaDescription: z.string().min(1),
+  metaKeywords: z.string().optional(),
   heroEyebrow: z.string(),
   headline: z.string(),
   intro: z.string(),
@@ -94,10 +96,12 @@ export async function PUT(
       where: { id },
       data: {
         slug: validatedData.slug,
+        prefix: validatedData.prefix || "",
         title: validatedData.title,
         type: validatedData.type,
         metaTitle: validatedData.metaTitle,
         metaDescription: validatedData.metaDescription,
+        metaKeywords: validatedData.metaKeywords || null,
         heroEyebrow: validatedData.heroEyebrow,
         headline: validatedData.headline,
         intro: validatedData.intro,
@@ -136,7 +140,11 @@ export async function PUT(
       },
     });
 
-    revalidatePath(`/location/${validatedData.slug}`);
+    const publicPath = validatedData.prefix
+      ? `/${validatedData.prefix}/${validatedData.slug}`
+      : `/location/${validatedData.slug}`;
+
+    revalidatePath(publicPath);
     revalidatePath("/");
     return NextResponse.json(location);
   } catch (error) {
@@ -162,11 +170,12 @@ export async function DELETE(
 
   try {
     const { id } = await params;
-    await prisma.location.update({
+    const location = await prisma.location.update({
       where: { id },
       data: { deletedAt: new Date() },
     });
 
+    revalidatePath(`/location/${location.slug}`);
     revalidatePath("/");
     return NextResponse.json({ message: "Location deleted" });
   } catch (error) {

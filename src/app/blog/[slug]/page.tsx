@@ -8,7 +8,7 @@ import { Container } from "@/components/ui/container";
 import { ArticleJsonLd, FAQJsonLd } from "@/components/seo/json-ld";
 import { getPostBySlug, getPublishedPostSlugs, getPrimaryKeywords, getFaqs } from "@/lib/db-queries";
 import { toMediaUrl } from "@/lib/media";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 import { ArrowLeft, Calendar } from "lucide-react";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -19,6 +19,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const site = await getSite();
   const { slug } = await params;
   const post = await getPostBySlug(slug);
   if (!post) return {};
@@ -50,6 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BlogPostPage({ params }: Props) {
+  const site = await getSite();
   const { slug } = await params;
   const [post, allKeywords, blogFaqs] = await Promise.all([
     getPostBySlug(slug),

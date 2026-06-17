@@ -5,13 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { FAQJsonLd } from "@/components/seo/json-ld";
 import { getFaqs } from "@/lib/db-queries";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 
-export const metadata: Metadata = {
-  title: "FAQ",
-  description: "Frequently asked questions about Search Modifiers — pricing, process, channels, and engagement models.",
-  alternates: { canonical: `${site.url}/faq` },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return {
+    title: "FAQ",
+    description: "Frequently asked questions about Search Modifiers — pricing, process, channels, and engagement models.",
+    alternates: { canonical: `${site.url}/faq` },
+  };
+}
 
 const staticFaqs = [
   {

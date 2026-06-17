@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { LocationPageBody } from "@/components/locations/location-page-body";
 import { getLocationBySlug, getLocationSlugs, getFaqs } from "@/lib/db-queries";
 import { getLocationBySlug as getStaticLocationBySlug, locationSlugs } from "@/lib/locations-data";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
+
+export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -13,6 +15,7 @@ type LocationView = {
   type: "COUNTRY" | "CITY";
   metaTitle: string;
   metaDescription: string;
+  metaKeywords?: string;
   heroEyebrow: string;
   headline: string;
   intro: string;
@@ -30,6 +33,7 @@ async function resolveLocation(slug: string): Promise<LocationView | null> {
       type: (db.type as "COUNTRY" | "CITY") ?? "COUNTRY",
       metaTitle: db.metaTitle,
       metaDescription: db.metaDescription,
+      metaKeywords: db.metaKeywords ?? undefined,
       heroEyebrow: db.heroEyebrow,
       headline: db.headline,
       intro: db.intro,
@@ -45,17 +49,22 @@ async function resolveLocation(slug: string): Promise<LocationView | null> {
 
 export async function generateStaticParams() {
   const dbSlugs = await getLocationSlugs();
-  const slugs = dbSlugs.length > 0 ? dbSlugs : [...locationSlugs];
-  return slugs.map((slug) => ({ slug }));
+  const all = Array.from(new Set([...dbSlugs, ...locationSlugs]));
+  return all.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const site = await getSite();
   const { slug } = await params;
   const loc = await resolveLocation(slug);
   if (!loc) return {};
+  const keywords = loc.metaKeywords
+    ? loc.metaKeywords.split(",").map((k: string) => k.trim()).filter(Boolean)
+    : undefined;
   return {
     title: loc.metaTitle,
     description: loc.metaDescription,
+    ...(keywords && { keywords }),
     alternates: { canonical: `${site.url}/location/${slug}` },
     openGraph: { title: loc.metaTitle, description: loc.metaDescription, url: `${site.url}/location/${slug}` },
   };
@@ -63,10 +72,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function LocationPage({ params }: Props) {
   const { slug } = await params;
+
+  // If the DB record has a prefix, redirect to the canonical /{prefix}/{slug} URL
+  const dbRecord = await getLocationBySlug(slug);
+  if (dbRecord && dbRecord.prefix) {
+    redirect(`/${dbRecord.prefix}/${slug}`);
+  }
+
   const loc = await resolveLocation(slug);
   if (!loc) notFound();
 
-  // Pull any FAQs assigned to this exact page from the FAQ manager.
   const placement = loc.type === "CITY" ? "CITY" : "COUNTRY";
   const injected = await getFaqs(placement, slug);
 

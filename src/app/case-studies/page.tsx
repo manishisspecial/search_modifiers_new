@@ -6,29 +6,36 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { caseStudies as staticCaseStudies } from "@/lib/case-studies";
 import { getCaseStudies } from "@/lib/db-queries";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 import { ArrowUpRight } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Case Studies",
-  description: "Selected growth stories from Search Modifiers — SEO, paid media, ORM, and full-funnel programs.",
-  alternates: { canonical: `${site.url}/case-studies` },
-};
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return {
+    title: "Case Studies",
+    description: "Selected growth stories from Search Modifiers — SEO, paid media, ORM, and full-funnel programs.",
+    alternates: { canonical: `${site.url}/case-studies` },
+  };
+}
 
 export default async function CaseStudiesPage() {
   const dbCaseStudies = await getCaseStudies();
-  const caseStudies =
-    dbCaseStudies.length > 0
-      ? dbCaseStudies.map((c) => ({
-          slug: c.slug,
-          title: c.title,
-          industry: c.industry,
-          result: c.result,
-          summary: c.summary,
-          content: c.content,
-          metrics: c.metrics.map((m) => ({ label: m.label, value: m.value })),
-        }))
-      : staticCaseStudies;
+  const dbMapped = dbCaseStudies.map((c) => ({
+    slug: c.slug,
+    title: c.title,
+    industry: c.industry,
+    result: c.result,
+    summary: c.summary,
+    content: c.content,
+    metrics: c.metrics.map((m) => ({ label: m.label, value: m.value })),
+  }));
+  const dbSlugs = new Set(dbMapped.map((c) => c.slug));
+  const caseStudies = [
+    ...dbMapped,
+    ...staticCaseStudies.filter((c) => !dbSlugs.has(c.slug)),
+  ];
   return (
     <>
       <PageHero

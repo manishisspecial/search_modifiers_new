@@ -12,6 +12,7 @@ import {
   RefreshCw,
   Trash2,
 } from "lucide-react";
+import { toMediaUrl } from "@/lib/media";
 
 interface CloudinaryResource {
   public_id: string;
@@ -132,7 +133,7 @@ export function FeaturedImagePicker({
       if (!res.ok) throw new Error("Upload failed");
       const data = await res.json();
       setUploadProgress(100);
-      onChange(data.secure_url);
+      onChange(toMediaUrl(data.secure_url));
       // Refresh library silently
       setResources([]);
       fetchLibrary(searchQuery);
@@ -165,7 +166,7 @@ export function FeaturedImagePicker({
   // ── Library select ─────────────────────────────────────────────
   const handleLibrarySelect = (resource: CloudinaryResource) => {
     setSelectedPublicId(resource.public_id);
-    onChange(resource.secure_url);
+    onChange(toMediaUrl(resource.secure_url));
     if (onAltChange && !altValue) {
       const name = resource.display_name ?? resource.public_id.split("/").pop() ?? "";
       onAltChange(name.replace(/[-_]/g, " "));
@@ -174,7 +175,7 @@ export function FeaturedImagePicker({
 
   // ── URL apply ─────────────────────────────────────────────────
   const handleUrlApply = () => {
-    if (urlInput.trim()) onChange(urlInput.trim());
+    if (urlInput.trim()) onChange(toMediaUrl(urlInput.trim()));
   };
 
   const tabs: { id: TabId; label: string; icon: React.ElementType }[] = [

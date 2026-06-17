@@ -15,9 +15,11 @@ interface ManagedLocation {
 
 interface LocationFormData {
   slug: string;
+  prefix: string;
   title: string;
   metaTitle: string;
   metaDescription: string;
+  metaKeywords: string;
   heroEyebrow: string;
   headline: string;
   intro: string;
@@ -28,9 +30,11 @@ interface LocationFormData {
 
 const empty: LocationFormData = {
   slug: "",
+  prefix: "",
   title: "",
   metaTitle: "",
   metaDescription: "",
+  metaKeywords: "",
   heroEyebrow: "",
   headline: "",
   intro: "",
@@ -78,9 +82,11 @@ export function LocationEditor({
         const data = await res.json();
         setFormData({
           slug: data.slug || "",
+          prefix: data.prefix || "",
           title: data.title || "",
           metaTitle: data.metaTitle || "",
           metaDescription: data.metaDescription || "",
+          metaKeywords: data.metaKeywords || "",
           heroEyebrow: data.heroEyebrow || "",
           headline: data.headline || "",
           intro: data.intro || "",
@@ -144,11 +150,20 @@ export function LocationEditor({
     <div className="p-6">
       <FormLayout
         title={isEdit ? `Edit ${noun}` : `Create ${noun}`}
-        description={`Permalink: /location/${formData.slug || "your-slug"}`}
+        description={`Permalink: ${formData.prefix ? `/${formData.prefix}/${formData.slug || "your-slug"}` : `/location/${formData.slug || "your-slug"}`}`}
         onSubmit={handleSubmit}
         isLoading={isLoading}
         submitLabel={isEdit ? `Update ${noun}` : `Create ${noun}`}
       >
+        {/* Permalink preview */}
+        {formData.prefix && formData.slug && (
+          <div className="rounded-lg border border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 px-4 py-3">
+            <p className="text-xs font-medium text-green-700 dark:text-green-300 mb-1">Live URL Preview</p>
+            <p className="text-sm font-mono text-green-900 dark:text-green-100">
+              https://www.searchmodifiers.com/{formData.prefix}/{formData.slug}
+            </p>
+          </div>
+        )}
         {managed.length > 0 && (
           <FormField label={`Pick a managed ${type === "COUNTRY" ? "country" : "city"} (optional)`}>
             <select
@@ -156,16 +171,22 @@ export function LocationEditor({
               onChange={(e) => {
                 const m = managed.find((x) => x.id === e.target.value);
                 if (m) {
+                  const newPrefix = m.slug;
+                  const newSlug = `seo-company-${m.slug}`;
+                  const newTitle = type === "COUNTRY"
+                    ? `SEO Company in ${m.name}`
+                    : `SEO Company in ${m.name}`;
                   setFormData((prev) => ({
                     ...prev,
-                    title: prev.title || m.name,
-                    slug: prev.slug || `seo-company-${m.slug}`,
+                    title: newTitle,
+                    slug: newSlug,
+                    prefix: newPrefix,
                   }));
                 }
               }}
               className="w-full px-4 py-2 rounded-lg border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-brand"
             >
-              <option value="">— Select from Manage Locations —</option>
+              <option value="">— Select from managed list —</option>
               {managed.map((m) => (
                 <option key={m.id} value={m.id}>
                   {m.name}
@@ -173,7 +194,9 @@ export function LocationEditor({
                 </option>
               ))}
             </select>
-            <span className="text-xs text-muted">Prefills the title & slug. Manage the list under “Manage Locations”.</span>
+            <span className="text-xs text-muted">
+              Selecting a {type === "COUNTRY" ? "country" : "city"} will auto-fill the title, slug, and prefix to generate the correct permalink.
+            </span>
           </FormField>
         )}
 
@@ -195,6 +218,17 @@ export function LocationEditor({
               onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
               placeholder={type === "COUNTRY" ? "seo-company-india" : "seo-company-delhi"}
             />
+          </FormField>
+
+          <FormField label="URL Prefix" required>
+            <FormInput
+              value={formData.prefix}
+              onChange={(e) => setFormData({ ...formData, prefix: e.target.value })}
+              placeholder={type === "COUNTRY" ? "india" : "delhi"}
+            />
+            <span className="text-xs text-muted">
+              First segment in the URL: /{formData.prefix || "prefix"}/{formData.slug || "slug"}
+            </span>
           </FormField>
 
           <FormField label="Meta Title" required>
@@ -220,6 +254,14 @@ export function LocationEditor({
             onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
             placeholder="SEO description for this page"
             rows={2}
+          />
+        </FormField>
+
+        <FormField label="Meta Keywords">
+          <FormInput
+            value={formData.metaKeywords}
+            onChange={(e) => setFormData({ ...formData, metaKeywords: e.target.value })}
+            placeholder="Comma-separated keywords for SEO"
           />
         </FormField>
 

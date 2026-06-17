@@ -1,18 +1,30 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Calendar, FileSearch, Phone } from "lucide-react";
-import { site } from "@/lib/site";
+import { ArrowRight, FileSearch, Calendar, Phone } from "lucide-react";
+import { useSite } from "@/lib/site-context";
 import { Button } from "@/components/ui/button";
+import type { HomeContent } from "@/lib/home-content";
 
-const items = [
-  { icon: FileSearch, text: "Free ORM + SEO Audit Report" },
-  { icon: Calendar, text: "Strategy call in 48 hours" },
-  { icon: Phone, text: "Connect Experts - Not Sales Team" },
-];
+const ICONS = [FileSearch, Calendar, Phone];
 
-export function HomeConversionBar() {
+export function HomeConversionBar({ content }: { content?: HomeContent["conversionBar"] }) {
+  const site = useSite();
   const reduce = useReducedMotion();
+
+  const c = content ?? {
+    eyebrow: "Start with clarity",
+    title: "Get a prioritized growth roadmap — before you sign anything",
+    items: [
+      { text: "Free ORM + SEO Audit Report" },
+      { text: "Strategy call in 48 hours" },
+      { text: "Connect Experts - Not Sales Team" },
+    ],
+    primaryCtaLabel: "Get free website audit",
+    primaryCtaHref: "/free-website-audit",
+    secondaryCtaLabel: "Request a quote",
+    secondaryCtaHref: "/request-quote",
+  };
 
   return (
     <motion.section
@@ -27,28 +39,31 @@ export function HomeConversionBar() {
         <div className="noise-overlay rounded-3xl" />
         <div className="relative grid gap-10 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-16">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-orange-400/90">Start with clarity</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-orange-400/90">{c.eyebrow}</p>
             <h2 className="mt-4 max-w-xl font-display text-2xl font-bold tracking-tight text-foreground text-balance sm:text-3xl">
-              Get a prioritized growth roadmap — before you sign anything
+              {c.title}
             </h2>
             <ul className="mt-8 flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:gap-x-10 sm:gap-y-4">
-              {items.map(({ icon: Icon, text }) => (
-                <li key={text} className="group flex items-center gap-3 text-sm text-foreground/80">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface-hover text-orange-400 transition-all duration-300 group-hover:bg-orange-500/15 group-hover:shadow-lg group-hover:shadow-orange-500/10">
-                    <Icon className="h-4 w-4" strokeWidth={2} />
-                  </span>
-                  {text}
-                </li>
-              ))}
+              {c.items.map(({ text }, idx) => {
+                const Icon = ICONS[idx % ICONS.length];
+                return (
+                  <li key={idx} className="group flex items-center gap-3 text-sm text-foreground/80">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface-hover text-orange-400 transition-all duration-300 group-hover:bg-orange-500/15 group-hover:shadow-lg group-hover:shadow-orange-500/10">
+                      <Icon className="h-4 w-4" strokeWidth={2} />
+                    </span>
+                    {text}
+                  </li>
+                );
+              })}
             </ul>
           </div>
           <div className="flex flex-col gap-3.5 sm:flex-row lg:flex-col lg:items-stretch">
-            <Button href="/free-website-audit" className="group justify-center px-8 py-3.5 text-base shadow-xl shadow-orange-500/20">
-              Get free website audit
+            <Button href={c.primaryCtaHref} className="group justify-center px-8 py-3.5 text-base shadow-xl shadow-orange-500/20">
+              {c.primaryCtaLabel}
               <ArrowRight className="cta-arrow-nudge h-4 w-4 shrink-0" />
             </Button>
-            <Button href="/request-quote" variant="secondary" className="justify-center px-8 py-3.5 text-base">
-              Request a quote
+            <Button href={c.secondaryCtaHref} variant="secondary" className="justify-center px-8 py-3.5 text-base">
+              {c.secondaryCtaLabel}
             </Button>
             <a
               href={`tel:${site.phoneTel}`}

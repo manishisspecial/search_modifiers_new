@@ -6,7 +6,7 @@ import { MainShell } from "@/components/layout/main-shell";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Providers } from "@/components/providers";
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/json-ld";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,40 +24,43 @@ const outfit = Outfit({
   weight: ["400", "500", "600", "700", "800"],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: {
-    default: `${site.name} | Digital Marketing & SEO Agency`,
-    template: `%s`,
-  },
-  description: site.description,
-  keywords: [
-    "digital marketing agency",
-    "SEO services",
-    "Google Ads",
-    "Facebook Ads",
-    "ORM",
-    "Delhi NCR",
-    "Search Modifiers",
-  ],
-  authors: [{ name: site.name, url: site.url }],
-  creator: site.name,
-  openGraph: {
-    type: "website",
-    locale: "en_IN",
-    url: site.url,
-    siteName: site.name,
-    title: `${site.name} | Digital Marketing & SEO Agency`,
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return {
+    metadataBase: new URL(site.url),
+    title: {
+      default: `${site.name} | Digital Marketing & SEO Agency`,
+      template: `%s`,
+    },
     description: site.description,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${site.name} | Digital Marketing & SEO Agency`,
-    description: site.description,
-  },
-  robots: { index: true, follow: true },
-  alternates: { canonical: site.url },
-};
+    keywords: [
+      "digital marketing agency",
+      "SEO services",
+      "Google Ads",
+      "Facebook Ads",
+      "ORM",
+      "Delhi NCR",
+      "Search Modifiers",
+    ],
+    authors: [{ name: site.name, url: site.url }],
+    creator: site.name,
+    openGraph: {
+      type: "website",
+      locale: "en_IN",
+      url: site.url,
+      siteName: site.name,
+      title: `${site.name} | Digital Marketing & SEO Agency`,
+      description: site.description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${site.name} | Digital Marketing & SEO Agency`,
+      description: site.description,
+    },
+    robots: { index: true, follow: true },
+    alternates: { canonical: site.url },
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#f8fafc",

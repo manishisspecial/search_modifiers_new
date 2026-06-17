@@ -7,17 +7,33 @@ import { useRef } from "react";
 import { Magnetic } from "@/components/motion/magnetic";
 import { MaskReveal } from "@/components/motion/mask-reveal";
 import { Container } from "@/components/ui/container";
-import { site } from "@/lib/site";
+import { useSite } from "@/lib/site-context";
+import type { HomeContent } from "@/lib/home-content";
 
-/**
- * Signature closer: a giant kinetic CTA with a magnetic orb, orbiting
- * accent dots, scroll-linked parallax on the wordmark, and a big
- * gradient-pan "inevitable" word that echoes the hero headline —
- * narratively closing the loop.
- */
-export function HomeMegaCta() {
+const TILE_ICONS = [
+  <MessageSquare key="msg" className="h-4 w-4" />,
+  <Clock key="clk" className="h-4 w-4" />,
+  <Sparkles key="spk" className="h-4 w-4" />,
+];
+
+export function HomeMegaCta({ content }: { content?: HomeContent["megaCta"] }) {
+  const site = useSite();
   const reduce = useReducedMotion();
   const ref = useRef<HTMLElement>(null);
+
+  const c = content ?? {
+    headlineTop: "Let's make your growth",
+    headlineAccent: "inevitable.",
+    subtitle:
+      "Send us your site — we'll come back with prioritised opportunities, owners, and effort estimates in two business days. No decks.",
+    orbLabel: "Start a project",
+    orbHref: "/contact",
+    contactTiles: [
+      { label: "Email us", value: "", href: "" },
+      { label: "Response SLA", value: "< 24 hours", href: "" },
+      { label: "Free intro call", value: "20 minutes · no pitch", href: "/contact" },
+    ],
+  };
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -27,11 +43,14 @@ export function HomeMegaCta() {
   const yHeadline = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [60, -60]);
   const yTagline = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [30, -30]);
 
+  const orbLines = c.orbLabel.includes(" ")
+    ? [c.orbLabel.split(" ").slice(0, Math.ceil(c.orbLabel.split(" ").length / 2)).join(" "), c.orbLabel.split(" ").slice(Math.ceil(c.orbLabel.split(" ").length / 2)).join(" ")]
+    : [c.orbLabel];
+
   return (
     <section ref={ref} className="relative overflow-hidden pb-24 pt-28 sm:pb-32 sm:pt-36">
       <div className="gradient-line absolute inset-x-0 top-0" />
 
-      {/* Ambient gradient + orbital background */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2">
           <div className="conic-ring absolute inset-0 rounded-full opacity-20 blur-2xl" />
@@ -42,7 +61,6 @@ export function HomeMegaCta() {
       </div>
 
       <Container className="relative">
-        {/* ── Orb with magnetic button at center ── */}
         <div className="relative mx-auto w-full max-w-5xl text-center">
           <motion.div
             style={{ y: yHeadline }}
@@ -51,13 +69,13 @@ export function HomeMegaCta() {
             <span className="block text-balance text-foreground/95">
               <MaskReveal
                 as="span"
-                text="Let's make your growth"
+                text={c.headlineTop}
                 className="mega-text block"
               />
             </span>
             <span className="mt-2 block">
               <span className="mega-text gradient-pan inline-block">
-                inevitable.
+                {c.headlineAccent}
               </span>
             </span>
           </motion.div>
@@ -66,13 +84,10 @@ export function HomeMegaCta() {
             style={{ y: yTagline }}
             className="mx-auto mt-8 max-w-xl text-base text-muted sm:text-lg"
           >
-            Send us your site — we&apos;ll come back with prioritised opportunities,
-            owners, and effort estimates in two business days. No decks.
+            {c.subtitle}
           </motion.p>
 
-          {/* Magnetic orb CTA */}
           <div className="relative mx-auto mt-12 flex justify-center">
-            {/* Orbiting dots */}
             {!reduce ? (
               <div aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-center">
                 <span className="absolute block h-[440px] w-[440px] rounded-full border border-dashed border-orange-500/15" />
@@ -85,12 +100,11 @@ export function HomeMegaCta() {
 
             <Magnetic strength={0.45} radius={220}>
               <Link
-                href="/contact"
+                href={c.orbHref}
                 data-cursor="view"
                 data-cursor-label="Let's talk"
                 className="group relative flex h-44 w-44 items-center justify-center rounded-full border border-orange-400/30 bg-gradient-to-br from-orange-400 via-amber-500 to-rose-500 text-white shadow-[0_20px_60px_-15px_rgba(251, 146, 60,0.55)] transition-transform duration-500 hover:scale-[1.04] sm:h-52 sm:w-52"
               >
-                {/* Pulsing ring */}
                 <span
                   aria-hidden
                   className="pulse-ring absolute inset-0 rounded-full"
@@ -98,7 +112,12 @@ export function HomeMegaCta() {
                 <span className="relative flex flex-col items-center gap-2">
                   <Sparkles className="h-5 w-5" aria-hidden />
                   <span className="text-base font-semibold leading-tight">
-                    Start a<br />project
+                    {orbLines.map((line, i) => (
+                      <span key={i}>
+                        {line}
+                        {i < orbLines.length - 1 && <br />}
+                      </span>
+                    ))}
                   </span>
                   <ArrowUpRight
                     className="h-5 w-5 transition-transform duration-400 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:rotate-45"
@@ -108,25 +127,20 @@ export function HomeMegaCta() {
             </Magnetic>
           </div>
 
-          {/* Supporting touchpoints */}
           <div className="mt-12 grid gap-5 sm:grid-cols-3">
-            <ContactTile
-              icon={<MessageSquare className="h-4 w-4" />}
-              label="Email us"
-              value={site.email}
-              href={`mailto:${site.email}`}
-            />
-            <ContactTile
-              icon={<Clock className="h-4 w-4" />}
-              label="Response SLA"
-              value="< 24 hours"
-            />
-            <ContactTile
-              icon={<Sparkles className="h-4 w-4" />}
-              label="Free intro call"
-              value="20 minutes · no pitch"
-              href="/contact"
-            />
+            {c.contactTiles.map((tile, i) => {
+              const displayValue = tile.value || (i === 0 ? site.email : tile.value);
+              const tileHref = tile.href || (i === 0 ? `mailto:${site.email}` : undefined);
+              return (
+                <ContactTile
+                  key={i}
+                  icon={TILE_ICONS[i % TILE_ICONS.length]}
+                  label={tile.label}
+                  value={displayValue}
+                  href={tileHref}
+                />
+              );
+            })}
           </div>
         </div>
       </Container>

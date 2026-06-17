@@ -236,6 +236,7 @@ export async function getCaseStudies() {
     return await prisma.caseStudy.findMany({
       where: { deletedAt: null },
       include: { metrics: { orderBy: { order: "asc" } } },
+      orderBy: { createdAt: "desc" },
     });
   } catch (e) {
     logDbError("getCaseStudies", e);
@@ -323,6 +324,22 @@ export async function getLocationSlugs() {
     return locations.map((l) => l.slug);
   } catch (e) {
     logDbError("getLocationSlugs", e);
+    return [];
+  }
+}
+
+export async function getLocationPaths() {
+  try {
+    const locations = await prisma.location.findMany({
+      where: { deletedAt: null },
+      select: { slug: true, prefix: true },
+    });
+    return locations.map((l) => ({
+      slug: l.slug,
+      prefix: l.prefix || "",
+    }));
+  } catch (e) {
+    logDbError("getLocationPaths", e);
     return [];
   }
 }

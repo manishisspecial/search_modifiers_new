@@ -20,7 +20,7 @@ import { ScrollHint } from "@/components/motion/scroll-hint";
 import { Tilt3D } from "@/components/motion/tilt-3d";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { site } from "@/lib/site";
+import { useSite } from "@/lib/site-context";
 import { defaultHomeContent, type HomeContent } from "@/lib/home-content";
 
 /** Parse a stat string like "14+", "4.9", "24h" into animated-counter params. */
@@ -41,6 +41,7 @@ function parseStat(value: string): { countTo: number; suffix: string; decimals: 
  *  4. 3D tilt dashboard mockup on the right with holo sheen + SVG chart.
  */
 export function HomeHero({ content }: { content?: HomeContent["hero"] }) {
+  const site = useSite();
   const c = content ?? defaultHomeContent.hero;
   const stats = c.stats;
   const reduce = useReducedMotion();

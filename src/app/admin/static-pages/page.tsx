@@ -77,7 +77,7 @@ export default function StaticPagesPage() {
                   <h3 className="font-bold font-display text-foreground">
                     {page.title}
                   </h3>
-                  <p className="text-sm text-muted">/{page.slug}</p>
+                  <p className="text-sm text-muted font-mono">/p/{page.slug}</p>
                 </div>
                 <div className="flex gap-2">
                   <Link href={`/admin/static-pages/${page.id}`}>

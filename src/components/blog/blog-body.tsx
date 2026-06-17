@@ -1,6 +1,7 @@
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { toMediaUrl } from "@/lib/media";
 
 export interface KeywordLink {
   keyword: string;
@@ -141,6 +142,14 @@ export function BlogBody({
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
+        h1: ({ children }) => (
+          <h2
+            id={slugifyHeading(nodeToText(children))}
+            className="mt-12 scroll-mt-28 font-display text-2xl font-semibold text-foreground first:mt-0 sm:text-3xl"
+          >
+            {children}
+          </h2>
+        ),
         h2: ({ children }) => (
           <h2
             id={slugifyHeading(nodeToText(children))}
@@ -175,17 +184,26 @@ export function BlogBody({
           <th className="border-b border-border px-4 py-3.5 font-display font-semibold text-foreground">{children}</th>
         ),
         td: ({ children }) => <td className="px-4 py-3.5 text-muted">{children}</td>,
+        img: ({ src, alt }) => (
+          <img
+            src={toMediaUrl(src)}
+            alt={alt || ""}
+            className="mt-6 rounded-xl border border-border"
+            loading="lazy"
+          />
+        ),
         a: ({ href, children }) => {
-          const isExt = href?.startsWith("http");
+          const resolvedHref = href ? toMediaUrl(href) : href;
+          const isExt = resolvedHref?.startsWith("http");
           if (isExt) {
             return (
-              <a href={href} className="text-orange-400 underline-offset-2 hover:underline" target="_blank" rel="noopener noreferrer">
+              <a href={resolvedHref} className="text-orange-400 underline-offset-2 hover:underline" target="_blank" rel="noopener noreferrer">
                 {children}
               </a>
             );
           }
           return (
-            <Link href={href ?? "#"} className="text-orange-400 underline-offset-2 hover:underline">
+            <Link href={resolvedHref ?? "#"} className="text-orange-400 underline-offset-2 hover:underline">
               {children}
             </Link>
           );

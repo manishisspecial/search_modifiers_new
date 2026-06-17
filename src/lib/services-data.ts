@@ -58,7 +58,7 @@ export const services: ServiceBlock[] = [
     title: "Digital Marketing",
     shortDescription:
       "Full-funnel campaigns that blend search, social, and creative to grow pipeline and revenue.",
-    metaTitle: "Digital Marketing Agency | Search Modifiers",
+    metaTitle: "Digital Marketing Agency",
     metaDescription:
       "Strategy-led digital marketing: SEO, paid media, content, and analytics — engineered for measurable growth across India and global markets.",
     heroEyebrow: "Growth systems",
@@ -127,7 +127,7 @@ export const services: ServiceBlock[] = [
     heroTitle: "Best SEO Company in India – Grow Your Business with Search Modifiers",
     shortDescription:
       "Traditional and AI-powered SEO for rankings, visibility, and leads — with mid-month and monthly reporting you can trust.",
-    metaTitle: "Best SEO Company in India | SEO Services | Search Modifiers",
+    metaTitle: "Best SEO Company in India | SEO Services",
     metaDescription:
       "Search Modifiers: trusted SEO company in India — on-page, off-page, technical, local, eCommerce, content, and AI SEO. Data-driven strategy, 9+ years' experience, transparent ROI-focused reporting.",
     heroEyebrow: "Organic growth",
@@ -217,7 +217,7 @@ export const services: ServiceBlock[] = [
     slug: "local-seo",
     title: "Local SEO",
     shortDescription: "Dominate the map pack and local SERPs for high-intent “near me” searches.",
-    metaTitle: "Local SEO Services | Maps & Reviews | Search Modifiers",
+    metaTitle: "Local SEO Services | Maps & Reviews",
     metaDescription:
       "Google Business Profile optimization, citations, reviews, and localized landing pages for multi-location brands and regional leaders.",
     heroEyebrow: "Near-me demand",
@@ -245,7 +245,7 @@ export const services: ServiceBlock[] = [
     slug: "ecommerce-seo",
     title: "E-commerce SEO",
     shortDescription: "Category, facet, and PDP SEO that scales without technical debt.",
-    metaTitle: "E-commerce SEO Agency | Search Modifiers",
+    metaTitle: "E-commerce SEO Agency",
     metaDescription:
       "Faceted navigation governance, PLP/PDP optimization, and structured data for products — built for large catalogs.",
     heroEyebrow: "Catalog scale",
@@ -273,7 +273,7 @@ export const services: ServiceBlock[] = [
     slug: "technical-seo",
     title: "Technical SEO",
     shortDescription: "Crawl budget, rendering, and site architecture tuned for growth.",
-    metaTitle: "Technical SEO Consultants | Search Modifiers",
+    metaTitle: "Technical SEO Consultants",
     metaDescription:
       "Deep audits: JavaScript rendering, log files, Core Web Vitals, hreflang, and enterprise migrations with minimal traffic risk.",
     heroEyebrow: "Engineering SEO",
@@ -303,7 +303,7 @@ export const services: ServiceBlock[] = [
     heroTitle: "Social Media Marketing Company in India – Drive Real Growth with Search Modifiers",
     shortDescription:
       "Data-driven social strategy across LinkedIn, Facebook, Instagram, X, and Pinterest — engagement, leads, and ROI with mid-month and monthly reporting.",
-    metaTitle: "Social Media Marketing Company in India | Search Modifiers",
+    metaTitle: "Social Media Marketing Company in India",
     metaDescription:
       "Search Modifiers: trusted social media marketing agency in India — B2B and B2C campaigns, platform-specific creative, community management, 9+ years' experience, transparent ROI-focused reporting.",
     heroEyebrow: "Community & creative",
@@ -435,7 +435,7 @@ export const services: ServiceBlock[] = [
     title: "Paid Advertising (Google & Social Ads)",
     shortDescription:
       "Google and Meta campaigns, precision audiences, and creative systems tuned for ROAS and pipeline.",
-    metaTitle: "Paid Advertising — Google & Social Ads | Search Modifiers",
+    metaTitle: "Paid Advertising — Google & Social Ads",
     metaDescription:
       "Google Ads, Meta ads, high-converting creatives, targeting, retargeting, and continuous optimization for measurable ROI.",
     heroEyebrow: "Paid search & beyond",
@@ -464,7 +464,7 @@ export const services: ServiceBlock[] = [
     title: "PPC Services",
     shortDescription:
       "Performance-driven PPC across Search, Display, Video, App campaigns, and Remarketing — built for leads, sales, and ROI with transparent reporting.",
-    metaTitle: "Best PPC Company in India | PPC Services | Search Modifiers",
+    metaTitle: "Best PPC Company in India | PPC Services",
     metaDescription:
       "Search Modifiers delivers high-converting PPC in India: Google Ads, Display, Video, App promotion, remarketing, daily optimization, and mid-month + monthly reporting.",
     heroEyebrow: "Paid search & performance",
@@ -558,7 +558,7 @@ export const services: ServiceBlock[] = [
     slug: "facebook-ads",
     title: "Facebook Ads",
     shortDescription: "Meta campaigns with creative velocity and durable attribution.",
-    metaTitle: "Facebook & Instagram Ads | Search Modifiers",
+    metaTitle: "Facebook & Instagram Ads",
     metaDescription:
       "Prospecting, retargeting, and catalog campaigns on Meta — with creative testing frameworks and CAPI setup.",
     heroEyebrow: "Meta performance",
@@ -587,7 +587,7 @@ export const services: ServiceBlock[] = [
     title: "Online Reputation Management (ORM)",
     shortDescription:
       "Proactive review ecosystems, suppression strategy, and SERP defense — trust signals that compound.",
-    metaTitle: "Online Reputation Management (ORM) | Search Modifiers",
+    metaTitle: "Online Reputation Management (ORM)",
     metaDescription:
       "ORM programs: review management, negative-result suppression, SERP defense, and positive content promotion for brands in India and globally.",
     heroEyebrow: "Trust engineering",
@@ -616,7 +616,7 @@ export const services: ServiceBlock[] = [
     title: "Public Relations (Digital PR & Brand Authority)",
     shortDescription:
       "Strategic media positioning and authority-building PR across digital and traditional channels.",
-    metaTitle: "Digital PR & Public Relations | Search Modifiers",
+    metaTitle: "Digital PR & Public Relations",
     metaDescription:
       "Press releases, media outreach, brand reputation management, and high-authority placements — narrative systems that scale credibility.",
     heroEyebrow: "Authority & coverage",
@@ -669,7 +669,7 @@ export const services: ServiceBlock[] = [
     heroTitle: "Online Reputation Management Services in India for Brand Growth & Trust",
     shortDescription:
       "SEO-driven ORM to build, monitor, recover, and protect your reputation across search, reviews, and social — with mid-month and monthly reporting.",
-    metaTitle: "Online Reputation Management (ORM) India | Brand Management | Search Modifiers",
+    metaTitle: "Online Reputation Management (ORM) India | Brand Management",
     metaDescription:
       "Search Modifiers: ORM and brand reputation in India — audits, content, review management, suppression, monitoring, 9+ years' experience, Semrush/Ahrefs, transparent reporting.",
     heroEyebrow: "Reputation & trust",
@@ -789,7 +789,7 @@ export const services: ServiceBlock[] = [
     slug: "content-marketing",
     title: "Content Marketing",
     shortDescription: "Editorial engines that rank, nurture, and convert.",
-    metaTitle: "Content Marketing Agency | Search Modifiers",
+    metaTitle: "Content Marketing Agency",
     metaDescription:
       "Topic clusters, long-form guides, newsletters, and gated assets — measured against pipeline impact.",
     heroEyebrow: "Editorial ROI",
@@ -817,7 +817,7 @@ export const services: ServiceBlock[] = [
     slug: "influencer-marketing",
     title: "Influencer Marketing",
     shortDescription: "Partnerships with rigorous vetting, briefs, and attribution.",
-    metaTitle: "Influencer Marketing Agency | Search Modifiers",
+    metaTitle: "Influencer Marketing Agency",
     metaDescription:
       "Creator sourcing, contracting support, UGC packages, and performance reporting for authentic reach.",
     heroEyebrow: "Creator partnerships",
@@ -846,7 +846,7 @@ export const services: ServiceBlock[] = [
     title: "Website Development",
     shortDescription:
       "Fast, responsive sites and conversion-led experiences — design, performance, and SEO-ready structure.",
-    metaTitle: "Website Development Agency | Search Modifiers",
+    metaTitle: "Website Development Agency",
     metaDescription:
       "Next.js and headless builds with Core Web Vitals in mind, CRO modules, and analytics instrumentation from day one.",
     heroEyebrow: "Build & ship",
@@ -875,7 +875,7 @@ export const services: ServiceBlock[] = [
     title: "GEO – Generative Engine Optimization",
     shortDescription:
       "Visibility inside ChatGPT, Gemini, Perplexity, and next-gen AI surfaces — citations, entities, and demand before the click.",
-    metaTitle: "Generative Engine Optimization (GEO) | Search Modifiers",
+    metaTitle: "Generative Engine Optimization (GEO)",
     metaDescription:
       "GEO programs: generative-search content systems, AI citation optimization, entity authority, and conversational query visibility.",
     heroEyebrow: "AI discovery",
@@ -927,7 +927,7 @@ export const services: ServiceBlock[] = [
     title: "AEO - Answer Engine Optimization",
     shortDescription:
       "Answer boxes, AI Overviews, and entity-rich content — built to become the preferred answer source.",
-    metaTitle: "Answer Engine Optimization (AEO) | Search Modifiers",
+    metaTitle: "Answer Engine Optimization (AEO)",
     metaDescription:
       "AEO: answer-focused content, entity optimization, structured data, and authority signals for Google and AI-powered answer surfaces.",
     heroEyebrow: "Preferred answers",

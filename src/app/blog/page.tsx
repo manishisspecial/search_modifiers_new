@@ -3,19 +3,22 @@ import Link from "next/link";
 import { FadeIn, Stagger, StaggerItem } from "@/components/motion/fade-in";
 import { PageHero } from "@/components/pages/page-hero";
 import { Container } from "@/components/ui/container";
-import { getPosts, getCategories } from "@/lib/db-queries";
+import { getPosts, getCategories, getAllTags } from "@/lib/db-queries";
 import { toMediaUrl } from "@/lib/media";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 import { ArrowUpRight, Calendar, FolderTree } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Blog",
-  description: "Insights on SEO, paid media, content, and web performance from the Search Modifiers team.",
-  alternates: { canonical: `${site.url}/blog` },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return {
+    title: "Blog",
+    description: "Insights on SEO, paid media, content, and web performance from the Search Modifiers team.",
+    alternates: { canonical: `${site.url}/blog` },
+  };
+}
 
 export default async function BlogPage() {
-  const [posts, categories] = await Promise.all([getPosts(), getCategories()]);
+  const [posts, categories, allTags] = await Promise.all([getPosts(), getCategories(), getAllTags()]);
 
   // Only root-level categories with posts for the filter nav
   const rootCats = categories.filter((c) => !c.parentId && c._count.posts > 0);
@@ -47,6 +50,21 @@ export default async function BlogPage() {
                   <FolderTree className="h-3.5 w-3.5" />
                   {cat.name}
                   <span className="text-xs text-muted/60">({cat._count.posts})</span>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {allTags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-10">
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted/70 self-center mr-2">Tags</span>
+              {allTags.map((tag) => (
+                <Link
+                  key={tag}
+                  href={`/blog/tag/${tag.toLowerCase().replace(/\s+/g, "-")}`}
+                  className="inline-block px-2.5 py-1 text-xs rounded-full bg-surface text-muted border border-border hover:border-orange-500/30 hover:text-orange-400 transition-colors"
+                >
+                  #{tag}
                 </Link>
               ))}
             </div>

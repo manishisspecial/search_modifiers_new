@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Edit, Trash2, Plus } from "lucide-react";
+import { Edit, Trash2, Plus, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface CaseStudy {
@@ -11,11 +11,13 @@ interface CaseStudy {
   title: string;
   industry: string;
   result: string;
+  isStatic?: boolean;
 }
 
 export default function CaseStudiesPage() {
   const [studies, setStudies] = useState<CaseStudy[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchStudies();
@@ -24,10 +26,19 @@ export default function CaseStudiesPage() {
   const fetchStudies = async () => {
     try {
       const response = await fetch("/api/admin/case-studies");
+      if (!response.ok) {
+        throw new Error(`Failed to fetch (${response.status})`);
+      }
       const data = await response.json();
+      if (!Array.isArray(data)) {
+        throw new Error("Invalid response format");
+      }
       setStudies(data);
-    } catch (error) {
-      console.error("Failed to fetch case studies", error);
+      setError(null);
+    } catch (err: any) {
+      console.error("Failed to fetch case studies", err);
+      setError(err?.message || "Failed to fetch case studies");
+      setStudies([]);
     } finally {
       setIsLoading(false);
     }
@@ -37,10 +48,12 @@ export default function CaseStudiesPage() {
     if (!confirm("Are you sure?")) return;
 
     try {
-      await fetch(`/api/admin/case-studies/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/admin/case-studies/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Delete failed");
       setStudies(studies.filter((s) => s.id !== id));
     } catch (error) {
       console.error("Failed to delete case study", error);
+      alert("Failed to delete case study");
     }
   };
 
@@ -60,6 +73,12 @@ export default function CaseStudiesPage() {
           </Button>
         </Link>
       </div>
+
+      {error && (
+        <div className="mb-4 rounded-xl border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 p-4 text-sm text-red-700 dark:text-red-300">
+          {error}
+        </div>
+      )}
 
       {isLoading ? (
         <div className="space-y-4">
@@ -104,10 +123,28 @@ export default function CaseStudiesPage() {
         </div>
       ) : (
         <div className="glass rounded-2xl p-12 border border-border text-center">
-          <p className="text-muted mb-4">No case studies yet</p>
+          <p className="text-muted mb-4">No case studies in the database yet</p>
           <Link href="/admin/case-studies/new">
             <Button variant="primary">Create your first case study</Button>
           </Link>
+        </div>
+      )}
+
+      {/* Static fallback notice */}
+      {!isLoading && (
+        <div className="mt-6 rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 p-4">
+          <div className="flex items-start gap-3">
+            <Info className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+            <div className="text-sm text-amber-800 dark:text-amber-200">
+              <p className="font-medium mb-1">About homepage case studies</p>
+              <p>
+                The homepage displays case studies from the database above. If no database entries exist,
+                it shows default placeholder case studies. Adding entries here will automatically
+                display them on the homepage. The default placeholders are hidden once database entries
+                with matching slugs exist.
+              </p>
+            </div>
+          </div>
         </div>
       )}
     </div>

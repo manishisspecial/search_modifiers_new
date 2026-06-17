@@ -49,6 +49,7 @@ const navigation = [
   { label: "Static Pages", href: "/admin/static-pages", icon: FileStack },
   { label: "Team", href: "/admin/team", icon: Users },
   { label: "Careers", href: "/admin/careers", icon: GraduationCap },
+  { label: "Career Leads", href: "/admin/career-leads", icon: Bell },
   { label: "FAQ", href: "/admin/faq", icon: HelpCircle },
   { label: "Portfolio", href: "/admin/portfolio", icon: Image },
   { label: "Navigation", href: "/admin/navigation", icon: Navigation2 },

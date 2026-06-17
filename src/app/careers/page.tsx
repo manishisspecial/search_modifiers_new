@@ -3,15 +3,19 @@ import { FadeIn, Stagger, StaggerItem } from "@/components/motion/fade-in";
 import { PageHero } from "@/components/pages/page-hero";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 import { getCareerRoles } from "@/lib/db-queries";
+import { CareerApplyForm } from "@/components/forms/career-apply-form";
 import { MapPin, Clock } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Careers",
-  description: "Join Search Modifiers — strategists, media buyers, creatives, and SEO specialists in Delhi NCR and remote.",
-  alternates: { canonical: `${site.url}/careers` },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return {
+    title: "Careers",
+    description: "Join Search Modifiers — strategists, media buyers, creatives, and SEO specialists in Delhi NCR and remote.",
+    alternates: { canonical: `${site.url}/careers` },
+  };
+}
 
 const staticRoles = [
   {
@@ -41,6 +45,7 @@ const staticRoles = [
 ];
 
 export default async function CareersPage() {
+  const site = await getSite();
   const dbRoles = await getCareerRoles();
   const roles =
     dbRoles.length > 0
@@ -77,19 +82,15 @@ export default async function CareersPage() {
           <Stagger className="mt-12 space-y-5">
             {roles.map((r) => (
               <StaggerItem key={r.title}>
-                <article className="glass flex flex-col gap-4 rounded-2xl p-6 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <h2 className="font-display text-lg font-semibold text-foreground">{r.title}</h2>
-                    <p className="mt-1 text-xs font-medium uppercase tracking-wider text-orange-400/80">{r.type}</p>
-                    <p className="mt-3 max-w-2xl text-sm text-muted">{r.desc}</p>
+                <article className="glass rounded-2xl p-6">
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <h2 className="font-display text-lg font-semibold text-foreground">{r.title}</h2>
+                      <p className="mt-1 text-xs font-medium uppercase tracking-wider text-orange-400/80">{r.type}</p>
+                      <p className="mt-3 max-w-2xl text-sm text-muted">{r.desc}</p>
+                    </div>
                   </div>
-                  <Button
-                    href={r.applyUrl || `/contact?role=${encodeURIComponent(r.title)}`}
-                    variant="outline"
-                    className="shrink-0"
-                  >
-                    Apply
-                  </Button>
+                  <CareerApplyForm roleTitle={r.title} />
                 </article>
               </StaggerItem>
             ))}

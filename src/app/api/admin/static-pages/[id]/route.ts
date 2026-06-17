@@ -1,11 +1,13 @@
 import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { z } from "zod";
 
 const StaticPageUpdateSchema = z.object({
   slug: z.string().min(1),
   title: z.string().min(1),
+  metaDescription: z.string().optional(),
   content: z.string().min(1),
 });
 
@@ -57,9 +59,15 @@ export async function PUT(
 
     const page = await prisma.staticPage.update({
       where: { id },
-      data: validatedData,
+      data: {
+        slug: validatedData.slug,
+        title: validatedData.title,
+        metaDescription: validatedData.metaDescription || null,
+        content: validatedData.content,
+      },
     });
 
+    revalidatePath(`/p/${validatedData.slug}`);
     return NextResponse.json(page);
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -84,11 +92,12 @@ export async function DELETE(
 
   try {
     const { id } = await params;
-    await prisma.staticPage.update({
+    const page = await prisma.staticPage.update({
       where: { id },
       data: { deletedAt: new Date() },
     });
 
+    revalidatePath(`/p/${page.slug}`);
     return NextResponse.json({ message: "Static page deleted" });
   } catch (error) {
     console.error(error);

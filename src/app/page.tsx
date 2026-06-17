@@ -11,6 +11,7 @@ import { HomeMegaCta } from "@/components/home/home-mega-cta";
 import { HomeMidCta } from "@/components/home/home-mid-cta";
 import { HomeServicesStack } from "@/components/home/home-services-stack";
 import { HomeStickyCta } from "@/components/home/home-sticky-cta";
+import { HomePortfolio } from "@/components/home/home-portfolio";
 import { HomeTestimonialsMarquee } from "@/components/home/home-testimonials-marquee";
 import { OfficeInfoSection } from "@/components/layout/office-info-section";
 import { BlurFade } from "@/components/motion/blur-fade";
@@ -20,24 +21,31 @@ import { Tilt3D } from "@/components/motion/tilt-3d";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { caseStudies as staticCaseStudies } from "@/lib/case-studies";
-import { getCaseStudies, getTestimonials } from "@/lib/db-queries";
+import { getCaseStudies, getTestimonials, getPortfolioItems } from "@/lib/db-queries";
+import { testimonials as staticTestimonials } from "@/lib/testimonials";
 import { getHomeContent } from "@/lib/home-content";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
 import type { LucideIcon } from "lucide-react";
 import { BarChart3, Layers, LineChart, Users } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 const whyIcons: LucideIcon[] = [BarChart3, LineChart, Layers, Users];
 
-export const metadata: Metadata = {
-  title: "Digital Marketing & SEO Agency",
-  description: site.description,
-  alternates: { canonical: site.url },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSite();
+  return {
+    title: "Digital Marketing & SEO Agency",
+    description: site.description,
+    alternates: { canonical: site.url },
+  };
+}
 
 export default async function HomePage() {
-  const [dbCaseStudies, dbTestimonials, homeContent] = await Promise.all([
+  const [dbCaseStudies, dbTestimonials, dbPortfolioItems, homeContent] = await Promise.all([
     getCaseStudies(),
     getTestimonials(),
+    getPortfolioItems(),
     getHomeContent(),
   ]);
   const why = homeContent.why.cards.map((card, i) => ({
@@ -45,45 +53,62 @@ export default async function HomePage() {
     body: card.body,
     icon: whyIcons[i % whyIcons.length],
   }));
-  const caseStudies =
-    dbCaseStudies.length > 0
-      ? dbCaseStudies.map((c) => ({
-          slug: c.slug,
-          title: c.title,
-          industry: c.industry,
-          result: c.result,
-          summary: c.summary,
-          content: c.content,
-          metrics: c.metrics.map((m) => ({ label: m.label, value: m.value })),
-        }))
-      : staticCaseStudies;
-  const testimonials =
-    dbTestimonials.length > 0
-      ? dbTestimonials.map((t) => ({ quote: t.quote, name: t.name, role: t.role, company: t.company }))
-      : undefined;
+  const dbMapped = dbCaseStudies.map((c) => ({
+    slug: c.slug,
+    title: c.title,
+    industry: c.industry,
+    result: c.result,
+    summary: c.summary,
+    content: c.content,
+    metrics: c.metrics.map((m) => ({ label: m.label, value: m.value })),
+  }));
+  const dbSlugs = new Set(dbMapped.map((c) => c.slug));
+  const caseStudies = [
+    ...dbMapped,
+    ...staticCaseStudies.filter((c) => !dbSlugs.has(c.slug)),
+  ];
+  const dbTestimonialsMapped = dbTestimonials.map((t) => ({ quote: t.quote, name: t.name, role: t.role, company: t.company }));
+  const dbTestimonialKeys = new Set(dbTestimonialsMapped.map((t) => `${t.name}|${t.company}`));
+  const testimonials = [
+    ...dbTestimonialsMapped,
+    ...staticTestimonials.filter((t) => !dbTestimonialKeys.has(`${t.name}|${t.company}`)),
+  ];
+
+  const staticPortfolioItems = [
+    { title: "Fintech rebrand + site relaunch", category: "Brand & Web", description: "Positioning refresh, design system, and Next.js marketing site with sub-2s LCP globally.", icon: "layout" },
+    { title: "D2C skincare — Meta creative OS", category: "Paid Social", description: "UGC factory, hook matrix, and catalog ads that sustained 4× ROAS through scale.", icon: "share2" },
+    { title: "B2B SaaS — topical SEO program", category: "SEO & Content", description: "120+ templates indexed; integration hub that drives 40% of demo requests.", icon: "search" },
+    { title: "Healthcare group — ORM + local", category: "ORM", description: "GBP governance across 22 clinics; review velocity +4× with ethical prompts.", icon: "palette" },
+  ];
+  const portfolioMapped = dbPortfolioItems.map((it) => ({
+    title: it.title,
+    category: it.category,
+    description: it.description,
+    icon: it.icon || "sparkles",
+  }));
+  const portfolioTitles = new Set(portfolioMapped.map((it) => it.title));
+  const portfolioItems = [
+    ...portfolioMapped,
+    ...staticPortfolioItems.filter((it) => !portfolioTitles.has(it.title)),
+  ];
   return (
     <>
-      <HomeStickyCta />
+      <HomeStickyCta content={homeContent.stickyCta} />
       <HomeHero content={homeContent.hero} />
 
-      {/* Logo marquee */}
-      <HomeLogoWall />
+      <HomeLogoWall content={homeContent.logoWall} />
 
-      {/* Conversion bar */}
       <section className="py-14 sm:py-18">
         <Container>
-          <HomeConversionBar />
+          <HomeConversionBar content={homeContent.conversionBar} />
         </Container>
       </section>
 
-      {/* Sticky stacking services */}
-      <HomeServicesStack />
+      <HomeServicesStack content={homeContent.servicesStack} />
 
-      {/* Horizontally-pinned approach journey */}
-      <HomeApproach />
+      <HomeApproach content={homeContent.approach} />
 
-      {/* Impact metrics ribbon */}
-      <HomeImpactRibbon />
+      <HomeImpactRibbon content={homeContent.impactRibbon} />
 
       {/* Why us */}
       <section className="relative py-24 sm:py-32">
@@ -119,13 +144,13 @@ export default async function HomePage() {
         <Container>
           <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
             <AnimatedSectionHeading
-              eyebrow="Proof"
-              title="Case studies with numbers — not adjectives"
-              description="A snapshot of recent engagements. Full narratives live on our case studies hub."
+              eyebrow={homeContent.caseStudiesHeading.eyebrow}
+              title={homeContent.caseStudiesHeading.title}
+              description={homeContent.caseStudiesHeading.description}
             />
             <FadeIn>
-              <Button href="/case-studies" variant="outline" className="px-6 py-3">
-                View all case studies
+              <Button href={homeContent.caseStudiesHeading.ctaHref} variant="outline" className="px-6 py-3">
+                {homeContent.caseStudiesHeading.ctaLabel}
               </Button>
             </FadeIn>
           </div>
@@ -143,14 +168,17 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      {/* Testimonials — dual kinetic marquee */}
+      {/* Portfolio */}
+      <HomePortfolio content={homeContent.portfolioHeading} items={portfolioItems} />
+
+      {/* Testimonials */}
       <section className="relative py-24 sm:py-32">
         <div className="gradient-line absolute inset-x-0 top-0" />
         <Container>
           <AnimatedSectionHeading
-            eyebrow="Voices"
-            title="Trusted by operators who hate fluff"
-            description="Retention and referrals are our real KPIs. Here's what clients say — references available on request."
+            eyebrow={homeContent.testimonialsHeading.eyebrow}
+            title={homeContent.testimonialsHeading.title}
+            description={homeContent.testimonialsHeading.description}
             align="center"
             className="mx-auto"
           />
@@ -160,13 +188,11 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Blog — featured + stack (match reference layout) */}
-      <HomeBlogSection />
+      <HomeBlogSection content={homeContent.blogHeading} />
 
       <OfficeInfoSection className="py-24 sm:py-32" withTopDivider />
 
-      {/* Signature mega CTA closer */}
-      <HomeMegaCta />
+      <HomeMegaCta content={homeContent.megaCta} />
     </>
   );
 }

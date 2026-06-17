@@ -5,90 +5,33 @@ import { ClipboardList, Compass, Rocket, Target } from "lucide-react";
 import { useRef } from "react";
 import { AnimatedSectionHeading } from "@/components/home/animated-section-heading";
 import { Container } from "@/components/ui/container";
+import type { HomeContent } from "@/lib/home-content";
 
-type Step = {
-  step: string;
-  title: string;
-  description: string;
-  deliverables: string[];
-  icon: React.ComponentType<{ className?: string }>;
-  hue: string;
-};
-
-const STEPS: Step[] = [
-  {
-    step: "01",
-    title: "Strategic Discovery Meeting",
-    description:
-      "Mission-alignment session focused on decoding your business model, growth objectives, operational friction points, and success metrics — establishing a precision roadmap from day one.",
-    deliverables: [
-      "Goal discovery & revenue-target mapping",
-      "Business requirement intelligence gathering",
-      "Target audience behavior analysis",
-      "Initial growth-opportunity identification systems",
-    ],
-    icon: Compass,
-    hue: "from-orange-400/30 via-orange-500/10 to-transparent text-orange-400",
-  },
-  {
-    step: "02",
-    title: "Project Intelligence Briefing",
-    description:
-      "Brand intelligence audit analyzing your products, services, market positioning, and current digital footprint — extracting the data required to engineer a high-performance growth strategy.",
-    deliverables: [
-      "Brand ecosystem & business model analysis",
-      "Current performance diagnostics & channel review",
-      "Product/service value architecture mapping",
-      "Priority objective synchronization systems",
-    ],
-    icon: ClipboardList,
-    hue: "from-amber-400/30 via-rose-500/10 to-transparent text-amber-400",
-  },
-  {
-    step: "03",
-    title: "Research & Strategy Engineering",
-    description:
-      "Competitive intelligence mapping, market-signal analysis, and strategic growth engineering — building a precision roadmap designed for measurable expansion and scalable performance.",
-    deliverables: [
-      "Competitor intelligence mapping & market-gap analysis",
-      "Audience behavior research & intent profiling",
-      "Multi-channel strategy architecture planning",
-      "Timeline sequencing & execution roadmap systems",
-    ],
-    icon: Target,
-    hue: "from-rose-400/30 via-orange-500/10 to-transparent text-rose-400",
-  },
-  {
-    step: "04",
-    title: "Launch & Execution Systems",
-    description:
-      "Precision deployment systems launch, manage, and continuously optimize every campaign layer — using real-time monitoring to maximize performance, efficiency, and measurable results.",
-    deliverables: [
-      "Campaign or website deployment protocols",
-      "Performance tracking & analytics integration",
-      "Continuous optimization & scaling systems",
-      "Monthly intelligence reports & growth insights",
-    ],
-    icon: Rocket,
-    hue: "from-emerald-400/30 via-orange-500/10 to-transparent text-emerald-400",
-  },
+const STEP_ICONS = [Compass, ClipboardList, Target, Rocket];
+const STEP_HUES = [
+  "from-orange-400/30 via-orange-500/10 to-transparent text-orange-400",
+  "from-amber-400/30 via-rose-500/10 to-transparent text-amber-400",
+  "from-rose-400/30 via-orange-500/10 to-transparent text-rose-400",
+  "from-emerald-400/30 via-orange-500/10 to-transparent text-emerald-400",
 ];
 
-/**
- * Horizontally-pinned approach section. As the user scrolls through the
- * tall wrapper, the inner track translates sideways — creating a pinned
- * horizontal journey through each stage of the process.
- */
-export function HomeApproach() {
+export function HomeApproach({ content }: { content?: HomeContent["approach"] }) {
   const reduce = useReducedMotion();
   const wrapRef = useRef<HTMLDivElement>(null);
+
+  const c = content ?? {
+    eyebrow: "Our approach",
+    title: "Growth Systems Engineered for Consistent Results",
+    description:
+      "A precision growth framework engineered to convert ideas into measurable momentum — generating qualified traffic, increasing brand value, and scaling brands with data-backed confidence.",
+    steps: [],
+  };
 
   const { scrollYProgress } = useScroll({
     target: wrapRef,
     offset: ["start start", "end end"],
   });
 
-  // Translate the track so all 4 cards can be reached; tuned for card width + gaps.
   const x = useTransform(
     scrollYProgress,
     [0, 1],
@@ -103,23 +46,21 @@ export function HomeApproach() {
       <Container>
         <div className="pt-24 sm:pt-32">
           <AnimatedSectionHeading
-            eyebrow="Our approach"
-            title="Growth Systems Engineered for Consistent Results"
-            description="A precision growth framework engineered to convert ideas into measurable momentum — generating qualified traffic, increasing brand value, and scaling brands with data-backed confidence."
+            eyebrow={c.eyebrow}
+            title={c.title}
+            description={c.description}
           />
         </div>
       </Container>
 
-      {/* Tall wrapper — its height defines how long the sideways pin lasts. */}
       <div ref={wrapRef} className="relative h-[340vh]">
         <div className="sticky top-0 flex h-screen items-center overflow-hidden">
           <motion.div style={{ x }} className="h-scroll-track px-[6vw]">
-            {STEPS.map((s, i) => (
-              <StageCard key={s.step} s={s} isLast={i === STEPS.length - 1} />
+            {c.steps.map((s, i) => (
+              <StageCard key={s.step} s={s} isLast={i === c.steps.length - 1} stepIndex={i} />
             ))}
           </motion.div>
 
-          {/* Progress bar at bottom of the pinned viewport */}
           <div className="pointer-events-none absolute inset-x-0 bottom-10 z-10 mx-auto h-px w-[80%] max-w-3xl overflow-hidden rounded-full bg-border sm:bottom-12">
             <motion.div
               style={{ width: progressWidth }}
@@ -136,8 +77,18 @@ export function HomeApproach() {
   );
 }
 
-function StageCard({ s, isLast }: { s: Step; isLast: boolean }) {
-  const Icon = s.icon;
+function StageCard({
+  s,
+  isLast,
+  stepIndex,
+}: {
+  s: HomeContent["approach"]["steps"][number];
+  isLast: boolean;
+  stepIndex: number;
+}) {
+  const Icon = STEP_ICONS[stepIndex % STEP_ICONS.length];
+  const hue = STEP_HUES[stepIndex % STEP_HUES.length];
+
   return (
     <div
       data-cursor="view"
@@ -146,7 +97,7 @@ function StageCard({ s, isLast }: { s: Step; isLast: boolean }) {
     >
       <div
         aria-hidden
-        className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${s.hue}`}
+        className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${hue}`}
       />
       <div className="noise-overlay" />
 
@@ -173,9 +124,9 @@ function StageCard({ s, isLast }: { s: Step; isLast: boolean }) {
           Deliverables
         </p>
         <ul className="space-y-2.5">
-          {s.deliverables.map((d) => (
+          {s.deliverables.map((d, di) => (
             <li
-              key={d}
+              key={di}
               className="flex items-start gap-2.5 text-sm font-medium text-foreground/90 leading-snug"
             >
               <span className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-orange-400" />
@@ -185,7 +136,6 @@ function StageCard({ s, isLast }: { s: Step; isLast: boolean }) {
         </ul>
       </div>
 
-      {/* Arrow connector to next card */}
       {!isLast ? (
         <svg
           aria-hidden

@@ -5,7 +5,8 @@ import { FadeIn, Stagger, StaggerItem } from "@/components/motion/fade-in";
 import { PageHero } from "@/components/pages/page-hero";
 import { Container } from "@/components/ui/container";
 import { getAllTags, getPostsByTag } from "@/lib/db-queries";
-import { site } from "@/lib/site";
+import { getSite } from "@/lib/get-site";
+import { toMediaUrl } from "@/lib/media";
 import { ArrowUpRight, Calendar, Tag, ChevronRight } from "lucide-react";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -20,6 +21,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const site = await getSite();
   const { slug } = await params;
   const label = slugToLabel(slug);
 
@@ -75,7 +77,7 @@ export default async function BlogTagPage({ params }: Props) {
                   <article className="glass group flex h-full flex-col rounded-2xl p-8 transition hover:border-orange-500/20">
                     {post.featuredImage && (
                       <img
-                        src={post.featuredImage}
+                        src={toMediaUrl(post.featuredImage)}
                         alt={post.featuredImageAlt || post.title}
                         className="w-full h-48 object-cover rounded-xl mb-4"
                       />
